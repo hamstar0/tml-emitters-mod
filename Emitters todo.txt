@@ -1,0 +1,29 @@
+v2
+-	...
+-	Define 3d scanner item
+-	Define hologram emitter item
+-	Implement crafting emitter items from bottled particles
+-	Implement catchable particles (requires net and empty bottles)
+
+
+
+v1
+-	Implement emitter recipe
+-	Implement emitter tile wire
+-	Implement emitter tile FX
+-	Implement emitter placement mode
+-	Implement UI (adjusts mode (dust or gore), scale, speed, color, alpha, scatter, has gravity, has light)
+	-	Apply settings
+
+	-	@Implement color picker widget
+	-	@Implement slider widget
+		-	Implement value input clamping
+		-	Implement value input (and output) field
+		-	Implement ticks
+		-	Implement click and drag mode
+		-	Define slider element and basic interactivity
+-	Create emitter graphic (small black candle-type thing)
+-	Define emitter concept
+-	Define bottled particles item
+-	Define emitter item
+-	Setup project (UI, bottle, emitter, emitter tile)
