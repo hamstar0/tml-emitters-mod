@@ -15,6 +15,7 @@ namespace Emitters.UI {
 
 		private UISlider TypeSliderElem;
 		private UISlider ScaleSliderElem;
+		private UISlider DelaySliderElem;
 		private UISlider SpeedXSliderElem;
 		private UISlider SpeedYSliderElem;
 		private UISlider HueSliderElem;
@@ -32,7 +33,7 @@ namespace Emitters.UI {
 
 		////////////////
 
-		public UIEmitterEditorDialog() : base( UITheme.Vanilla, 480, 368 ) { }
+		public UIEmitterEditorDialog() : base( UITheme.Vanilla, 600, 400 ) { }
 
 
 		////////////////
@@ -59,10 +60,11 @@ namespace Emitters.UI {
 
 			this.TypeSliderElem.SetValue( myitem.Def.Type );
 			this.ScaleSliderElem.SetValue( myitem.Def.Scale );
+			this.DelaySliderElem.SetValue( myitem.Def.Delay );
 			this.SpeedXSliderElem.SetValue( myitem.Def.SpeedX );
 			this.SpeedYSliderElem.SetValue( myitem.Def.SpeedY );
-			this.HueSliderElem.SetValue( (float)hsl.X );
-			this.IntensitySliderElem.SetValue( (float)hsl.Y );
+			this.HueSliderElem.SetValue( hsl.X );
+			this.IntensitySliderElem.SetValue( hsl.Y );
 			this.AlphaSliderElem.SetValue( myitem.Def.Alpha );
 			this.ScatterSliderElem.SetValue( myitem.Def.Scatter );
 			this.HasGravityCheckbox.Selected = myitem.Def.HasGravity;
@@ -83,10 +85,11 @@ namespace Emitters.UI {
 				IsGoreMode = this.IsGoreMode,
 				Type = (int)this.TypeSliderElem.RememberedInputValue,
 				Scale = this.ScaleSliderElem.RememberedInputValue,
+				Delay = (int)this.DelaySliderElem.RememberedInputValue,
 				SpeedX = this.SpeedXSliderElem.RememberedInputValue,
 				SpeedY = this.SpeedYSliderElem.RememberedInputValue,
 				Color = this.GetColor(),
-				Alpha = this.AlphaSliderElem.RememberedInputValue,
+				Alpha = (byte)this.AlphaSliderElem.RememberedInputValue,
 				Scatter = this.ScatterSliderElem.RememberedInputValue,
 				HasGravity = this.HasGravityCheckbox.Selected,
 				HasLight = this.HasLightCheckbox.Selected,

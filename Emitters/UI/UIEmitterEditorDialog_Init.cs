@@ -21,6 +21,7 @@ namespace Emitters.UI {
 			this.InitializeWidgetsForMode( ref yOffset );
 			this.InitializeWidgetsForType( ref yOffset );
 			this.InitializeWidgetsForScale( ref yOffset );
+			this.InitializeWidgetsForDelay( ref yOffset );
 			this.InitializeWidgetsForSpeedX( ref yOffset );
 			this.InitializeWidgetsForSpeedY( ref yOffset );
 			this.InitializeWidgetsForColor( ref yOffset );
@@ -151,6 +152,24 @@ namespace Emitters.UI {
 			this.InnerContainer.Append( (UIElement)this.ScaleSliderElem );
 		}
 
+		private void InitializeWidgetsForDelay( ref float yOffset ) {
+			this.InitializeComponentForTitle( "Delay:", false, ref yOffset );
+			
+			this.DelaySliderElem = new UISlider(
+				theme: UITheme.Vanilla,
+				hoverText: "",
+				isInt: true,
+				ticks: 0,
+				minRange: 5,
+				maxRange: 60 * 5 );
+			this.DelaySliderElem.Top.Set( yOffset, 0f );
+			this.DelaySliderElem.Left.Set( 64f, 0f );
+			this.DelaySliderElem.Width.Set( -64f, 1f );
+			yOffset += 28f;
+
+			this.InnerContainer.Append( (UIElement)this.DelaySliderElem );
+		}
+
 		private void InitializeWidgetsForSpeedX( ref float yOffset ) {
 			this.InitializeComponentForTitle( "Speed X:", false, ref yOffset );
 
@@ -233,10 +252,10 @@ namespace Emitters.UI {
 			this.AlphaSliderElem = new UISlider(
 				theme: UITheme.Vanilla,
 				hoverText: "",
-				isInt: false,
+				isInt: true,
 				ticks: 0,
-				minRange: 0f,
-				maxRange: 1f );
+				minRange: 8f,
+				maxRange: 255f );
 			this.AlphaSliderElem.Top.Set( yOffset, 0f );
 			this.AlphaSliderElem.Left.Set( 64f, 0f );
 			this.AlphaSliderElem.Width.Set( -64f, 1f );

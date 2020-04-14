@@ -9,6 +9,7 @@ v2
 
 v1
 -	Implement emitter recipe
+-	Implement emitter toggle
 -	Implement emitter tile wire
 -	Implement emitter tile FX
 

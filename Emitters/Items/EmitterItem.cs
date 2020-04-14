@@ -69,6 +69,7 @@ namespace Emitters.Items {
 				IsGoreMode = tag.GetBool( "EmitterMode"),
 				Type = tag.GetInt( "EmitterType" ),
 				Scale = tag.GetFloat( "EmitterScale" ),
+				Delay = tag.GetInt( "EmitterDelay" ),
 				SpeedX = tag.GetFloat( "EmitterSpeedX" ),
 				SpeedY = tag.GetFloat( "EmitterSpeedY" ),
 				Color = new Color(
@@ -76,7 +77,7 @@ namespace Emitters.Items {
 					tag.GetByte( "EmitterColorG" ),
 					tag.GetByte( "EmitterColorB" )
 				),
-				Alpha = tag.GetFloat( "EmitterAlpha" ),
+				Alpha = tag.GetByte( "EmitterAlpha" ),
 				Scatter = tag.GetFloat( "EmitterScatter" ),
 				HasGravity = tag.GetBool( "EmitterHasGrav" ),
 				HasLight = tag.GetBool( "EmitterHasLight" ),
@@ -92,12 +93,13 @@ namespace Emitters.Items {
 				{ "EmitterMode", (bool)this.Def.IsGoreMode },
 				{ "EmitterType", (int)this.Def.Type },
 				{ "EmitterScale", (float)this.Def.Scale },
+				{ "EmitterDelay", (float)this.Def.Delay },
 				{ "EmitterSpeedX", (float)this.Def.SpeedX },
 				{ "EmitterSpeedY", (float)this.Def.SpeedY },
 				{ "EmitterColorR", (byte)this.Def.Color.R },
 				{ "EmitterColorG", (byte)this.Def.Color.G },
 				{ "EmitterColorB", (byte)this.Def.Color.B },
-				{ "EmitterAlpha", (float)this.Def.Alpha },
+				{ "EmitterAlpha", (byte)this.Def.Alpha },
 				{ "EmitterScatter", (float)this.Def.Scatter },
 				{ "EmitterHasGrav", (bool)this.Def.HasGravity },
 				{ "EmitterHasLight", (bool)this.Def.HasLight },
@@ -117,10 +119,11 @@ namespace Emitters.Items {
 			var modeTip = new TooltipLine( this.mod, "EmitterMode", " Mode: "+this.Def?.RenderMode() );
 			var typeTip = new TooltipLine( this.mod, "EmitterType", " Type: "+this.Def?.RenderType() );
 			var scaleTip = new TooltipLine( this.mod, "EmitterScale", " Scale: "+this.Def?.RenderScale() );
+			var delayTip = new TooltipLine( this.mod, "EmitterDelay", " Scale: "+this.Def?.RenderDelay() );
 			var speedxTip = new TooltipLine( this.mod, "EmitterSpeedX", " SpeedX: "+this.Def?.RenderSpeedX() );
 			var speedyTip = new TooltipLine( this.mod, "EmitterSpeedY", " SpeedY: "+this.Def?.RenderSpeedY() );
 			var colorTip = new TooltipLine( this.mod, "EmitterColor", " Color: "+this.Def?.RenderColor() );
-			var alphaTip = new TooltipLine( this.mod, "EmitterAlpha", " Alpha%: "+this.Def?.RenderAlpha() );
+			var alphaTip = new TooltipLine( this.mod, "EmitterAlpha", " Alpha: "+this.Def?.RenderAlpha() );
 			var scatterTip = new TooltipLine( this.mod, "EmitterScatter", " Scatter%: "+this.Def?.RenderScatter() );
 			var hasGravTip = new TooltipLine( this.mod, "EmitterHasGrav", " Has Gravity: "+this.Def?.RenderHasGravity() );
 			var hasLightTip = new TooltipLine( this.mod, "EmitterHasLight", " Has Light: "+this.Def?.RenderHasLight() );
@@ -128,6 +131,7 @@ namespace Emitters.Items {
 			modeTip.overrideColor = Color.Gray;
 			typeTip.overrideColor = Color.Gray;
 			scaleTip.overrideColor = Color.Gray;
+			delayTip.overrideColor = Color.Gray;
 			speedxTip.overrideColor = Color.Gray;
 			speedyTip.overrideColor = Color.Gray;
 			colorTip.overrideColor = Color.Gray;
@@ -139,6 +143,7 @@ namespace Emitters.Items {
 			tooltips.Add( modeTip );
 			tooltips.Add( typeTip );
 			tooltips.Add( scaleTip );
+			tooltips.Add( delayTip );
 			tooltips.Add( speedxTip );
 			tooltips.Add( speedyTip );
 			tooltips.Add( colorTip );

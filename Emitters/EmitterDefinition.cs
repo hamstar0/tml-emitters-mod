@@ -10,6 +10,7 @@ namespace Emitters {
 				IsGoreMode = (bool)reader.ReadBoolean(),
 				Type = (int)reader.ReadUInt16(),
 				Scale = (float)reader.ReadSingle(),
+				Delay = (int)reader.ReadInt16(),
 				SpeedX = (float)reader.ReadSingle(),
 				SpeedY = (float)reader.ReadSingle(),
 				Color = new Color(
@@ -17,7 +18,7 @@ namespace Emitters {
 					(byte)reader.ReadByte(),
 					(byte)reader.ReadByte()
 				),
-				Alpha = (float)reader.ReadSingle(),
+				Alpha = (byte)reader.ReadByte(),
 				Scatter = (float)reader.ReadSingle(),
 				HasGravity = (bool)reader.ReadBoolean(),
 				HasLight = (bool)reader.ReadBoolean(),
@@ -28,12 +29,13 @@ namespace Emitters {
 			writer.Write( (bool)def.IsGoreMode );
 			writer.Write( (ushort)def.Type );
 			writer.Write( (float)def.Scale );
+			writer.Write( (ushort)def.Delay );
 			writer.Write( (float)def.SpeedX );
 			writer.Write( (float)def.SpeedY );
 			writer.Write( (byte)def.Color.R );
 			writer.Write( (byte)def.Color.G );
 			writer.Write( (byte)def.Color.B );
-			writer.Write( (float)def.Alpha );
+			writer.Write( (byte)def.Alpha );
 			writer.Write( (float)def.Scatter );
 			writer.Write( (bool)def.HasGravity );
 			writer.Write( (bool)def.HasLight );
@@ -43,13 +45,19 @@ namespace Emitters {
 
 		////////////////
 
+		private int Timer = 0;
+
+
+		////////////////
+
 		public bool IsGoreMode { get; internal set; }
 		public int Type { get; internal set; }
 		public float Scale { get; internal set; }
+		public int Delay { get; internal set; }
 		public float SpeedX { get; internal set; }
 		public float SpeedY { get; internal set; }
 		public Color Color { get; internal set; }
-		public float Alpha { get; internal set; }
+		public byte Alpha { get; internal set; }
 		public float Scatter { get; internal set; }
 		public bool HasGravity { get; internal set; }
 		public bool HasLight { get; internal set; }
@@ -69,6 +77,9 @@ namespace Emitters {
 		public string RenderScale() {
 			return ( this.Scale * 100f ).ToString( "N0" );
 		}
+		public string RenderDelay() {
+			return this.Delay.ToString();
+		}
 		public string RenderSpeedX() {
 			return this.SpeedX.ToString();
 		}
@@ -79,7 +90,7 @@ namespace Emitters {
 			return this.Color.ToString();
 		}
 		public string RenderAlpha() {
-			return (this.Alpha * 100f).ToString( "N0" );
+			return this.Alpha.ToString();
 		}
 		public string RenderScatter() {
 			return (this.Scatter * 100f).ToString( "N0" );
@@ -98,6 +109,7 @@ namespace Emitters {
 				+/*"\n"+*/" Mode: " + this.RenderMode() + ", "
 				+/*"\n"+*/" Type: " + this.RenderType() + ", "
 				+/*"\n"+*/" Scale: " + this.RenderScale() + ", "
+				+/*"\n"+*/" Delay: " + this.RenderDelay() + ", "
 				+/*"\n"+*/" SpeedX: " + this.RenderSpeedX() + ", "
 				+/*"\n"+*/" SpeedY: " + this.RenderSpeedY() + ", "
 				+/*"\n"+*/" Color: " + this.RenderColor() + ", "

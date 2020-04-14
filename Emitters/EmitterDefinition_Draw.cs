@@ -33,7 +33,31 @@ namespace Emitters {
 		////////////////
 
 		public void AnimateEmitter( Vector2 worldPos ) {
-			f
+			if( this.Timer++ < this.Delay ) {
+				return;
+			}
+			this.Timer = 0;
+
+			if( this.IsGoreMode ) {
+				Gore.NewGore(
+					Position: worldPos,
+					Velocity: new Vector2(this.SpeedX, this.SpeedY),
+					Type: (int)this.Type,
+					Scale: this.Scale
+				);
+			} else {
+				Dust.NewDust(
+					Position: worldPos,
+					Width: (int)this.Scatter,
+					Height: (int)this.Scatter,
+					Type: (int)this.Type,
+					SpeedX: this.SpeedX,
+					SpeedY: this.SpeedY,
+					Alpha: (int)this.Alpha,
+					newColor: this.Color,
+					Scale: this.Scale
+				);
+			}
 		}
 	}
 }
