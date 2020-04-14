@@ -9,6 +9,23 @@ using HamstarHelpers.Services.Timers;
 
 namespace Emitters.Items {
 	public class EmitterItem : ModItem {
+		public static void AttemptEmitterPlacementForCurrentPlayer( EmitterDefinition def ) {
+			var myworld = ModContent.GetInstance<EmittersWorld>();
+			ushort tileX = (ushort)Main.MouseWorld.X;
+			ushort tileY = (ushort)Main.MouseWorld.Y;
+
+			myworld.AddEmitter( def, tileX, tileY );
+
+			Main.PlaySound( SoundID.Item108, Main.MouseWorld );
+
+			if( Main.netMode == 1 ) {
+				EmitterPlacementProtocol.Broadcast( def, tileX, tileY );
+			}
+		}
+
+
+		////////////////
+
 		public static void OpenUI( Item emitterItem ) {
 			var mymod = EmittersMod.Instance;
 
@@ -196,22 +213,20 @@ namespace Emitters.Items {
 		////////////////
 
 		public override bool UseItem( Player player ) {
+			if( Main.netMode == 2 || player.whoAmI != Main.myPlayer ) {
+				return base.UseItem( player );
+			}
+
 			string timerName = "EmitterPlace_" + player.whoAmI;
+
 			if( Timers.GetTimerTickDuration(timerName) > 0 ) {
 				return base.UseItem( player );
 			}
 			Timers.SetTimer( timerName, 4, false, () => false );
 
-			this.AttemptPlacement( player );
+			EmitterItem.AttemptEmitterPlacementForCurrentPlayer( this.Def );
 
 			return base.UseItem( player );
-		}
-
-
-		////////////////
-
-		private void AttemptPlacement( Player plr ) {
-
 		}
 	}
 }
