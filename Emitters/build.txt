@@ -1,6 +1,6 @@
 displayName = Emitters
 author = hamstar
-version = 0.3.0
+version = 0.3.1
 modReferences = HamstarHelpers@5.6.0
 buildIgnore = *.csproj, *.user, *.bat, obj\*, bin\*, .vs\*, .git\*
 homepage = https://forums.terraria.org/index.php?threads/mounted-magic-mirrors-fast-travel.83296/

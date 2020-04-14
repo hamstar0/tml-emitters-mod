@@ -51,5 +51,21 @@ namespace Emitters {
 		public string RenderHasLight() {
 			return this.HasLight.ToString();
 		}
+
+		////////////////
+
+		public override string ToString() {
+			return "Emitter Definition:"
+				+/*"\n"+*/" Mode: "+this.RenderMode()+", "
+				+/*"\n"+*/" Type: " + this.RenderType()+", "
+				+/*"\n"+*/" Scale: " + this.RenderScale()+", "
+				+/*"\n"+*/" SpeedX: " + this.RenderSpeedX()+", "
+				+/*"\n"+*/" SpeedY: " + this.RenderSpeedY()+", "
+				+/*"\n"+*/" Color: " + this.RenderColor()+", "
+				+/*"\n"+*/" Alpha: " + this.RenderAlpha()+", "
+				+/*"\n"+*/" Scatter: " + this.RenderScatter()+", "
+				+/*"\n"+*/" HasGravity: " + this.RenderHasGravity()+", "
+				+/*"\n"+*/" HasLight: " + this.RenderHasLight();
+		}
 	}
 }

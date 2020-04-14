@@ -40,7 +40,7 @@ namespace Emitters.UI {
 		public Color GetColor() {
 			float hue = this.HueSliderElem.RememberedInputValue;
 			float intensity = this.IntensitySliderElem.RememberedInputValue;
-
+			
 			return Main.hslToRgb( hue, intensity, 1f );//0.5f?
 		}
 
@@ -49,6 +49,24 @@ namespace Emitters.UI {
 
 		internal void SetItem( Item emitterItem ) {
 			this.EmitterItem = emitterItem;
+
+			var myitem = emitterItem.modItem as EmitterItem;
+			if( myitem.Def == null ) {
+				return;
+			}
+
+			Vector3 hsl = Main.rgbToHsl( myitem.Def.Color );
+
+			this.TypeSliderElem.SetValue( myitem.Def.Type );
+			this.ScaleSliderElem.SetValue( myitem.Def.Scale );
+			this.SpeedXSliderElem.SetValue( myitem.Def.SpeedX );
+			this.SpeedYSliderElem.SetValue( myitem.Def.SpeedY );
+			this.HueSliderElem.SetValue( (float)hsl.X );
+			this.IntensitySliderElem.SetValue( (float)hsl.Y );
+			this.AlphaSliderElem.SetValue( myitem.Def.Alpha );
+			this.ScatterSliderElem.SetValue( myitem.Def.Scatter );
+			this.HasGravityCheckbox.Selected = myitem.Def.HasGravity;
+			this.HasLightCheckbox.Selected = myitem.Def.HasLight;
 		}
 
 
@@ -60,6 +78,7 @@ namespace Emitters.UI {
 			}
 
 			var myitem = this.EmitterItem.modItem as EmitterItem;
+
 			myitem.SetEmitterDefinition( new EmitterDefinition {
 				IsGoreMode = this.IsGoreMode,
 				Type = (int)this.TypeSliderElem.RememberedInputValue,

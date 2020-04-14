@@ -11,6 +11,7 @@ using HamstarHelpers.Helpers.DotNET.Reflection;
 namespace Emitters.UI {
 	partial class UIEmitterEditorDialog : UIDialog {
 		public override void InitializeComponents() {
+			var self = this;
 			float yOffset = 0f;
 
 			var textElem = new UIText( "Adjust Emitter", 1f, true );
@@ -33,8 +34,8 @@ namespace Emitters.UI {
 			applyButton.Top.Set( yOffset, 0f );
 			applyButton.Left.Set( -64f, 1f );
 			applyButton.OnClick += ( _, __ ) => {
-				this.Close();
-				this.ApplySettingsToCurrentItem();
+				self.Close();
+				self.ApplySettingsToCurrentItem();
 			};
 			this.InnerContainer.Append( (UIElement)applyButton );
 		}

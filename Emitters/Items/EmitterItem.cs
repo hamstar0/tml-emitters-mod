@@ -31,12 +31,28 @@ namespace Emitters.Items {
 
 		////////////////
 
+		public override ModItem Clone( Item item ) {
+			var myclone = (EmitterItem)base.Clone( item );
+			myclone.Def = this.Def;
+
+			return myclone;
+		}
+
+		public override ModItem Clone() {
+			var myclone = (EmitterItem)base.Clone();
+			myclone.Def = this.Def;
+
+			return myclone;
+		}
+
+
+		////////////////
+
 		public override void SetStaticDefaults() {
 			this.DisplayName.SetDefault( "Emitter" );
 			this.Tooltip.SetDefault( "Spews particles."
 				+"\n"+"Place on a tile to apply effect"
 				+"\n"+"Emitters may be wire controlled"
-				+"\n"+"[c/00FF00:Right-click item for adjustments]"
 			);
 		}
 
@@ -104,16 +120,22 @@ namespace Emitters.Items {
 		////////////////
 
 		public override void ModifyTooltips( List<TooltipLine> tooltips ) {
-			var modeTip = new TooltipLine( this.mod, "EmitterMode", "Mode: "+this.Def?.RenderMode() );
-			var typeTip = new TooltipLine( this.mod, "EmitterType", "Type: "+this.Def?.RenderType() );
-			var scaleTip = new TooltipLine( this.mod, "EmitterScale", "Scale: "+this.Def?.RenderScale() );
-			var speedxTip = new TooltipLine( this.mod, "EmitterSpeedX", "SpeedX: "+this.Def?.RenderSpeedX() );
-			var speedyTip = new TooltipLine( this.mod, "EmitterSpeedY", "SpeedY: "+this.Def?.RenderSpeedY() );
-			var colorTip = new TooltipLine( this.mod, "EmitterColor", "Color: "+this.Def?.RenderColor() );
-			var alphaTip = new TooltipLine( this.mod, "EmitterAlpha", "Alpha%: "+this.Def?.RenderAlpha() );
-			var scatterTip = new TooltipLine( this.mod, "EmitterScatter", "Scatter%: "+this.Def?.RenderScatter() );
-			var hasGravTip = new TooltipLine( this.mod, "EmitterHasGrav", "Has Gravity: "+this.Def?.RenderHasGravity() );
-			var hasLightTip = new TooltipLine( this.mod, "EmitterHasLight", "Has Light: "+this.Def?.RenderHasLight() );
+			tooltips.Insert( 0, new TooltipLine(this.mod, "EmitterUI", "[c/00FF00:Right-click item to make adjustments]") );
+
+			if( this.Def == null ) {
+				return;
+			}
+
+			var modeTip = new TooltipLine( this.mod, "EmitterMode", " Mode: "+this.Def?.RenderMode() );
+			var typeTip = new TooltipLine( this.mod, "EmitterType", " Type: "+this.Def?.RenderType() );
+			var scaleTip = new TooltipLine( this.mod, "EmitterScale", " Scale: "+this.Def?.RenderScale() );
+			var speedxTip = new TooltipLine( this.mod, "EmitterSpeedX", " SpeedX: "+this.Def?.RenderSpeedX() );
+			var speedyTip = new TooltipLine( this.mod, "EmitterSpeedY", " SpeedY: "+this.Def?.RenderSpeedY() );
+			var colorTip = new TooltipLine( this.mod, "EmitterColor", " Color: "+this.Def?.RenderColor() );
+			var alphaTip = new TooltipLine( this.mod, "EmitterAlpha", " Alpha%: "+this.Def?.RenderAlpha() );
+			var scatterTip = new TooltipLine( this.mod, "EmitterScatter", " Scatter%: "+this.Def?.RenderScatter() );
+			var hasGravTip = new TooltipLine( this.mod, "EmitterHasGrav", " Has Gravity: "+this.Def?.RenderHasGravity() );
+			var hasLightTip = new TooltipLine( this.mod, "EmitterHasLight", " Has Light: "+this.Def?.RenderHasLight() );
 
 			modeTip.overrideColor = Color.Gray;
 			typeTip.overrideColor = Color.Gray;
@@ -153,6 +175,7 @@ namespace Emitters.Items {
 		////////////////
 
 		public void SetEmitterDefinition( EmitterDefinition def ) {
+//Main.NewText( def.ToString() );
 			this.Def = def;
 		}
 
