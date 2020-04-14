@@ -5,10 +5,19 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using HamstarHelpers.Services.Timers;
+using HamstarHelpers.Helpers.Items;
+using Emitters.NetProtocols;
 
 
 namespace Emitters.Items {
 	public class EmitterItem : ModItem {
+		public static bool CanViewEmitters( Player plr ) {
+			return !plr.HeldItem.IsAir && plr.HeldItem.type == ModContent.ItemType<EmitterItem>();
+		}
+
+
+		////
+
 		public static void AttemptEmitterPlacementForCurrentPlayer( EmitterDefinition def ) {
 			var myworld = ModContent.GetInstance<EmittersWorld>();
 			ushort tileX = (ushort)Main.MouseWorld.X;
@@ -19,7 +28,7 @@ namespace Emitters.Items {
 			Main.PlaySound( SoundID.Item108, Main.MouseWorld );
 
 			if( Main.netMode == 1 ) {
-				EmitterPlacementProtocol.Broadcast( def, tileX, tileY );
+				EmitterPlacementProtocol.BroadcastFromClient( def, tileX, tileY );
 			}
 		}
 
@@ -194,6 +203,54 @@ namespace Emitters.Items {
 		public void SetEmitterDefinition( EmitterDefinition def ) {
 //Main.NewText( def.ToString() );
 			this.Def = def;
+		}
+
+
+		////////////////
+
+		public override void UpdateInventory( Player player ) {
+			if( player.whoAmI == Main.myPlayer ) {
+				this.UpdateForCurrentPlayer();
+			}
+		}
+
+		private void UpdateForCurrentPlayer() {
+			if( EmitterItem.CanViewEmitters( Main.LocalPlayer ) ) {
+				this.UpdateInterface();
+			}
+		}
+
+		////
+
+		private void UpdateInterface() {
+			if( Main.mouseRight && Main.mouseRightRelease ) {
+				this.AttemptEmitterPickup( Main.MouseWorld );
+				return;
+			}
+		}
+
+		////////////////
+
+		private void AttemptEmitterPickup( Vector2 worldPos ) {
+			if( this.AttemptEmitterRemove(worldPos) ) {
+				ItemHelpers.CreateItem( Main.LocalPlayer.position, ModContent.ItemType<EmitterItem>(), 1, 16, 16 );
+			}
+		}
+
+		////
+
+		private bool AttemptEmitterRemove( Vector2 worldPos ) {
+			var myworld = ModContent.GetInstance<EmittersWorld>();
+			Vector2 tilePos = worldPos / 16f;
+			var tileX = (ushort)tilePos.X;
+			var tileY = (ushort)tilePos.Y;
+
+			EmitterDefinition emitter = myworld.GetEmitter( tileX, tileY );
+			if( emitter == null ) {
+				return false;
+			}
+
+			return myworld.RemoveEmitter( tileX, tileY );
 		}
 
 

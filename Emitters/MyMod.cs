@@ -1,11 +1,11 @@
-using System.Collections.Generic;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
 using Emitters.UI;
 
 
 namespace Emitters {
-	public class EmittersMod : Mod {
+	public partial class EmittersMod : Mod {
 		public static string GithubUserName => "hamstar0";
 		public static string GithubProjectName => "tml-emitters-mod";
 
@@ -18,10 +18,7 @@ namespace Emitters {
 
 		////////////////
 
-		private IDictionary<short, IDictionary<short, EmitterDefinition>> Emitters
-			= new Dictionary<short, IDictionary<short, EmitterDefinition>>();
-
-		////
+		internal Texture2D Emitter;
 
 		internal UIEmitterEditorDialog EmitterEditorDialog;
 
@@ -41,6 +38,14 @@ namespace Emitters {
 
 		public override void Unload() {
 			EmittersMod.Instance = null;
+		}
+
+		////
+
+		public override void PostSetupContent() {
+			if( !Main.dedServ ) {
+				this.Emitter = this.GetTexture( "Emitter" );
+			}
 		}
 	}
 }

@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 
 
 namespace Emitters {
-	public class EmitterDefinition {
+	public partial class EmitterDefinition {
 		public static EmitterDefinition Read( BinaryReader reader ) {
 			return new EmitterDefinition {
 				IsGoreMode = (bool)reader.ReadBoolean(),
@@ -23,7 +23,7 @@ namespace Emitters {
 				HasLight = (bool)reader.ReadBoolean(),
 			};
 		}
-		
+
 		public static void Write( EmitterDefinition def, BinaryWriter writer ) {
 			writer.Write( (bool)def.IsGoreMode );
 			writer.Write( (ushort)def.Type );
@@ -67,7 +67,7 @@ namespace Emitters {
 			return this.Type.ToString();
 		}
 		public string RenderScale() {
-			return (this.Scale * 100f).ToString( "N0" );
+			return ( this.Scale * 100f ).ToString( "N0" );
 		}
 		public string RenderSpeedX() {
 			return this.SpeedX.ToString();
@@ -95,15 +95,15 @@ namespace Emitters {
 
 		public override string ToString() {
 			return "Emitter Definition:"
-				+/*"\n"+*/" Mode: "+this.RenderMode()+", "
-				+/*"\n"+*/" Type: " + this.RenderType()+", "
-				+/*"\n"+*/" Scale: " + this.RenderScale()+", "
-				+/*"\n"+*/" SpeedX: " + this.RenderSpeedX()+", "
-				+/*"\n"+*/" SpeedY: " + this.RenderSpeedY()+", "
-				+/*"\n"+*/" Color: " + this.RenderColor()+", "
-				+/*"\n"+*/" Alpha: " + this.RenderAlpha()+", "
-				+/*"\n"+*/" Scatter: " + this.RenderScatter()+", "
-				+/*"\n"+*/" HasGravity: " + this.RenderHasGravity()+", "
+				+/*"\n"+*/" Mode: " + this.RenderMode() + ", "
+				+/*"\n"+*/" Type: " + this.RenderType() + ", "
+				+/*"\n"+*/" Scale: " + this.RenderScale() + ", "
+				+/*"\n"+*/" SpeedX: " + this.RenderSpeedX() + ", "
+				+/*"\n"+*/" SpeedY: " + this.RenderSpeedY() + ", "
+				+/*"\n"+*/" Color: " + this.RenderColor() + ", "
+				+/*"\n"+*/" Alpha: " + this.RenderAlpha() + ", "
+				+/*"\n"+*/" Scatter: " + this.RenderScatter() + ", "
+				+/*"\n"+*/" HasGravity: " + this.RenderHasGravity() + ", "
 				+/*"\n"+*/" HasLight: " + this.RenderHasLight();
 		}
 	}

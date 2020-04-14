@@ -12,7 +12,8 @@ v1
 -	Implement emitter tile wire
 -	Implement emitter tile FX
 -	Implement emitter placement mode
-	-	Add interface layer to render emitters
+	-	Implement emitter removal (right-click on emitters when in mode)
+	-	Draw emitters when in mode to perceive them (holding an emitter item)
 
 	-	Implement emitter sync
 	-	Set emitter onto tile

@@ -1,5 +1,6 @@
 using System.IO;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using Terraria;
 using Terraria.ModLoader;
@@ -86,15 +87,45 @@ namespace Emitters {
 		}
 
 
-
 		////////////////
-
+		
 		public void AddEmitter( EmitterDefinition def, ushort tileX, ushort tileY ) {
 			this.Emitters.Set2D( tileX, tileY, def );
 		}
 
 		public EmitterDefinition GetEmitter( ushort tileX, ushort tileY ) {
 			return this.Emitters.Get2DOrDefault( tileX, tileY );
+		}
+
+		////
+
+		public bool RemoveEmitter( ushort tileX, ushort tileY ) {
+			return this.Emitters.Remove2D( tileX, tileY );
+		}
+
+
+		////////////////
+
+		public override void PostDrawTiles() {
+			int leftTile = (int)Main.screenPosition.X >> 4;
+			int topTile = (int)Main.screenPosition.Y >> 4;
+			int tileWidth = Main.screenWidth >> 4;
+			int tileHeight = Main.screenHeight >> 4;
+			int maxX = leftTile + tileWidth + 1;
+			int maxY = topTile + tileHeight + 1;
+			EmitterDefinition def;
+
+			var scrTiles = new Rectangle( leftTile, topTile, maxX, maxY );
+			maxX += 8;
+			maxY += 8;
+
+			for( ushort x=(ushort)(leftTile - 8); x < maxX; x++ ) {
+				for( ushort y=(ushort)(topTile - 8); y < maxY; y++ ) {
+					if( this.Emitters.TryGetValue2D(x, y, out def) ) {
+						def.Draw( x, y, scrTiles.Contains(x, y) );
+					}
+				}
+			}
 		}
 	}
 }
