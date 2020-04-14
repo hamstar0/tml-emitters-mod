@@ -12,10 +12,14 @@ v1
 -	Implement emitter tile wire
 -	Implement emitter tile FX
 -	Implement emitter placement mode
--	Implement tile sync
+	-	Implement emitter sync
+	-	Add interface layer to render emitters
+	-	Set emitter onto tile
+
+	-	Implement emitter save and sync for world
+	-	Store emitters for world
 -	Implement UI (adjusts mode (dust or gore), scale, speed, color, alpha, scatter, has gravity, has light)
 	-	Apply settings
-
 	-	@Implement color picker widget
 	-	@Implement slider widget
 		-	Implement value input clamping

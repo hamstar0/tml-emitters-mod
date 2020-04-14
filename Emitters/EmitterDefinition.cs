@@ -1,9 +1,48 @@
 ﻿using System;
+using System.IO;
 using Microsoft.Xna.Framework;
 
 
 namespace Emitters {
 	public class EmitterDefinition {
+		public static EmitterDefinition Read( BinaryReader reader ) {
+			return new EmitterDefinition {
+				IsGoreMode = (bool)reader.ReadBoolean(),
+				Type = (int)reader.ReadUInt16(),
+				Scale = (float)reader.ReadSingle(),
+				SpeedX = (float)reader.ReadSingle(),
+				SpeedY = (float)reader.ReadSingle(),
+				Color = new Color(
+					(byte)reader.ReadByte(),
+					(byte)reader.ReadByte(),
+					(byte)reader.ReadByte()
+				),
+				Alpha = (float)reader.ReadSingle(),
+				Scatter = (float)reader.ReadSingle(),
+				HasGravity = (bool)reader.ReadBoolean(),
+				HasLight = (bool)reader.ReadBoolean(),
+			};
+		}
+		
+		public static void Write( EmitterDefinition def, BinaryWriter writer ) {
+			writer.Write( (bool)def.IsGoreMode );
+			writer.Write( (ushort)def.Type );
+			writer.Write( (float)def.Scale );
+			writer.Write( (float)def.SpeedX );
+			writer.Write( (float)def.SpeedY );
+			writer.Write( (byte)def.Color.R );
+			writer.Write( (byte)def.Color.G );
+			writer.Write( (byte)def.Color.B );
+			writer.Write( (float)def.Alpha );
+			writer.Write( (float)def.Scatter );
+			writer.Write( (bool)def.HasGravity );
+			writer.Write( (bool)def.HasLight );
+		}
+
+
+
+		////////////////
+
 		public bool IsGoreMode { get; internal set; }
 		public int Type { get; internal set; }
 		public float Scale { get; internal set; }
