@@ -282,7 +282,7 @@ namespace Emitters.UI {
 				isInt: false,
 				ticks: 0,
 				minRange: 0f,
-				maxRange: 100f );
+				maxRange: 300f );
 			this.ScatterSliderElem.Top.Set( yOffset, 0f );
 			this.ScatterSliderElem.Left.Set( 64f, 0f );
 			this.ScatterSliderElem.Width.Set( -64f, 1f );

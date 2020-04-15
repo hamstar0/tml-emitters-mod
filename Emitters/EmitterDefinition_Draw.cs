@@ -55,7 +55,7 @@ namespace Emitters {
 				Main.gore[goreIdx].alpha = this.Alpha;
 			} else {
 				int dustIdx = Dust.NewDust(
-					Position: worldPos,
+					Position: worldPos - new Vector2(this.Scatter * 0.5f),
 					Width: (int)this.Scatter,
 					Height: (int)this.Scatter,
 					Type: (int)this.Type,

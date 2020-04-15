@@ -2,9 +2,10 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Classes.UI.Elements;
 using HamstarHelpers.Classes.UI.Theme;
-using HamstarHelpers.Classes.Errors;
+using HamstarHelpers.Helpers.Debug;
 using Emitters.Items;
 
 
@@ -43,7 +44,8 @@ namespace Emitters.UI {
 			float hue = this.HueSliderElem.RememberedInputValue;
 			float intensity = this.IntensitySliderElem.RememberedInputValue;
 
-			return Main.hslToRgb( hue, intensity, 1f );//0.5f?
+			Color color = Main.hslToRgb( hue, intensity, 0.5f );
+			return color;
 		}
 
 		////////////////

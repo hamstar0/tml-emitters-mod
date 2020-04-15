@@ -113,7 +113,8 @@ namespace Emitters.Items {
 		////////////////
 
 		public override void ModifyTooltips( List<TooltipLine> tooltips ) {
-			tooltips.Insert( 0, new TooltipLine(this.mod, "EmitterUI", "[c/00FF00:Right-click item to make adjustments]") );
+			tooltips.Insert( 0, new TooltipLine(this.mod, "EmitterUI", "[c/00FF00:Right-click in inventory to adjust settings]") );
+			tooltips.Insert( 1, new TooltipLine( this.mod, "EmitterToggle", "Left-click in world to toggle activation" ) );
 
 			if( this.Def == null ) {
 				return;

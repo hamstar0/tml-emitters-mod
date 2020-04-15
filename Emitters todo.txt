@@ -9,7 +9,9 @@ v2
 
 v1
 -	@Slider: Add arrow adjusters at ends of widget
+-	Fix gores
 
+-	Fix colors
 -	Fix loading
 -	Fix toggle
 -	Animate particles at mouse position while in dialog

@@ -103,6 +103,7 @@ namespace Emitters {
 			if( (tileX < 0 || tileX >= Main.maxTilesX) || (tileY < 0 || tileY >= Main.maxTilesY) ) {
 				throw new ModHelpersException( "Cannot place emitter outside of world." );
 			}
+//Main.NewText( def.ToString() );
 			this.Emitters.Set2D( tileX, tileY, def );
 		}
 
