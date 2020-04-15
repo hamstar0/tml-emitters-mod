@@ -47,7 +47,7 @@ namespace Emitters {
 
 		////////////////
 
-		private int Timer = 0;
+		internal int Timer = 0;
 
 
 		////////////////

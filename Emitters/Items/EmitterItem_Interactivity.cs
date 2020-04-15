@@ -13,8 +13,8 @@ namespace Emitters.Items {
 		public static void OpenUI( Item emitterItem ) {
 			var mymod = EmittersMod.Instance;
 
-			mymod.EmitterEditorDialog.SetItem( emitterItem );
 			mymod.EmitterEditorDialog.Open();
+			mymod.EmitterEditorDialog.SetItem( emitterItem );
 		}
 
 

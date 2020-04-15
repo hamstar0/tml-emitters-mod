@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
@@ -28,14 +29,19 @@ namespace Emitters {
 
 			int count = tag.GetInt( "emitter_count" );
 
-			for( int i=0; i<count; i++ ) {
-				ushort tileX = (ushort)tag.GetInt( "emitter_" + i + "_x" );
-				ushort tileY = (ushort)tag.GetInt( "emitter_" + i + "_y" );
-				string rawDef = tag.GetString( "emitter_" + i );
+			try {
+				for( int i = 0; i < count; i++ ) {
+					ushort tileX = (ushort)tag.GetInt( "emitter_" + i + "_x" );
+					ushort tileY = (ushort)tag.GetInt( "emitter_" + i + "_y" );
+					string rawDef = tag.GetString( "emitter_" + i );
 
-				var def = JsonConvert.DeserializeObject<EmitterDefinition>( rawDef );
+					var def = JsonConvert.DeserializeObject<EmitterDefinition>( rawDef );
+					def.Activate( tag.GetBool( "emitter_" + i + "_on" ) );
 
-				this.Emitters.Set2D( tileX, tileY, def );
+					this.Emitters.Set2D( tileX, tileY, def );
+				}
+			} catch( Exception e ) {
+				LogHelpers.Warn( e.ToString() );
 			}
 		}
 
@@ -50,6 +56,7 @@ namespace Emitters {
 					tag["emitter_" + i + "_x"] = (int)tileX;
 					tag["emitter_" + i + "_y"] = (int)tileY;
 					tag["emitter_" + i] = JsonConvert.SerializeObject( def );
+					tag["emitter_" + i + "_on"] = def.IsActivated;
 					i++;
 				}
 			}
