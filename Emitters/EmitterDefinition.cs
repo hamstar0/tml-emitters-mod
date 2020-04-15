@@ -22,6 +22,7 @@ namespace Emitters {
 				Scatter = (float)reader.ReadSingle(),
 				HasGravity = (bool)reader.ReadBoolean(),
 				HasLight = (bool)reader.ReadBoolean(),
+				IsActivated = (bool)reader.ReadBoolean(),
 			};
 		}
 
@@ -39,6 +40,7 @@ namespace Emitters {
 			writer.Write( (float)def.Scatter );
 			writer.Write( (bool)def.HasGravity );
 			writer.Write( (bool)def.HasLight );
+			writer.Write( (bool)def.IsActivated );
 		}
 
 
@@ -62,6 +64,17 @@ namespace Emitters {
 		public bool HasGravity { get; internal set; }
 		public bool HasLight { get; internal set; }
 
+		////
+
+		public bool IsActivated { get; internal set; } = true;
+
+
+
+		////////////////
+		
+		public void Activate( bool isActivated ) {
+			this.IsActivated = isActivated;
+		}
 
 
 		////////////////
@@ -116,7 +129,8 @@ namespace Emitters {
 				+/*"\n"+*/" Alpha: " + this.RenderAlpha() + ", "
 				+/*"\n"+*/" Scatter: " + this.RenderScatter() + ", "
 				+/*"\n"+*/" HasGravity: " + this.RenderHasGravity() + ", "
-				+/*"\n"+*/" HasLight: " + this.RenderHasLight();
+				+/*"\n"+*/" HasLight: " + this.RenderHasLight() + ", "
+				+/*"\n"+*/" IsActivated: " + this.IsActivated;
 		}
 	}
 }

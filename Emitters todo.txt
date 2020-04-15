@@ -8,11 +8,11 @@ v2
 
 
 v1
--	Implement emitter recipe
--	Implement emitter toggle
+-	Implement emitter recipe (crafted from sparklers + explosive powder + nanites)
+-	Implement emitter manual toggle
+
 -	Implement emitter tile wire
 -	Implement emitter tile FX
-
 -	Implement emitter placement mode
 	-	Implement emitter removal (right-click on emitters when in mode)
 	-	Draw emitters when in mode to perceive them (holding an emitter item)
