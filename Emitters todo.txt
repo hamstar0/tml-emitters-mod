@@ -9,8 +9,9 @@ v2
 
 v1
 -	@Slider: Add arrow adjusters at ends of widget
--	Fix toggle
 
+-	Fix loading
+-	Fix toggle
 -	Animate particles at mouse position while in dialog
 -	Fixes
 	-	Clone emitters instances per added emitter

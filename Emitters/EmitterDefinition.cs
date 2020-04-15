@@ -52,21 +52,21 @@ namespace Emitters {
 
 		////////////////
 
-		public bool IsGoreMode { get; internal set; }
-		public int Type { get; internal set; }
-		public float Scale { get; internal set; }
-		public int Delay { get; internal set; }
-		public float SpeedX { get; internal set; }
-		public float SpeedY { get; internal set; }
-		public Color Color { get; internal set; }
-		public byte Alpha { get; internal set; }
-		public float Scatter { get; internal set; }
-		public bool HasGravity { get; internal set; }
-		public bool HasLight { get; internal set; }
+		public bool IsGoreMode { get; set; }
+		public int Type { get; set; }
+		public float Scale { get; set; }
+		public int Delay { get; set; }
+		public float SpeedX { get; set; }
+		public float SpeedY { get; set; }
+		public Color Color { get; set; }
+		public byte Alpha { get; set; }
+		public float Scatter { get; set; }
+		public bool HasGravity { get; set; }
+		public bool HasLight { get; set; }
 
 		////
 
-		public bool IsActivated { get; internal set; } = true;
+		public bool IsActivated { get; set; } = true;
 
 
 

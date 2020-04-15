@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Terraria;
+using HamstarHelpers.Helpers.Debug;
 using Emitters.Items;
 
 
@@ -33,6 +34,11 @@ namespace Emitters {
 		////////////////
 
 		public void AnimateEmitter( Vector2 worldPos ) {
+//DebugHelpers.Print( "emit_"+this.GetHashCode(), "timer: "+this.Timer+", "+this.ToString() );
+			if( !this.IsActivated ) {
+				return;
+			}
+
 			if( this.Timer++ < this.Delay ) {
 				return;
 			}

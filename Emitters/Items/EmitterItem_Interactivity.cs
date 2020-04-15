@@ -18,7 +18,6 @@ namespace Emitters.Items {
 		}
 
 
-
 		////////////////
 
 		public static bool CanViewEmitters( Player plr ) {
@@ -26,7 +25,7 @@ namespace Emitters.Items {
 		}
 
 
-		////
+		////////////////
 
 		public static bool AttemptEmitterPlacementForCurrentPlayer( EmitterDefinition def ) {
 			var myworld = ModContent.GetInstance<EmittersWorld>();
@@ -48,18 +47,37 @@ namespace Emitters.Items {
 			return true;
 		}
 
+		public static bool AttemptEmitterToggle( Vector2 worldPos ) {
+			var myworld = ModContent.GetInstance<EmittersWorld>();
+			var tileX = (ushort)( worldPos.X / 16f );
+			var tileY = (ushort)( worldPos.Y / 16f );
+
+			EmitterDefinition emitter = myworld.GetEmitter( tileX, tileY );
+			if( emitter == null ) {
+				return false;
+			}
+
+			emitter.Activate( !emitter.IsActivated );
+
+			if( Main.netMode == 1 ) {
+				EmitterActivateProtocol.BroadcastFromClient( emitter.IsActivated, tileX, tileY );
+			}
+
+			return true;
+		}
+
 
 		////////////////
 
-		private void AttemptEmitterPickup( Vector2 worldPos ) {
-			if( this.AttemptEmitterRemove(worldPos) ) {
+		private static void AttemptEmitterPickup( Vector2 worldPos ) {
+			if( EmitterItem.AttemptEmitterRemove(worldPos) ) {
 				ItemHelpers.CreateItem( Main.LocalPlayer.position, ModContent.ItemType<EmitterItem>(), 1, 16, 16 );
 			}
 		}
 
 		////
 
-		private bool AttemptEmitterRemove( Vector2 worldPos ) {
+		private static bool AttemptEmitterRemove( Vector2 worldPos ) {
 			var myworld = ModContent.GetInstance<EmittersWorld>();
 			Vector2 tilePos = worldPos / 16f;
 			var tileX = (ushort)tilePos.X;
@@ -73,26 +91,6 @@ namespace Emitters.Items {
 			return myworld.RemoveEmitter( tileX, tileY );
 		}
 
-
-		////////////////
-
-		public void AttemptEmitterToggle( Vector2 worldPos ) {
-			var myworld = ModContent.GetInstance<EmittersWorld>();
-			Vector2 tilePos = worldPos / 16f;
-			var tileX = (ushort)tilePos.X;
-			var tileY = (ushort)tilePos.Y;
-
-			EmitterDefinition emitter = myworld.GetEmitter( tileX, tileY );
-			if( emitter == null ) {
-				return;
-			}
-
-			emitter.Activate( !emitter.IsActivated );
-
-			if( Main.netMode == 1 ) {
-				EmitterActivateProtocol.BroadcastFromClient( emitter.IsActivated, tileX, tileY );
-			}
-		}
 
 
 		////////////////
@@ -129,7 +127,7 @@ namespace Emitters.Items {
 			if( EmitterItem.AttemptEmitterPlacementForCurrentPlayer(this.Def) ) {
 				PlayerItemHelpers.RemoveInventoryItemQuantity( player, this.item.type, 1 );
 			} else {
-				this.AttemptEmitterToggle( Main.MouseWorld );
+				EmitterItem.AttemptEmitterToggle( Main.MouseWorld );
 			}
 
 			return base.UseItem( player );

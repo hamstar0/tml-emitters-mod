@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using Terraria;
@@ -12,9 +13,9 @@ using HamstarHelpers.Helpers.DotNET.Extensions;
 
 
 namespace Emitters {
-	public class EmittersWorld : ModWorld {
+	public partial class EmittersWorld : ModWorld {
 		private IDictionary<ushort, IDictionary<ushort, EmitterDefinition>> Emitters
-			= new Dictionary<ushort, IDictionary<ushort, EmitterDefinition>>();
+			= new ConcurrentDictionary<ushort, IDictionary<ushort, EmitterDefinition>>();
 
 
 

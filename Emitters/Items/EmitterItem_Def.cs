@@ -186,7 +186,7 @@ namespace Emitters.Items {
 			if( Main.mouseLeft && Main.mouseLeftRelease ) {
 			//	this.AttemptEmitterToggle( Main.MouseWorld );
 			} else if( Main.mouseRight && Main.mouseRightRelease ) {
-				this.AttemptEmitterPickup( Main.MouseWorld );
+				EmitterItem.AttemptEmitterPickup( Main.MouseWorld );
 			}
 		}
 	}
