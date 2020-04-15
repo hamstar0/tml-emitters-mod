@@ -27,10 +27,14 @@ namespace Emitters.Items {
 
 		////
 
-		public static void AttemptEmitterPlacementForCurrentPlayer( EmitterDefinition def ) {
+		public static bool AttemptEmitterPlacementForCurrentPlayer( EmitterDefinition def ) {
 			var myworld = ModContent.GetInstance<EmittersWorld>();
+
 			ushort tileX = (ushort)Main.MouseWorld.X;
 			ushort tileY = (ushort)Main.MouseWorld.Y;
+			if( myworld.GetEmitter(tileX, tileY) != null ) {
+				return false;
+			}
 
 			myworld.AddEmitter( def, tileX, tileY );
 
@@ -39,6 +43,8 @@ namespace Emitters.Items {
 			if( Main.netMode == 1 ) {
 				EmitterPlacementProtocol.BroadcastFromClient( def, tileX, tileY );
 			}
+
+			return true;
 		}
 
 
@@ -69,6 +75,27 @@ namespace Emitters.Items {
 
 		////////////////
 
+		public void AttemptEmitterToggle( Vector2 worldPos ) {
+			var myworld = ModContent.GetInstance<EmittersWorld>();
+			Vector2 tilePos = worldPos / 16f;
+			var tileX = (ushort)tilePos.X;
+			var tileY = (ushort)tilePos.Y;
+
+			EmitterDefinition emitter = myworld.GetEmitter( tileX, tileY );
+			if( emitter == null ) {
+				return;
+			}
+
+			emitter.Activate( !emitter.IsActivated );
+
+			if( Main.netMode == 1 ) {
+				EmitterActivateProtocol.BroadcastFromClient( emitter.IsActivated, tileX, tileY );
+			}
+		}
+
+
+		////////////////
+
 		public override bool CanRightClick() {
 			return true;
 		}
@@ -94,7 +121,9 @@ namespace Emitters.Items {
 			}
 			Timers.SetTimer( timerName, 4, false, () => false );
 
-			EmitterItem.AttemptEmitterPlacementForCurrentPlayer( this.Def );
+			if( !EmitterItem.AttemptEmitterPlacementForCurrentPlayer(this.Def) ) {
+				this.AttemptEmitterToggle( Main.MouseWorld );
+			}
 
 			return base.UseItem( player );
 		}

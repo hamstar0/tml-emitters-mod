@@ -9,8 +9,10 @@ v2
 
 v1
 -	Implement emitter recipe (crafted from sparklers + explosive powder + nanites)
--	Implement emitter manual toggle
 
+-	Implement emitter manual toggle
+	-	Implement toggle sync
+	-	Implement manual toggle (l-click tile)
 -	Implement emitter tile wire
 -	Implement emitter tile FX
 -	Implement emitter placement mode

@@ -156,17 +156,6 @@ namespace Emitters.Items {
 
 		////////////////
 
-		public override void AddRecipes() {
-			ModRecipe recipe = new ModRecipe( this.mod );
-			recipe.AddIngredient( ItemID.FireworkFountain, 1 );
-			recipe.AddTile( TileID.WorkBenches );
-			recipe.SetResult( this );
-			recipe.AddRecipe();
-		}
-
-
-		////////////////
-
 		public void SetEmitterDefinition( EmitterDefinition def ) {
 //Main.NewText( def.ToString() );
 			this.Def = def;
@@ -190,9 +179,10 @@ namespace Emitters.Items {
 		////
 
 		private void UpdateInterface() {
-			if( Main.mouseRight && Main.mouseRightRelease ) {
+			if( Main.mouseLeft && Main.mouseLeftRelease ) {
+			//	this.AttemptEmitterToggle( Main.MouseWorld );
+			} else if( Main.mouseRight && Main.mouseRightRelease ) {
 				this.AttemptEmitterPickup( Main.MouseWorld );
-				return;
 			}
 		}
 	}
