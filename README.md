@@ -1,8 +1,5 @@
-# Findable Mana Crystals
+# Emitters
 
-Generates the world with Mana Crystal Shards needed for creating Mana Crystals (consumed for increased max mana).
+Allows placing devices that can be configured to emit any type of particle ("dust") or "gore". Rate, size, direction, color, type, etc. can all be configured per emitter.
 
-Credits:
-	RoboticTea - Shard tile and item sprites
-
-https://github.com/hamstar0/tml-findablemanacrystals-mod
+https://github.com/hamstar0/tml-emitters-mod

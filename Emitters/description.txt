@@ -1,1 +1,1 @@
-Emitters is a pretty cool mod, it does...this. Modify this file with a description of your mod.
+Allows placing devices that can be configured to emit any type of particle ("dust") or "gore". Rate, size, direction, color, type, etc. can all be configured per emitter.
