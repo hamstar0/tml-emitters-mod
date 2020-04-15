@@ -45,8 +45,13 @@ namespace Emitters {
 			this.Timer = 0;
 
 			if( this.IsGoreMode ) {
+				var scatter = new Vector2(
+					Main.rand.NextFloat() * this.Scatter,
+					Main.rand.NextFloat() * this.Scatter
+				);
+
 				int goreIdx = Gore.NewGore(
-					Position: worldPos,
+					Position: worldPos + scatter - new Vector2(this.Scatter * 0.5f),
 					Velocity: new Vector2(this.SpeedX, this.SpeedY),
 					Type: (int)this.Type,
 					Scale: this.Scale

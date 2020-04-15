@@ -61,61 +61,25 @@ namespace Emitters.UI {
 
 		private void InitializeWidgetsForMode( ref float yOffset ) {
 			this.InitializeComponentForTitle( "Mode:", false, ref yOffset );
+			
+			this.ModeDustFlagElem = new UICheckbox( UITheme.Vanilla, "Dust", "" );
+			this.ModeDustFlagElem.Top.Set( yOffset, 0f );
+			this.ModeDustFlagElem.Left.Set( 64f, 0f );
+			this.ModeDustFlagElem.Selected = true;
+			this.ModeDustFlagElem.OnSelectedChanged += () => {
+				this.SetGoreMode( false );
+			};
 
-			var modeOption1 = new UICheckbox( UITheme.Vanilla, "Dust", "" );
-			modeOption1.Top.Set( yOffset, 0f );
-			modeOption1.Left.Set( 64f, 0f );
-			modeOption1.Selected = true;
-
-			var modeOption2 = new UICheckbox( UITheme.Vanilla, "Gore", "" );
-			modeOption2.Top.Set( yOffset, 0f );
-			modeOption2.Left.Set( 128f, 0f );
+			this.ModeGoreFlagElem = new UICheckbox( UITheme.Vanilla, "Gore", "" );
+			this.ModeGoreFlagElem.Top.Set( yOffset, 0f );
+			this.ModeGoreFlagElem.Left.Set( 128f, 0f );
+			this.ModeGoreFlagElem.OnSelectedChanged += () => {
+				this.SetGoreMode( true );
+			};
 			yOffset += 28f;
 
-			//
-			
-			int dustCount, goreCount;
-			if( !ReflectionHelpers.Get(typeof(ModDust), null, "DustCount", out dustCount) ) {
-				throw new ModHelpersException( "Could not get dust count." );
-			}
-			if( !ReflectionHelpers.Get(typeof(ModGore), null, "GoreCount", out goreCount ) ) {
-				throw new ModHelpersException( "Could not get gore count." );
-			}
-
-			//
-
-			bool block = false;
-			void updateMode( bool isGore ) {
-				if( block ) {
-					return;
-				}
-
-				block = true;
-
-				this.IsGoreMode = isGore;
-				modeOption1.Selected = isGore;
-				modeOption2.Selected = !isGore;
-
-				if( isGore ) {
-					this.TypeSliderElem.SetRange( 0, dustCount );
-				} else {
-					this.TypeSliderElem.SetRange( 0, goreCount );
-				}
-
-				block = false;
-			}
-
-			modeOption1.OnSelectedChanged += () => {
-				updateMode( true );
-			};
-			modeOption2.OnSelectedChanged += () => {
-				updateMode( false );
-			};
-
-			//
-
-			this.InnerContainer.Append( (UIElement)modeOption1 );
-			this.InnerContainer.Append( (UIElement)modeOption2 );
+			this.InnerContainer.Append( (UIElement)this.ModeDustFlagElem );
+			this.InnerContainer.Append( (UIElement)this.ModeGoreFlagElem );
 		}
 
 		private void InitializeWidgetsForType( ref float yOffset ) {

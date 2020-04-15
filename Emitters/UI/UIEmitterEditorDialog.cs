@@ -11,10 +11,13 @@ using Emitters.Items;
 
 namespace Emitters.UI {
 	partial class UIEmitterEditorDialog : UIDialog {
-		private bool IsGoreMode = false;
+		private bool IsGoreMode => this.ModeGoreFlagElem.Selected;
 
-		////
 
+		////////////////
+
+		private UICheckbox ModeDustFlagElem;
+		private UICheckbox ModeGoreFlagElem;
 		private UISlider TypeSliderElem;
 		private UISlider ScaleSliderElem;
 		private UISlider DelaySliderElem;
@@ -40,16 +43,6 @@ namespace Emitters.UI {
 
 		////////////////
 
-		public Color GetColor() {
-			float hue = this.HueSliderElem.RememberedInputValue;
-			float intensity = this.IntensitySliderElem.RememberedInputValue;
-
-			Color color = Main.hslToRgb( hue, intensity, 0.5f );
-			return color;
-		}
-
-		////////////////
-
 		public EmitterDefinition CreateEmitterDefinition() {
 			return new EmitterDefinition(
 				isGoreMode: this.IsGoreMode,
@@ -70,6 +63,16 @@ namespace Emitters.UI {
 
 		////////////////
 
+		public Color GetColor() {
+			float hue = this.HueSliderElem.RememberedInputValue;
+			float intensity = this.IntensitySliderElem.RememberedInputValue;
+
+			Color color = Main.hslToRgb( hue, intensity, 0.5f );
+			return color;
+		}
+
+		////////////////
+
 		internal void SetItem( Item emitterItem ) {
 			this.EmitterItem = emitterItem;
 
@@ -80,6 +83,7 @@ namespace Emitters.UI {
 
 			Vector3 hsl = Main.rgbToHsl( myitem.Def.Color );
 
+			this.SetGoreMode( myitem.Def.IsGoreMode );
 			this.TypeSliderElem.SetValue( myitem.Def.Type );
 			this.ScaleSliderElem.SetValue( myitem.Def.Scale );
 			this.DelaySliderElem.SetValue( myitem.Def.Delay );

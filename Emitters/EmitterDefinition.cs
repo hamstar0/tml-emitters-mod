@@ -218,7 +218,7 @@ namespace Emitters {
 			return this.Alpha.ToString();
 		}
 		public string RenderScatter() {
-			return (this.Scatter * 100f).ToString( "N0" );
+			return this.Scatter.ToString( "N2" );
 		}
 		public string RenderHasGravity() {
 			return this.HasGravity.ToString();

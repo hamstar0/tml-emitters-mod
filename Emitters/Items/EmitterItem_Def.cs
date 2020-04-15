@@ -114,7 +114,8 @@ namespace Emitters.Items {
 
 		public override void ModifyTooltips( List<TooltipLine> tooltips ) {
 			tooltips.Insert( 0, new TooltipLine(this.mod, "EmitterUI", "[c/00FF00:Right-click in inventory to adjust settings]") );
-			tooltips.Insert( 1, new TooltipLine( this.mod, "EmitterToggle", "Left-click in world to toggle activation" ) );
+			tooltips.Insert( 1, new TooltipLine(this.mod, "EmitterToggle", "[c/00FF00:Left-click in world to toggle activation]") );
+			tooltips.Insert( 2, new TooltipLine(this.mod, "EmitterRemove", "[c/00FF00:Right-click in world to remove]") );
 
 			if( this.Def == null ) {
 				return;
@@ -123,12 +124,12 @@ namespace Emitters.Items {
 			var modeTip = new TooltipLine( this.mod, "EmitterMode", " Mode: "+this.Def?.RenderMode() );
 			var typeTip = new TooltipLine( this.mod, "EmitterType", " Type: "+this.Def?.RenderType() );
 			var scaleTip = new TooltipLine( this.mod, "EmitterScale", " Scale: "+this.Def?.RenderScale() );
-			var delayTip = new TooltipLine( this.mod, "EmitterDelay", " Scale: "+this.Def?.RenderDelay() );
+			var delayTip = new TooltipLine( this.mod, "EmitterDelay", " Delay: "+this.Def?.RenderDelay() );
 			var speedxTip = new TooltipLine( this.mod, "EmitterSpeedX", " SpeedX: "+this.Def?.RenderSpeedX() );
 			var speedyTip = new TooltipLine( this.mod, "EmitterSpeedY", " SpeedY: "+this.Def?.RenderSpeedY() );
 			var colorTip = new TooltipLine( this.mod, "EmitterColor", " Color: "+this.Def?.RenderColor() );
 			var alphaTip = new TooltipLine( this.mod, "EmitterAlpha", " Alpha: "+this.Def?.RenderAlpha() );
-			var scatterTip = new TooltipLine( this.mod, "EmitterScatter", " Scatter%: "+this.Def?.RenderScatter() );
+			var scatterTip = new TooltipLine( this.mod, "EmitterScatter", " Scatter: "+this.Def?.RenderScatter() );
 			var hasGravTip = new TooltipLine( this.mod, "EmitterHasGrav", " Has Gravity: "+this.Def?.RenderHasGravity() );
 			var hasLightTip = new TooltipLine( this.mod, "EmitterHasLight", " Has Light: "+this.Def?.RenderHasLight() );
 
