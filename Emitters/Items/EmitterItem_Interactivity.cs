@@ -4,6 +4,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using HamstarHelpers.Services.Timers;
 using HamstarHelpers.Helpers.Items;
+using HamstarHelpers.Helpers.Players;
 using Emitters.NetProtocols;
 
 
@@ -30,13 +31,13 @@ namespace Emitters.Items {
 		public static bool AttemptEmitterPlacementForCurrentPlayer( EmitterDefinition def ) {
 			var myworld = ModContent.GetInstance<EmittersWorld>();
 
-			ushort tileX = (ushort)Main.MouseWorld.X;
-			ushort tileY = (ushort)Main.MouseWorld.Y;
+			ushort tileX = (ushort)(Main.MouseWorld.X / 16);
+			ushort tileY = (ushort)(Main.MouseWorld.Y / 16);
 			if( myworld.GetEmitter(tileX, tileY) != null ) {
 				return false;
 			}
 
-			myworld.AddEmitter( def, tileX, tileY );
+			myworld.AddEmitter( new EmitterDefinition(def), tileX, tileY );
 
 			Main.PlaySound( SoundID.Item108, Main.MouseWorld );
 
@@ -115,13 +116,19 @@ namespace Emitters.Items {
 			}
 
 			string timerName = "EmitterPlace_" + player.whoAmI;
-
 			if( Timers.GetTimerTickDuration(timerName) > 0 ) {
 				return base.UseItem( player );
 			}
-			Timers.SetTimer( timerName, 4, false, () => false );
+			Timers.SetTimer( timerName, 15, false, () => false );
 
-			if( !EmitterItem.AttemptEmitterPlacementForCurrentPlayer(this.Def) ) {
+			if( this.Def == null ) {
+				Main.NewText( "Emitter settings must be first specified (right-click item)." );
+				return base.UseItem( player );
+			}
+
+			if( EmitterItem.AttemptEmitterPlacementForCurrentPlayer(this.Def) ) {
+				PlayerItemHelpers.RemoveInventoryItemQuantity( player, this.item.type, 1 );
+			} else {
 				this.AttemptEmitterToggle( Main.MouseWorld );
 			}
 

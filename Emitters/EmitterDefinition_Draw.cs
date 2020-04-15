@@ -19,8 +19,8 @@ namespace Emitters {
 
 		public void DrawEmitter( int tileX, int tileY ) {
 			Vector2 pos = Main.screenPosition;
-			int scrX = (tileX<<4) - (int)Main.screenPosition.X;
-			int scrY = (tileY<<4) - (int)Main.screenPosition.Y;
+			int scrX = (tileX<<4) - (int)pos.X;
+			int scrY = (tileY<<4) - (int)pos.Y;
 
 			Main.spriteBatch.Draw(
 				texture: EmittersMod.Instance.Emitter,
@@ -39,14 +39,16 @@ namespace Emitters {
 			this.Timer = 0;
 
 			if( this.IsGoreMode ) {
-				Gore.NewGore(
+				int goreIdx = Gore.NewGore(
 					Position: worldPos,
 					Velocity: new Vector2(this.SpeedX, this.SpeedY),
 					Type: (int)this.Type,
 					Scale: this.Scale
 				);
+
+				Main.gore[goreIdx].alpha = this.Alpha;
 			} else {
-				Dust.NewDust(
+				int dustIdx = Dust.NewDust(
 					Position: worldPos,
 					Width: (int)this.Scatter,
 					Height: (int)this.Scatter,
@@ -57,6 +59,9 @@ namespace Emitters {
 					newColor: this.Color,
 					Scale: this.Scale
 				);
+
+				Main.dust[dustIdx].noGravity = !this.HasGravity;
+				Main.dust[dustIdx].noLight = !this.HasLight;
 			}
 		}
 	}

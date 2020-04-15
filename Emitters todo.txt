@@ -8,6 +8,17 @@ v2
 
 
 v1
+-	@Slider: Add arrow adjusters at ends of widget
+-	Animate particles at mouse position while in dialog
+
+-	Fixes
+	-	Clone emitters instances per added emitter
+	-	Fix emitter not animating
+	-	Fix item consume on emitter place
+	-	Set default emitter gravity and light on
+	-	Set default emitter scale and intensity to 1
+	-	Fix view mode
+	-	Prevent placing when no stats defined
 -	@Test
 -	Implement emitter recipe (crafted from sparklers + wire + cloud + flare)
 -	Implement emitter manual toggle

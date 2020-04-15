@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.UI;
 using Terraria.ModLoader;
 using Terraria.GameContent.UI.Elements;
+using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Classes.UI.Elements;
 using HamstarHelpers.Classes.UI.Theme;
 using HamstarHelpers.Helpers.DotNET.Reflection;
@@ -34,6 +35,7 @@ namespace Emitters.UI {
 			var applyButton = new UITextPanelButton( UITheme.Vanilla, "Apply" );
 			applyButton.Top.Set( yOffset, 0f );
 			applyButton.Left.Set( -64f, 1f );
+			applyButton.Height.Set( applyButton.GetOuterDimensions().Height + 4f, 0f );
 			applyButton.OnClick += ( _, __ ) => {
 				self.Close();
 				self.ApplySettingsToCurrentItem();
@@ -74,10 +76,10 @@ namespace Emitters.UI {
 			
 			int dustCount, goreCount;
 			if( !ReflectionHelpers.Get(typeof(ModDust), null, "DustCount", out dustCount) ) {
-				return;
+				throw new ModHelpersException( "Could not get dust count." );
 			}
 			if( !ReflectionHelpers.Get(typeof(ModGore), null, "GoreCount", out goreCount ) ) {
-				return;
+				throw new ModHelpersException( "Could not get gore count." );
 			}
 
 			//
@@ -117,6 +119,11 @@ namespace Emitters.UI {
 		}
 
 		private void InitializeWidgetsForType( ref float yOffset ) {
+			int dustCount;
+			if( !ReflectionHelpers.Get( typeof( ModDust ), null, "DustCount", out dustCount ) ) {
+				throw new ModHelpersException( "Could not get dust count." );
+			}
+
 			this.InitializeComponentForTitle( "Type:", false, ref yOffset );
 
 			this.TypeSliderElem = new UISlider(
@@ -125,7 +132,7 @@ namespace Emitters.UI {
 				isInt: true,
 				ticks: 0,
 				minRange: 0f,
-				maxRange: 200f );
+				maxRange: (float)dustCount );
 			this.TypeSliderElem.Top.Set( yOffset, 0f );
 			this.TypeSliderElem.Left.Set( 64f, 0f );
 			this.TypeSliderElem.Width.Set( -64f, 1f );
@@ -147,6 +154,7 @@ namespace Emitters.UI {
 			this.ScaleSliderElem.Top.Set( yOffset, 0f );
 			this.ScaleSliderElem.Left.Set( 64f, 0f );
 			this.ScaleSliderElem.Width.Set( -64f, 1f );
+			this.ScaleSliderElem.SetValue( 1f );
 			yOffset += 28f;
 
 			this.InnerContainer.Append( (UIElement)this.ScaleSliderElem );
@@ -160,8 +168,8 @@ namespace Emitters.UI {
 				hoverText: "",
 				isInt: true,
 				ticks: 0,
-				minRange: 5,
-				maxRange: 60 * 5 );
+				minRange: 1f,
+				maxRange: 60f * 3f );
 			this.DelaySliderElem.Top.Set( yOffset, 0f );
 			this.DelaySliderElem.Left.Set( 64f, 0f );
 			this.DelaySliderElem.Width.Set( -64f, 1f );
@@ -239,7 +247,7 @@ namespace Emitters.UI {
 			this.IntensitySliderElem.Top.Set( yOffset, 0f );
 			this.IntensitySliderElem.Left.Set( 96f, 0f );
 			this.IntensitySliderElem.Width.Set( -96f, 1f );
-			this.IntensitySliderElem.SetValue( 0f );
+			this.IntensitySliderElem.SetValue( 1f );
 			yOffset += 28f;
 
 			this.InnerContainer.Append( (UIElement)this.HueSliderElem );
@@ -254,12 +262,12 @@ namespace Emitters.UI {
 				hoverText: "",
 				isInt: true,
 				ticks: 0,
-				minRange: 8f,
+				minRange: 0f,
 				maxRange: 255f );
 			this.AlphaSliderElem.Top.Set( yOffset, 0f );
 			this.AlphaSliderElem.Left.Set( 64f, 0f );
 			this.AlphaSliderElem.Width.Set( -64f, 1f );
-			this.AlphaSliderElem.SetValue( 1f );
+			this.AlphaSliderElem.SetValue( 0f );
 			yOffset += 28f;
 
 			this.InnerContainer.Append( (UIElement)this.AlphaSliderElem );
@@ -287,6 +295,7 @@ namespace Emitters.UI {
 		private void InitializeWidgetsForHasGravity( ref float yOffset ) {
 			this.HasGravityCheckbox = new UICheckbox( UITheme.Vanilla, "Has Gravity", "" );
 			this.HasGravityCheckbox.Top.Set( yOffset, 0f );
+			this.HasGravityCheckbox.Selected = true;
 			yOffset += 28f;
 
 			this.InnerContainer.Append( (UIElement)this.HasGravityCheckbox );
@@ -295,6 +304,7 @@ namespace Emitters.UI {
 		private void InitializeWidgetsForHasLight( ref float yOffset ) {
 			this.HasLightCheckbox = new UICheckbox( UITheme.Vanilla, "Has Light", "" );
 			this.HasLightCheckbox.Top.Set( yOffset, 0f );
+			this.HasLightCheckbox.Selected = true;
 			yOffset += 28f;
 
 			this.InnerContainer.Append( (UIElement)this.HasLightCheckbox );

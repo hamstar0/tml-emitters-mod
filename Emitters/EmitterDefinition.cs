@@ -74,6 +74,21 @@ namespace Emitters {
 
 		public EmitterDefinition() { }
 
+		public EmitterDefinition( EmitterDefinition copy ) {
+			this.IsGoreMode = copy.IsGoreMode;
+			this.Type = copy.Type;
+			this.Scale = copy.Scale;
+			this.Delay = copy.Delay;
+			this.SpeedX = copy.SpeedX;
+			this.SpeedY = copy.SpeedY;
+			this.Color = copy.Color;
+			this.Alpha = copy.Alpha;
+			this.Scatter = copy.Scatter;
+			this.HasGravity = copy.HasGravity;
+			this.HasLight = copy.HasLight;
+			this.IsActivated = copy.IsActivated;
+		}
+
 		public EmitterDefinition(
 					bool isGoreMode,
 					int type,

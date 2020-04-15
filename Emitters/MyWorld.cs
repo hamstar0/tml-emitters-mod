@@ -5,6 +5,8 @@ using Newtonsoft.Json;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using HamstarHelpers.Classes.Errors;
+using HamstarHelpers.Helpers.Debug;
 using HamstarHelpers.Helpers.DotNET.Extensions;
 
 
@@ -45,9 +47,9 @@ namespace Emitters {
 			int i = 0;
 			foreach( (ushort tileX, IDictionary<ushort, EmitterDefinition> tileYs) in this.Emitters ) {
 				foreach( (ushort tileY, EmitterDefinition def) in tileYs ) {
-					tag[ "emitter_"+i+"_x" ] = (int)tileX;
-					tag[ "emitter_"+i+"_y" ] = (int)tileY;
-					tag[ "emitter_"+i ] = JsonConvert.SerializeObject(def);
+					tag["emitter_" + i + "_x"] = (int)tileX;
+					tag["emitter_" + i + "_y"] = (int)tileY;
+					tag["emitter_" + i] = JsonConvert.SerializeObject( def );
 					i++;
 				}
 			}
@@ -90,6 +92,9 @@ namespace Emitters {
 		////////////////
 		
 		public void AddEmitter( EmitterDefinition def, ushort tileX, ushort tileY ) {
+			if( (tileX < 0 || tileX >= Main.maxTilesX) || (tileY < 0 || tileY >= Main.maxTilesY) ) {
+				throw new ModHelpersException( "Cannot place emitter outside of world." );
+			}
 			this.Emitters.Set2D( tileX, tileY, def );
 		}
 
@@ -119,12 +124,18 @@ namespace Emitters {
 			maxX += 8;
 			maxY += 8;
 
-			for( ushort x=(ushort)(leftTile - 8); x < maxX; x++ ) {
-				for( ushort y=(ushort)(topTile - 8); y < maxY; y++ ) {
-					if( this.Emitters.TryGetValue2D(x, y, out def) ) {
-						def.Draw( x, y, scrTiles.Contains(x, y) );
+			Main.spriteBatch.Begin();
+
+			try {
+				for( ushort x=(ushort)(leftTile - 8); x < maxX; x++ ) {
+					for( ushort y=(ushort)(topTile - 8); y < maxY; y++ ) {
+						if( this.Emitters.TryGetValue2D(x, y, out def) ) {
+							def.Draw( x, y, scrTiles.Contains(x, y) );
+						}
 					}
 				}
+			} finally {
+				Main.spriteBatch.End();
 			}
 		}
 	}
