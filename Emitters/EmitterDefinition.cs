@@ -6,24 +6,24 @@ using Microsoft.Xna.Framework;
 namespace Emitters {
 	public partial class EmitterDefinition {
 		public static EmitterDefinition Read( BinaryReader reader ) {
-			return new EmitterDefinition {
-				IsGoreMode = (bool)reader.ReadBoolean(),
-				Type = (int)reader.ReadUInt16(),
-				Scale = (float)reader.ReadSingle(),
-				Delay = (int)reader.ReadInt16(),
-				SpeedX = (float)reader.ReadSingle(),
-				SpeedY = (float)reader.ReadSingle(),
-				Color = new Color(
+			return new EmitterDefinition(
+				isGoreMode: (bool)reader.ReadBoolean(),
+				type: (int)reader.ReadUInt16(),
+				scale: (float)reader.ReadSingle(),
+				delay: (int)reader.ReadInt16(),
+				speedX: (float)reader.ReadSingle(),
+				speedY: (float)reader.ReadSingle(),
+				color: new Color(
 					(byte)reader.ReadByte(),
 					(byte)reader.ReadByte(),
 					(byte)reader.ReadByte()
 				),
-				Alpha = (byte)reader.ReadByte(),
-				Scatter = (float)reader.ReadSingle(),
-				HasGravity = (bool)reader.ReadBoolean(),
-				HasLight = (bool)reader.ReadBoolean(),
-				IsActivated = (bool)reader.ReadBoolean(),
-			};
+				alpha: (byte)reader.ReadByte(),
+				scatter: (float)reader.ReadSingle(),
+				hasGravity: (bool)reader.ReadBoolean(),
+				hasLight: (bool)reader.ReadBoolean(),
+				isActivated: (bool)reader.ReadBoolean()
+			);
 		}
 
 		public static void Write( EmitterDefinition def, BinaryWriter writer ) {
@@ -71,7 +71,104 @@ namespace Emitters {
 
 
 		////////////////
-		
+
+		public EmitterDefinition() { }
+
+		public EmitterDefinition(
+					bool isGoreMode,
+					int type,
+					float scale,
+					int delay,
+					float speedX,
+					float speedY,
+					Color color,
+					byte alpha,
+					float scatter,
+					bool hasGravity,
+					bool hasLight,
+					bool isActivated ) {
+			this.IsGoreMode = isGoreMode;
+			this.Type = type;
+			this.Scale = scale;
+			this.Delay = delay;
+			this.SpeedX = speedX;
+			this.SpeedY = speedY;
+			this.Color = color;
+			this.Alpha = alpha;
+			this.Scatter = scatter;
+			this.HasGravity = hasGravity;
+			this.HasLight = hasLight;
+			this.IsActivated = isActivated;
+		}
+
+
+		////
+
+		public void Output(
+					out bool isGoreMode,
+					out int type,
+					out float scale,
+					out int delay,
+					out float speedX,
+					out float speedY,
+					out Color color,
+					out byte alpha,
+					out float scatter,
+					out bool hasGravity,
+					out bool hasLight,
+					out bool isActivated ) {
+			isGoreMode = this.IsGoreMode;
+			type = this.Type;
+			scale = this.Scale;
+			delay = this.Delay;
+			speedX = this.SpeedX;
+			speedY = this.SpeedY;
+			color = this.Color;
+			alpha = this.Alpha;
+			scatter = this.Scatter;
+			hasGravity = this.HasGravity;
+			hasLight = this.HasLight;
+			isActivated = this.IsActivated;
+		}
+
+		public void Output(
+					out bool isGoreMode,
+					out int type,
+					out float scale,
+					out int delay,
+					out float speedX,
+					out float speedY,
+					out byte colorR,
+					out byte colorG,
+					out byte colorB,
+					out byte alpha,
+					out float scatter,
+					out bool hasGravity,
+					out bool hasLight,
+					out bool isActivated ) {
+			Color color;
+			this.Output(
+				out isGoreMode,
+				out type,
+				out scale,
+				out delay,
+				out speedX,
+				out speedY,
+				out color,
+				out alpha,
+				out scatter,
+				out hasGravity,
+				out hasLight,
+				out isActivated
+			);
+			colorR = color.R;
+			colorG = color.G;
+			colorB = color.B;
+		}
+
+
+		////////////////
+
 		public void Activate( bool isActivated ) {
 			this.IsActivated = isActivated;
 		}

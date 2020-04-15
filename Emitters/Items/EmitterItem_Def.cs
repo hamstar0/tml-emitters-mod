@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -65,23 +64,26 @@ namespace Emitters.Items {
 				return;
 			}
 
-			this.Def = new EmitterDefinition {
-				IsGoreMode = tag.GetBool( "EmitterMode"),
-				Type = tag.GetInt( "EmitterType" ),
-				Scale = tag.GetFloat( "EmitterScale" ),
-				Delay = tag.GetInt( "EmitterDelay" ),
-				SpeedX = tag.GetFloat( "EmitterSpeedX" ),
-				SpeedY = tag.GetFloat( "EmitterSpeedY" ),
-				Color = new Color(
-					tag.GetByte( "EmitterColorR" ),
-					tag.GetByte( "EmitterColorG" ),
-					tag.GetByte( "EmitterColorB" )
-				),
-				Alpha = tag.GetByte( "EmitterAlpha" ),
-				Scatter = tag.GetFloat( "EmitterScatter" ),
-				HasGravity = tag.GetBool( "EmitterHasGrav" ),
-				HasLight = tag.GetBool( "EmitterHasLight" ),
-			};
+			try {
+				this.Def = new EmitterDefinition(
+					isGoreMode: tag.GetBool( "EmitterMode" ),
+					type: tag.GetInt( "EmitterType" ),
+					scale: tag.GetFloat( "EmitterScale" ),
+					delay: tag.GetInt( "EmitterDelay" ),
+					speedX: tag.GetFloat( "EmitterSpeedX" ),
+					speedY: tag.GetFloat( "EmitterSpeedY" ),
+					color: new Color(
+						tag.GetByte( "EmitterColorR" ),
+						tag.GetByte( "EmitterColorG" ),
+						tag.GetByte( "EmitterColorB" )
+					),
+					alpha: tag.GetByte( "EmitterAlpha" ),
+					scatter: tag.GetFloat( "EmitterScatter" ),
+					hasGravity: tag.GetBool( "EmitterHasGrav" ),
+					hasLight: tag.GetBool( "EmitterHasLight" ),
+					isActivated: tag.GetBool( "EmitterIsActivated" )
+				);
+			} catch { }
 		}
 
 		public override TagCompound Save() {
@@ -93,7 +95,7 @@ namespace Emitters.Items {
 				{ "EmitterMode", (bool)this.Def.IsGoreMode },
 				{ "EmitterType", (int)this.Def.Type },
 				{ "EmitterScale", (float)this.Def.Scale },
-				{ "EmitterDelay", (float)this.Def.Delay },
+				{ "EmitterDelay", (int)this.Def.Delay },
 				{ "EmitterSpeedX", (float)this.Def.SpeedX },
 				{ "EmitterSpeedY", (float)this.Def.SpeedY },
 				{ "EmitterColorR", (byte)this.Def.Color.R },
@@ -103,6 +105,7 @@ namespace Emitters.Items {
 				{ "EmitterScatter", (float)this.Def.Scatter },
 				{ "EmitterHasGrav", (bool)this.Def.HasGravity },
 				{ "EmitterHasLight", (bool)this.Def.HasLight },
+				{ "EmitterIsActivated", (bool)this.Def.IsActivated },
 			};
 		}
 
@@ -128,17 +131,18 @@ namespace Emitters.Items {
 			var hasGravTip = new TooltipLine( this.mod, "EmitterHasGrav", " Has Gravity: "+this.Def?.RenderHasGravity() );
 			var hasLightTip = new TooltipLine( this.mod, "EmitterHasLight", " Has Light: "+this.Def?.RenderHasLight() );
 
-			modeTip.overrideColor = Color.Gray;
-			typeTip.overrideColor = Color.Gray;
-			scaleTip.overrideColor = Color.Gray;
-			delayTip.overrideColor = Color.Gray;
-			speedxTip.overrideColor = Color.Gray;
-			speedyTip.overrideColor = Color.Gray;
-			colorTip.overrideColor = Color.Gray;
-			alphaTip.overrideColor = Color.Gray;
-			scatterTip.overrideColor = Color.Gray;
-			hasGravTip.overrideColor = Color.Gray;
-			hasLightTip.overrideColor = Color.Gray;
+			var color = Color.White * 0.75f;
+			modeTip.overrideColor = color;
+			typeTip.overrideColor = color;
+			scaleTip.overrideColor = color;
+			delayTip.overrideColor = color;
+			speedxTip.overrideColor = color;
+			speedyTip.overrideColor = color;
+			colorTip.overrideColor = color;
+			alphaTip.overrideColor = color;
+			scatterTip.overrideColor = color;
+			hasGravTip.overrideColor = color;
+			hasLightTip.overrideColor = color;
 
 			tooltips.Add( modeTip );
 			tooltips.Add( typeTip );

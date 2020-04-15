@@ -8,8 +8,8 @@ v2
 
 
 v1
--	Implement emitter recipe (crafted from sparklers + explosive powder + nanites)
-
+-	@Test
+-	Implement emitter recipe (crafted from sparklers + wire + cloud + flare)
 -	Implement emitter manual toggle
 	-	Implement toggle sync
 	-	Implement manual toggle (l-click tile)

@@ -14,23 +14,25 @@ namespace Emitters.NetProtocols {
 
 			var protocol = new EmitterPlacementProtocol();
 
+			def.Output(
+				out protocol.IsGoreMode,
+				out protocol.Type,
+				out protocol.Scale,
+				out protocol.Delay,
+				out protocol.SpeedX,
+				out protocol.SpeedY,
+				out protocol.ColorR,
+				out protocol.ColorG,
+				out protocol.ColorB,
+				out protocol.Alpha,
+				out protocol.Scatter,
+				out protocol.HasGravity,
+				out protocol.HasLight,
+				out protocol.IsActivated
+			);
+
 			protocol.TileX = tileX;
 			protocol.TileY = tileY;
-
-			protocol.IsGoreMode = def.IsGoreMode;
-			protocol.Type = def.Type;
-			protocol.Scale = def.Scale;
-			protocol.Delay = def.Delay;
-			protocol.SpeedX = def.SpeedX;
-			protocol.SpeedY = def.SpeedY;
-			protocol.ColorR = def.Color.R;
-			protocol.ColorG = def.Color.G;
-			protocol.ColorB = def.Color.B;
-			protocol.Alpha = def.Alpha;
-			protocol.Scatter = def.Scatter;
-			protocol.HasGravity = def.HasGravity;
-			protocol.HasLight = def.HasLight;
-			protocol.IsActivated = def.IsActivated;
 
 			protocol.SendToServer( true );
 		}
@@ -39,20 +41,20 @@ namespace Emitters.NetProtocols {
 
 		////////////////
 
-		private EmitterDefinition Def => new EmitterDefinition {
-			IsGoreMode = this.IsGoreMode,
-			Type = this.Type,
-			Scale = this.Scale,
-			Delay = this.Delay,
-			SpeedX = this.SpeedX,
-			SpeedY = this.SpeedY,
-			Color = new Color( this.ColorR, this.ColorG, this.ColorB ),
-			Alpha = this.Alpha,
-			Scatter = this.Scatter,
-			HasGravity = this.HasGravity,
-			HasLight = this.HasLight,
-			IsActivated = this.IsActivated,
-		};
+		private EmitterDefinition Def => new EmitterDefinition(
+			isGoreMode: this.IsGoreMode,
+			type: this.Type,
+			scale: this.Scale,
+			delay: this.Delay,
+			speedX: this.SpeedX,
+			speedY: this.SpeedY,
+			color: new Color( this.ColorR, this.ColorG, this.ColorB ),
+			alpha: this.Alpha,
+			scatter: this.Scatter,
+			hasGravity: this.HasGravity,
+			hasLight: this.HasLight,
+			isActivated: this.IsActivated
+		);
 
 
 		////////////////

@@ -81,19 +81,20 @@ namespace Emitters.UI {
 
 			var myitem = this.EmitterItem.modItem as EmitterItem;
 
-			myitem.SetEmitterDefinition( new EmitterDefinition {
-				IsGoreMode = this.IsGoreMode,
-				Type = (int)this.TypeSliderElem.RememberedInputValue,
-				Scale = this.ScaleSliderElem.RememberedInputValue,
-				Delay = (int)this.DelaySliderElem.RememberedInputValue,
-				SpeedX = this.SpeedXSliderElem.RememberedInputValue,
-				SpeedY = this.SpeedYSliderElem.RememberedInputValue,
-				Color = this.GetColor(),
-				Alpha = (byte)this.AlphaSliderElem.RememberedInputValue,
-				Scatter = this.ScatterSliderElem.RememberedInputValue,
-				HasGravity = this.HasGravityCheckbox.Selected,
-				HasLight = this.HasLightCheckbox.Selected,
-			} );
+			myitem.SetEmitterDefinition( new EmitterDefinition(
+				isGoreMode: this.IsGoreMode,
+				type: (int)this.TypeSliderElem.RememberedInputValue,
+				scale: this.ScaleSliderElem.RememberedInputValue,
+				delay: (int)this.DelaySliderElem.RememberedInputValue,
+				speedX: this.SpeedXSliderElem.RememberedInputValue,
+				speedY: this.SpeedYSliderElem.RememberedInputValue,
+				color: this.GetColor(),
+				alpha: (byte)this.AlphaSliderElem.RememberedInputValue,
+				scatter: this.ScatterSliderElem.RememberedInputValue,
+				hasGravity: this.HasGravityCheckbox.Selected,
+				hasLight: this.HasLightCheckbox.Selected,
+				isActivated: true
+			) );
 		}
 	}
 }
