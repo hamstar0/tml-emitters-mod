@@ -26,14 +26,14 @@ namespace Emitters.UI {
 					throw new ModHelpersException( "Could not get dust count." );
 				}
 
-				this.TypeSliderElem.SetRange( 0, dustCount );
+				this.TypeSliderElem.SetRange( 0, dustCount-1 );
 			} else {
 				int goreCount;
 				if( !ReflectionHelpers.Get( typeof( ModGore ), null, "GoreCount", out goreCount ) ) {
 					throw new ModHelpersException( "Could not get gore count." );
 				}
 
-				this.TypeSliderElem.SetRange( 0, goreCount );
+				this.TypeSliderElem.SetRange( 0, goreCount-1 );
 			}
 
 			this.IsSettingMode = false;

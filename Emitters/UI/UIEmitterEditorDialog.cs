@@ -3,10 +3,11 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using HamstarHelpers.Classes.Errors;
-using HamstarHelpers.Classes.UI.Elements;
 using HamstarHelpers.Classes.UI.Theme;
+using HamstarHelpers.Classes.UI.Elements;
 using HamstarHelpers.Helpers.Debug;
 using Emitters.Items;
+using UISlider = Emitters.Libraries.Classes.UI.UISlider;
 
 
 namespace Emitters.UI {
@@ -108,6 +109,14 @@ namespace Emitters.UI {
 			var myitem = this.EmitterItem.modItem as EmitterItem;
 
 			myitem.SetEmitterDefinition( this.CreateEmitterDefinition() );
+		}
+
+
+		////////////////
+
+		public override void Update( GameTime gameTime ) {
+			base.Update( gameTime );
+			Main.LocalPlayer.mouseInterface = true;
 		}
 
 

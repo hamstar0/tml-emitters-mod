@@ -7,9 +7,11 @@ v2
 
 
 
+v1.1
+-	Define sound emitter item
+-	Add shader field
 v1
 -	@Slider: Add arrow adjusters at ends of widget
-
 -	Fix gores
 -	Fix colors
 -	Fix loading
