@@ -33,20 +33,20 @@ namespace Emitters.Libraries.Classes.UI {
 			this.NumericInput.OnTextChange += ProcessInput;
 			this.Append( this.NumericInput );
 
-			var leftArrowElem = new UIThemedText( this.Theme, true, " < " );
-			leftArrowElem.Height.Set( 24f, 0f );
-			leftArrowElem.OnMouseOver += ( _, __ ) => leftArrowElem.TextColor = Color.Yellow;
-			leftArrowElem.OnMouseOut += ( _, __ ) => leftArrowElem.TextColor = Color.White;
-			leftArrowElem.OnClick += ( _, __ ) => this.ScrollLeft();
-			this.Append( (UIElement)leftArrowElem );
+			this.LeftArrowElem = new UIThemedText( this.Theme, true, " < " );
+			this.LeftArrowElem.Height.Set( 24f, 0f );
+			this.LeftArrowElem.OnMouseOver += ( _, __ ) => this.LeftArrowElem.TextColor = Color.Yellow;
+			this.LeftArrowElem.OnMouseOut += ( _, __ ) => this.LeftArrowElem.TextColor = Color.Gray;
+			this.LeftArrowElem.OnClick += ( _, __ ) => this.ScrollLeft();
+			this.Append( (UIElement)this.LeftArrowElem );
 
-			var rightArrowElem = new UIThemedText( this.Theme, true, "  > " );
-			rightArrowElem.Left.Set( -30f, 1f );
-			rightArrowElem.Height.Set( 24f, 0f );
-			rightArrowElem.OnMouseOver += ( _, __ ) => rightArrowElem.TextColor = Color.Yellow;
-			rightArrowElem.OnMouseOut += ( _, __ ) => rightArrowElem.TextColor = Color.White;
-			rightArrowElem.OnClick += ( _, __ ) => this.ScrollRight();
-			this.Append( (UIElement)rightArrowElem );
+			this.RightArrowElem = new UIThemedText( this.Theme, true, "  > " );
+			this.RightArrowElem.Left.Set( -30f, 1f );
+			this.RightArrowElem.Height.Set( 24f, 0f );
+			this.RightArrowElem.OnMouseOver += ( _, __ ) => this.RightArrowElem.TextColor = Color.Yellow;
+			this.RightArrowElem.OnMouseOut += ( _, __ ) => this.RightArrowElem.TextColor = Color.Gray;
+			this.RightArrowElem.OnClick += ( _, __ ) => this.ScrollRight();
+			this.Append( (UIElement)this.RightArrowElem );
 		}
 	}
 }

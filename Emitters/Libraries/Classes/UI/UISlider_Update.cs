@@ -38,9 +38,14 @@ namespace Emitters.Libraries.Classes.UI {
 				return;
 			}
 
-			//Rectangle rect = this.GetInnerDimensions().ToRectangle();
 			Rectangle rect = this.GetInnerRectangle();
 			if( !rect.Contains( Main.mouseX, Main.mouseY ) ) {
+				return;
+			}
+			if( this.LeftArrowElem.GetOuterDimensions().ToRectangle().Contains(Main.mouseX, Main.mouseY) ) {
+				return;
+			}
+			if( this.RightArrowElem.GetOuterDimensions().ToRectangle().Contains(Main.mouseX, Main.mouseY) ) {
 				return;
 			}
 

@@ -21,6 +21,12 @@ namespace Emitters {
 
 		////////////////
 
+		public override void Initialize() {
+			this.Emitters.Clear();
+		}
+
+		////////////////
+
 		public override void Load( TagCompound tag ) {
 			this.Emitters.Clear();
 

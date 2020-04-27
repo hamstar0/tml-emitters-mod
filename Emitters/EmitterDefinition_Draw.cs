@@ -1,7 +1,9 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using HamstarHelpers.Helpers.Debug;
+using HamstarHelpers.Helpers.UI;
 using Emitters.Items;
 
 
@@ -19,14 +21,18 @@ namespace Emitters {
 		////////////////
 
 		public void DrawEmitter( int tileX, int tileY ) {
-			Vector2 pos = Main.screenPosition;
-			int scrX = (tileX<<4) - (int)pos.X;
-			int scrY = (tileY<<4) - (int)pos.Y;
+			Vector2 scr = UIHelpers.ConvertToScreenPosition( new Vector2(tileX<<4, tileY<<4) );
 
 			Main.spriteBatch.Draw(
 				texture: EmittersMod.Instance.Emitter,
-				position: new Vector2(scrX, scrY),
-				color: Color.White
+				position: scr,
+				sourceRectangle: null,
+				color: Color.White,
+				rotation: 0f,
+				origin: default(Vector2),
+				scale: Main.GameZoomTarget,
+				effects: SpriteEffects.None,
+				layerDepth: 1f
 			);
 		}
 
@@ -43,6 +49,12 @@ namespace Emitters {
 				return;
 			}
 			this.Timer = 0;
+
+			int maxDistSqr = EmittersConfig.Instance.DustEmitterMinimumRangeBeforeEmit;
+			maxDistSqr *= maxDistSqr;
+			if( (Main.LocalPlayer.Center - worldPos).LengthSquared() >= maxDistSqr ) {
+				return;
+			}
 
 			if( this.IsGoreMode ) {
 				var scatter = new Vector2(

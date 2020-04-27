@@ -72,6 +72,8 @@ namespace Emitters.Libraries.Classes.UI {
 		////////////////
 
 		private UITextInputElement NumericInput;
+		private UIThemedText LeftArrowElem;
+		private UIThemedText RightArrowElem;
 
 		private bool IsNowSettingValue = false;
 
