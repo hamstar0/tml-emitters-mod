@@ -88,7 +88,17 @@ namespace Emitters.Items {
 				return false;
 			}
 
-			return myworld.RemoveEmitter( tileX, tileY );
+			if( !myworld.RemoveEmitter( tileX, tileY ) ) {
+				return false;
+			}
+
+			if( Main.netMode == 1 ) {
+				EmitterRemoveProtocol.BroadcastFromClient( tileX, tileY );
+			} else if( Main.netMode == 2 ) {
+				EmitterRemoveProtocol.BroadcastFromServer( tileX, tileY );
+			}
+
+			return true;
 		}
 
 
