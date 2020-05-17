@@ -1,7 +1,7 @@
 ﻿using System.IO;
 
 
-namespace Emitters {
+namespace Emitters.Definitions {
 	public partial class SoundEmitterDefinition {
 		public static SoundEmitterDefinition Read( BinaryReader reader ) {
 			return new SoundEmitterDefinition(

@@ -7,7 +7,7 @@ using HamstarHelpers.Helpers.UI;
 using Emitters.Items;
 
 
-namespace Emitters {
+namespace Emitters.Definitions {
 	public partial class EmitterDefinition {
 		public void Draw( int tileX, int tileY, bool isOnScreen ) {
 			this.AnimateEmitter( new Vector2((tileX<<4)+8, (tileY<<4)+8) );

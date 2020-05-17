@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Helpers.Debug;
 using HamstarHelpers.Helpers.DotNET.Extensions;
+using Emitters.Definitions;
 
 
 namespace Emitters {

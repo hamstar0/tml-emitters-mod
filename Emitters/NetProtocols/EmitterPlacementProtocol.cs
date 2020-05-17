@@ -7,6 +7,7 @@ using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Classes.Protocols.Packet.Interfaces;
 using HamstarHelpers.Helpers.Players;
 using Emitters.Items;
+using Emitters.Definitions;
 
 
 namespace Emitters.NetProtocols {

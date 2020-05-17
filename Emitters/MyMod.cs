@@ -46,8 +46,8 @@ namespace Emitters {
 
 		public override void PostSetupContent() {
 			if( !Main.dedServ ) {
-				this.EmitterTex = this.GetTexture( "Emitter" );
-				this.SoundEmitterTex = this.GetTexture( "SoundEmitter" );
+				this.EmitterTex = this.GetTexture( "Definitions/Emitter" );
+				this.SoundEmitterTex = this.GetTexture( "Definitions/SoundEmitter" );
 			}
 		}
 	}

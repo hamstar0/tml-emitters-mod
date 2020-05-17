@@ -8,6 +8,7 @@ using HamstarHelpers.Classes.UI.Elements;
 using HamstarHelpers.Classes.UI.Elements.Slider;
 using HamstarHelpers.Helpers.Debug;
 using Emitters.Items;
+using Emitters.Definitions;
 
 
 namespace Emitters.UI {

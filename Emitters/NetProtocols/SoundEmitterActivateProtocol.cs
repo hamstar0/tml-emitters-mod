@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.ModLoader;
 using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Classes.Protocols.Packet.Interfaces;
+using Emitters.Definitions;
 
 
 namespace Emitters.NetProtocols {

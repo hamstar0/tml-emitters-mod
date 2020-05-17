@@ -6,6 +6,7 @@ using HamstarHelpers.Services.Timers;
 using HamstarHelpers.Helpers.Items;
 using HamstarHelpers.Helpers.Players;
 using Emitters.NetProtocols;
+using Emitters.Definitions;
 
 
 namespace Emitters.Items {

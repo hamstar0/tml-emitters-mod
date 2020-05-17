@@ -1,5 +1,6 @@
 ﻿using System;
 using Terraria.ModLoader;
+using Emitters.Definitions;
 
 
 namespace Emitters {
