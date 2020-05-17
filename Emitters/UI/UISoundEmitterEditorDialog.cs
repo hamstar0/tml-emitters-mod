@@ -5,16 +5,16 @@ using Terraria;
 using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Classes.UI.Theme;
 using HamstarHelpers.Classes.UI.Elements;
+using HamstarHelpers.Classes.UI.Elements.Slider;
 using HamstarHelpers.Helpers.Debug;
 using Emitters.Items;
-using UISlider = Emitters.Libraries.Classes.UI.UISlider;
 
 
 namespace Emitters.UI {
 	partial class UISoundEmitterEditorDialog : UIDialog {
 
 		////////////////
-		
+
 		private UISlider TypeSliderElem;
 		private UISlider StyleSliderElem;
 		private UISlider VolumeSliderElem;
@@ -40,7 +40,7 @@ namespace Emitters.UI {
 				style: (int)this.StyleSliderElem.RememberedInputValue,
 				volume: this.VolumeSliderElem.RememberedInputValue,
 				pitch: this.PitchSliderElem.RememberedInputValue,
-				delay: (int)this.DelaySliderElem.RememberedInputValue,	
+				delay: (int)this.DelaySliderElem.RememberedInputValue,
 				isActivated: true
 			);
 		}
@@ -49,21 +49,19 @@ namespace Emitters.UI {
 		////////////////
 
 
-		internal void SetItem(Item SoundEmitterItem)
-		{
+		internal void SetItem( Item SoundEmitterItem ) {
 			this.SoundEmitterItem = SoundEmitterItem;
 
 			var myitem = SoundEmitterItem.modItem as SoundEmitterItem;
-			if (myitem.Def == null)
-			{
+			if( myitem.Def == null ) {
 				return;
 			}
 
-			this.TypeSliderElem.SetValue(myitem.Def.Type);
-			this.StyleSliderElem.SetValue(myitem.Def.Style);
-			this.VolumeSliderElem.SetValue(myitem.Def.Volume);
-			this.PitchSliderElem.SetValue(myitem.Def.Pitch);
-			this.DelaySliderElem.SetValue(myitem.Def.Delay);
+			this.TypeSliderElem.SetValue( myitem.Def.Type );
+			this.StyleSliderElem.SetValue( myitem.Def.Style );
+			this.VolumeSliderElem.SetValue( myitem.Def.Volume );
+			this.PitchSliderElem.SetValue( myitem.Def.Pitch );
+			this.DelaySliderElem.SetValue( myitem.Def.Delay );
 		}
 
 
@@ -75,8 +73,12 @@ namespace Emitters.UI {
 			}
 
 			var myitem = this.SoundEmitterItem.modItem as SoundEmitterItem;
+			if( myitem == null ) {
+				Main.NewText( "No sound emitter item selected. Changes not saved.", Color.Red );
+				return;
+			}
 
-			myitem.SetSoundEmitterDefinition( this.CreateSoundEmitterDefinition() );
+			myitem?.SetSoundEmitterDefinition( this.CreateSoundEmitterDefinition() );
 		}
 
 
@@ -90,7 +92,7 @@ namespace Emitters.UI {
 
 		////////////////
 
-		private SoundEmitterDefinition CachedSoundEmitterDef = null;
+		 private SoundEmitterDefinition CachedSoundEmitterDef = null;
 
 		public override void Draw( SpriteBatch sb ) {
 			base.Draw( sb );

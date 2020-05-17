@@ -1,12 +1,9 @@
 ﻿using System.IO;
 
 
-namespace Emitters
-{
-	public partial class SoundEmitterDefinition
-	{
-		public static SoundEmitterDefinition Read(BinaryReader reader)
-		{
+namespace Emitters {
+	public partial class SoundEmitterDefinition {
+		public static SoundEmitterDefinition Read( BinaryReader reader ) {
 			return new SoundEmitterDefinition(
 				type: (int)reader.ReadUInt16(),
 				style: (int)reader.ReadUInt16(),
@@ -17,14 +14,13 @@ namespace Emitters
 			);
 		}
 
-		public static void Write(SoundEmitterDefinition def, BinaryWriter writer)
-		{
-			writer.Write((ushort)def.Type);
-			writer.Write((ushort)def.Style);
-			writer.Write((float)def.Volume);
-			writer.Write((float)def.Pitch);
-			writer.Write((ushort)def.Delay);
-			writer.Write((bool)def.IsActivated);
+		public static void Write( SoundEmitterDefinition def, BinaryWriter writer ) {
+			writer.Write( (ushort)def.Type );
+			writer.Write( (ushort)def.Style );
+			writer.Write( (float)def.Volume );
+			writer.Write( (float)def.Pitch );
+			writer.Write( (ushort)def.Delay );
+			writer.Write( (bool)def.IsActivated );
 		}
 
 
@@ -51,8 +47,7 @@ namespace Emitters
 
 		public SoundEmitterDefinition() { }
 
-		public SoundEmitterDefinition(SoundEmitterDefinition copy)
-		{
+		public SoundEmitterDefinition( SoundEmitterDefinition copy ) {
 			this.Type = copy.Type;
 			this.Style = copy.Style;
 			this.Volume = copy.Volume;
@@ -67,8 +62,7 @@ namespace Emitters
 					float volume,
 					float pitch,
 					int delay,
-					bool isActivated)
-		{
+					bool isActivated ) {
 			this.Type = type;
 			this.Style = style;
 			this.Volume = volume;
@@ -86,8 +80,7 @@ namespace Emitters
 					out float volume,
 					out float pitch,
 					out int delay,
-					out bool isActivated)
-		{
+					out bool isActivated ) {
 			type = this.Type;
 			style = this.Style;
 			volume = this.Volume;
@@ -98,38 +91,32 @@ namespace Emitters
 
 		////////////////
 
-		public void Activate(bool isActivated)
-		{
+		public void Activate( bool isActivated ) {
 			this.IsActivated = isActivated;
 		}
 
 		////////////////
 
-		public string RenderType()
-		{
+		public string RenderType() {
 			return this.Type.ToString();
 		}
-		public string RenderStyle()
-		{
+		public string RenderStyle() {
 			return this.Style.ToString();
 		}
-		public string RenderVolume()
-		{
-			return (this.Volume).ToString("N0");
+		public string RenderVolume() {
+			return ( this.Volume * 100f ).ToString( "N0" );
 		}
-		public string RenderPitch()
-		{
-			return (this.Pitch).ToString("N0");
+		public string RenderPitch() {
+			return ( this.Pitch * 100f ).ToString( "N0" );
 		}
-		public string RenderDelay()
-		{
+		public string RenderDelay() {
 			return this.Delay.ToString();
 		}
+
 		////////////////
 
-		public override string ToString()
-		{
-			return "Emitter Definition:"
+		public override string ToString() {
+			return "Sound Emitter Definition:"
 				+/*"\n"+*/" Type: " + this.RenderType() + ", "
 				+/*"\n"+*/" Type: " + this.RenderStyle() + ", "
 				+/*"\n"+*/" Volume: " + this.RenderVolume() + ", "

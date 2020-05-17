@@ -23,18 +23,6 @@ namespace Emitters.NetProtocols {
 
 		////////////////
 
-		private SoundEmitterDefinition Def => new SoundEmitterDefinition(
-			type: this.Type,
-			style: this.Style,
-			volume: this.Volume,
-			pitch: this.Pitch,
-			delay: this.Delay,
-			isActivated: this.IsActivated
-		);
-
-
-		////////////////
-
 		public int FromWho;
 
 		public ushort TileX;
@@ -70,13 +58,25 @@ namespace Emitters.NetProtocols {
 
 
 		////////////////
-		
+
+		private SoundEmitterDefinition GetNewEmitter() => new SoundEmitterDefinition(
+			type: this.Type,
+			style: this.Style,
+			volume: this.Volume,
+			pitch: this.Pitch,
+			delay: this.Delay,
+			isActivated: this.IsActivated
+		);
+
+
+		////////////////
+
 		protected override void ReceiveOnClient() {
 			var myworld = ModContent.GetInstance<EmittersWorld>();
 
 			Main.PlaySound( SoundID.Item108, new Vector2(this.TileX<<4, this.TileY<<4) );
 
-			myworld.AddSoundEmitter( this.Def, this.TileX, this.TileY );
+			myworld.AddSoundEmitter( this.GetNewEmitter(), this.TileX, this.TileY );
 
 			PlayerItemHelpers.RemoveInventoryItemQuantity( Main.player[this.FromWho], ModContent.ItemType<SoundEmitterItem>(), 1 );
 		}
@@ -84,7 +84,7 @@ namespace Emitters.NetProtocols {
 		protected override void ReceiveOnServer( int fromWho ) {
 			var myworld = ModContent.GetInstance<EmittersWorld>();
 
-			myworld.AddSoundEmitter( this.Def, this.TileX, this.TileY );
+			myworld.AddSoundEmitter( this.GetNewEmitter(), this.TileX, this.TileY );
 
 			PlayerItemHelpers.RemoveInventoryItemQuantity( Main.player[this.FromWho], ModContent.ItemType<SoundEmitterItem>(), 1 );
 		}

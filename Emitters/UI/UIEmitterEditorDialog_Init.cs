@@ -6,8 +6,8 @@ using Terraria.GameContent.UI.Elements;
 using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Classes.UI.Theme;
 using HamstarHelpers.Classes.UI.Elements;
+using HamstarHelpers.Classes.UI.Elements.Slider;
 using HamstarHelpers.Helpers.DotNET.Reflection;
-using UISlider = Emitters.Libraries.Classes.UI.UISlider;
 
 
 namespace Emitters.UI {

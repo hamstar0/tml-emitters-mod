@@ -1,1 +1,1 @@
-Allows placing devices that can be configured to emit any type of particle ("dust") or "gore". Rate, size, direction, color, type, etc. can all be configured per emitter.
+Allows placing devices that can be configured to emit any type of particle ("dust"), "gore", or sound effect. Rate, size, direction, color, type, etc. can all be configured per emitter.

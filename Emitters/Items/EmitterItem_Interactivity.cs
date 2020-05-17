@@ -21,7 +21,9 @@ namespace Emitters.Items {
 		////////////////
 
 		public static bool CanViewEmitters( Player plr ) {
-			return !plr.HeldItem.IsAir && plr.HeldItem.type == ModContent.ItemType<EmitterItem>();
+			return plr.HeldItem != null
+				&& !plr.HeldItem.IsAir
+				&& plr.HeldItem.type == ModContent.ItemType<EmitterItem>();
 		}
 
 

@@ -1,13 +1,11 @@
 ﻿using System;
 using Terraria;
 using Terraria.UI;
-using Terraria.ModLoader;
 using Terraria.GameContent.UI.Elements;
 using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Classes.UI.Theme;
 using HamstarHelpers.Classes.UI.Elements;
-using HamstarHelpers.Helpers.DotNET.Reflection;
-using UISlider = Emitters.Libraries.Classes.UI.UISlider;
+using HamstarHelpers.Classes.UI.Elements.Slider;
 
 
 namespace Emitters.UI {
@@ -16,14 +14,14 @@ namespace Emitters.UI {
 			var self = this;
 			float yOffset = 0f;
 
-			var textElem = new UIText( "Adjust SoundEmitter", 1f, true );
+			var textElem = new UIText( "Adjust Sound Emitter", 1f, true );
 			this.InnerContainer.Append( (UIElement)textElem );
 			yOffset += 48f;
 
 			this.InitializeWidgetsForType( ref yOffset );
 			this.IntializeWidgetsForStyle( ref yOffset );
 			this.InitializeWidgetsForVolume( ref yOffset );
-			this.InitializeWidgetsForPitch(ref yOffset);
+			this.InitializeWidgetsForPitch( ref yOffset );
 			this.InitializeWidgetsForDelay( ref yOffset );
 			yOffset -= 28f;
 
@@ -62,7 +60,7 @@ namespace Emitters.UI {
 				hoverText: "",
 				isInt: true,
 				ticks: 0,
-				minRange:-1f,
+				minRange: -1f,
 				maxRange: 50f );
 			this.TypeSliderElem.Top.Set( yOffset, 0f );
 			this.TypeSliderElem.Left.Set( 64f, 0f );
@@ -73,23 +71,23 @@ namespace Emitters.UI {
 			this.InnerContainer.Append( (UIElement)this.TypeSliderElem );
 		}
 
-		private void IntializeWidgetsForStyle(ref float yOffset){
-			this.InitializeComponentForTitle("Style:", false, ref yOffset);
+		private void IntializeWidgetsForStyle( ref float yOffset ) {
+			this.InitializeComponentForTitle( "Style:", false, ref yOffset );
 
 			this.StyleSliderElem = new UISlider(
 				theme: UITheme.Vanilla,
 				hoverText: "",
 				isInt: true,
 				ticks: 0,
-				minRange:-1f,
-				maxRange: 50f );		//Temporary until slider is adjusted for style 
-			this.StyleSliderElem.Top.Set(yOffset, 0f);
-			this.StyleSliderElem.Left.Set(64f, 0f);
-			this.StyleSliderElem.Width.Set(-64f, 1f);
+				minRange: -1f,
+				maxRange: 50f );        //Temporary until slider is adjusted for style 
+			this.StyleSliderElem.Top.Set( yOffset, 0f );
+			this.StyleSliderElem.Left.Set( 64f, 0f );
+			this.StyleSliderElem.Width.Set( -64f, 1f );
 			this.StyleSliderElem.SetValue( 1f );
 			yOffset += 28f;
 
-			this.InnerContainer.Append((UIElement)this.StyleSliderElem);
+			this.InnerContainer.Append( (UIElement)this.StyleSliderElem );
 		}
 
 		private void InitializeWidgetsForVolume( ref float yOffset ) {
@@ -100,7 +98,7 @@ namespace Emitters.UI {
 				hoverText: "",
 				isInt: false,
 				ticks: 0,
-				minRange: 0.1f,
+				minRange: 0.01f,
 				maxRange: 1f );
 			this.VolumeSliderElem.Top.Set( yOffset, 0f );
 			this.VolumeSliderElem.Left.Set( 64f, 0f );
@@ -111,9 +109,8 @@ namespace Emitters.UI {
 			this.InnerContainer.Append( (UIElement)this.VolumeSliderElem );
 		}
 
-		private void InitializeWidgetsForPitch(ref float yOffset)
-		{
-			this.InitializeComponentForTitle("Pitch:", false, ref yOffset);
+		private void InitializeWidgetsForPitch( ref float yOffset ) {
+			this.InitializeComponentForTitle( "Pitch:", false, ref yOffset );
 
 			this.PitchSliderElem = new UISlider(
 				theme: UITheme.Vanilla,
@@ -121,30 +118,30 @@ namespace Emitters.UI {
 				isInt: false,
 				ticks: 0,
 				minRange: -1f,
-				maxRange: 1f); 
-			this.PitchSliderElem.Top.Set(yOffset, 0f);
-			this.PitchSliderElem.Left.Set(64f, 0f);
-			this.PitchSliderElem.Width.Set(-64f, 1f);
-			this.PitchSliderElem.SetValue(0f);
+				maxRange: 1f );
+			this.PitchSliderElem.Top.Set( yOffset, 0f );
+			this.PitchSliderElem.Left.Set( 64f, 0f );
+			this.PitchSliderElem.Width.Set( -64f, 1f );
+			this.PitchSliderElem.SetValue( 0f );
 			yOffset += 28f;
 
-			this.InnerContainer.Append((UIElement)this.PitchSliderElem);
+			this.InnerContainer.Append( (UIElement)this.PitchSliderElem );
 		}
 
 		private void InitializeWidgetsForDelay( ref float yOffset ) {
 			this.InitializeComponentForTitle( "Delay:", false, ref yOffset );
-			
+
 			this.DelaySliderElem = new UISlider(
 				theme: UITheme.Vanilla,
 				hoverText: "",
 				isInt: true,
 				ticks: 0,
-				minRange: 1f,
-				maxRange: 200f ); //Not sure how big we should make this.
+				minRange: 4f,
+				maxRange: 60f * 60f );
 			this.DelaySliderElem.Top.Set( yOffset, 0f );
 			this.DelaySliderElem.Left.Set( 64f, 0f );
 			this.DelaySliderElem.Width.Set( -64f, 1f );
-			this.DelaySliderElem.SetValue(100f);
+			this.DelaySliderElem.SetValue( 100f );
 			yOffset += 28f;
 
 			this.InnerContainer.Append( (UIElement)this.DelaySliderElem );
