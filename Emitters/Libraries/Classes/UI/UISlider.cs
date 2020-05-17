@@ -153,8 +153,7 @@ namespace Emitters.Libraries.Classes.UI {
 		////////////////
 
 		private bool SetValueFromInput( string rawInput ) {
-			float value;
-			if( !float.TryParse(rawInput, out value) ) {
+			if( !float.TryParse(rawInput, out float value) ) {
 				return true;
 			}
 

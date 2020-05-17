@@ -84,8 +84,7 @@ namespace Emitters.UI {
 		}
 
 		private void InitializeWidgetsForType( ref float yOffset ) {
-			int dustCount;
-			if( !ReflectionHelpers.Get( typeof( ModDust ), null, "DustCount", out dustCount ) ) {
+			if( !ReflectionHelpers.Get( typeof( ModDust ), null, "DustCount", out int dustCount ) ) {
 				throw new ModHelpersException( "Could not get dust count." );
 			}
 
