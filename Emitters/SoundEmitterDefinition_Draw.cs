@@ -1,11 +1,8 @@
-﻿using System;
+﻿using Emitters.Items;
+using HamstarHelpers.Helpers.UI;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Helpers.UI;
-using Emitters.Items;
 
 
 namespace Emitters
@@ -14,10 +11,12 @@ namespace Emitters
 	{
 		public void Draw(int tileX, int tileY, bool isOnScreen)
 		{
-			if (isOnScreen){ 
+			if (isOnScreen)
+			{
 				this.AnimateSoundEmitter(new Vector2((tileX << 4) + 8, (tileY << 4) + 8));
 			}
-			if (isOnScreen && SoundEmitterItem.CanViewSoundEmitters(Main.LocalPlayer)){
+			if (isOnScreen && SoundEmitterItem.CanViewSoundEmitters(Main.LocalPlayer))
+			{
 				this.DrawSoundEmitter(tileX, tileY);
 			}
 		}
@@ -49,21 +48,24 @@ namespace Emitters
 		{
 			//DebugHelpers.Print( "emit_"+this.GetHashCode(), "timer: "+this.Timer+", "+this.ToString() );
 
-			if (!this.IsActivated){
+			if (!this.IsActivated)
+			{
 				return;
 			}
 
-			if (this.Timer++ < this.Delay){
+			if (this.Timer++ < this.Delay)
+			{
 				return;
 			}
 			this.Timer = 0;
 			int maxDistSqr = EmittersConfig.Instance.DustEmitterMinimumRangeBeforeEmit;
 			maxDistSqr *= maxDistSqr;
-			if ((Main.LocalPlayer.Center - worldPos).LengthSquared() >= maxDistSqr){
+			if ((Main.LocalPlayer.Center - worldPos).LengthSquared() >= maxDistSqr)
+			{
 				return;
 			}
-		    Main.PlaySound(this.Type,(int)worldPos.X,(int)worldPos.Y, this.Style, this.Volume, this.Pitch);
-			
+			Main.PlaySound(this.Type, (int)worldPos.X, (int)worldPos.Y, this.Style, this.Volume, this.Pitch);
+
 		}
 	}
 }

@@ -10,8 +10,6 @@ namespace Emitters.Items
 	public partial class SoundEmitterItem : ModItem
 	{
 		public SoundEmitterDefinition Def { get; private set; } = null;
-
-
 		////////////////
 
 		public override bool CloneNewInstances => false;

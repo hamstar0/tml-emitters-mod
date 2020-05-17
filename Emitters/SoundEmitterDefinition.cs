@@ -1,7 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.IO;
-using Microsoft.Xna.Framework;
+﻿using System.IO;
 
 
 namespace Emitters
