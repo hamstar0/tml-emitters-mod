@@ -144,7 +144,7 @@ namespace Emitters.Items {
 			Timers.SetTimer( timerName, 15, false, () => false );
 
 			if( this.Def == null ) {
-				Main.NewText( "SoundEmitter settings must be first specified (right-click item)." );
+				Main.NewText( "Sound Emitter settings must be first specified (right-click item)." );
 				return base.UseItem( player );
 			}
 

@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
-using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using Terraria;
 using Terraria.ModLoader;
@@ -145,8 +144,8 @@ namespace Emitters {
 
 		public override void NetSend( BinaryWriter writer ) {
 			try {
-				writer.Write( this.Emitters.Count2D() );
-				writer.Write( this.SoundEmitters.Count2D() );
+				writer.Write( (int)this.Emitters.Count2D() );
+				writer.Write( (int)this.SoundEmitters.Count2D() );
 
 				foreach( (ushort tileX, IDictionary<ushort, EmitterDefinition> tileYs) in this.Emitters ) {
 					foreach( (ushort tileY, EmitterDefinition def) in tileYs ) {
@@ -164,73 +163,6 @@ namespace Emitters {
 					}
 				}
 			} catch { }
-		}
-
-
-		////////////////
-
-		public void AddEmitter( EmitterDefinition def, ushort tileX, ushort tileY ) {
-			if( ( tileX < 0 || tileX >= Main.maxTilesX ) || ( tileY < 0 || tileY >= Main.maxTilesY ) ) {
-				throw new ModHelpersException( "Cannot place emitter outside of world." );
-			}
-			//Main.NewText( def.ToString() );
-			this.Emitters.Set2D( tileX, tileY, def );
-		}
-
-		public EmitterDefinition GetEmitter( ushort tileX, ushort tileY ) {
-			return this.Emitters.Get2DOrDefault( tileX, tileY );
-		}
-
-		public bool RemoveEmitter( ushort tileX, ushort tileY ) {
-			return this.Emitters.Remove2D( tileX, tileY );
-		}
-
-		public void AddSoundEmitter( SoundEmitterDefinition def, ushort tileX, ushort tileY ) {
-			if( ( tileX < 0 || tileX >= Main.maxTilesX ) || ( tileY < 0 || tileY >= Main.maxTilesY ) ) {
-				throw new ModHelpersException( "Cannot place emitter outside of world." );
-			}
-			//Main.NewText( def.ToString() );
-			this.SoundEmitters.Set2D( tileX, tileY, def );
-		}
-
-		public SoundEmitterDefinition GetSoundEmitter( ushort tileX, ushort tileY ) {
-			return this.SoundEmitters.Get2DOrDefault( tileX, tileY );
-		}
-		public bool RemoveSoundEmitter( ushort tileX, ushort tileY ) {
-			return this.SoundEmitters.Remove2D( tileX, tileY );
-		}
-
-
-		////////////////
-
-		public override void PostDrawTiles() {
-			int leftTile = (int)Main.screenPosition.X >> 4;
-			int topTile = (int)Main.screenPosition.Y >> 4;
-			int tileWidth = Main.screenWidth >> 4;
-			int tileHeight = Main.screenHeight >> 4;
-			int maxX = leftTile + tileWidth + 1;
-			int maxY = topTile + tileHeight + 1;
-
-			var scrTiles = new Rectangle( leftTile, topTile, maxX, maxY );
-			maxX += 8;
-			maxY += 8;
-
-			Main.spriteBatch.Begin();
-
-			try {
-				for( ushort x = (ushort)( leftTile - 8 ); x < maxX; x++ ) {
-					for( ushort y = (ushort)( topTile - 8 ); y < maxY; y++ ) {
-						if( this.Emitters.TryGetValue2D( x, y, out EmitterDefinition def ) ) {
-							def.Draw( x, y, scrTiles.Contains( x, y ) );
-						}
-						if( this.SoundEmitters.TryGetValue2D( x, y, out SoundEmitterDefinition sdef ) ) {
-							sdef.Draw( x, y, scrTiles.Contains( x, y ) );
-						}
-					}
-				}
-			} finally {
-				Main.spriteBatch.End();
-			}
 		}
 	}
 }

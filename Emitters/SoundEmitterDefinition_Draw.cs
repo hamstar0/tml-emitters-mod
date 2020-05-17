@@ -19,7 +19,7 @@ namespace Emitters {
 		////////////////
 
 		public void DrawSoundEmitter( int tileX, int tileY ) {
-			Vector2 scr = UIHelpers.ConvertToScreenPosition( new Vector2( tileX << 4, tileY << 4 ) );
+			Vector2 scr = UIHelpers.ConvertToScreenPosition( new Vector2(tileX<<4, tileY<<4) );
 
 			Main.spriteBatch.Draw(
 				texture: EmittersMod.Instance.SoundEmitterTex,
@@ -49,7 +49,7 @@ namespace Emitters {
 			}
 			this.Timer = 0;
 
-			int maxDistSqr = EmittersConfig.Instance.DustEmitterMinimumRangeBeforeEmit;
+			int maxDistSqr = EmittersConfig.Instance.SoundEmitterMinimumRangeBeforeEmit;
 			maxDistSqr *= maxDistSqr;
 
 			if( (Main.LocalPlayer.Center - worldPos).LengthSquared() >= maxDistSqr ) {

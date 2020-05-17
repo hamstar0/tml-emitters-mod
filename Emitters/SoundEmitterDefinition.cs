@@ -104,10 +104,10 @@ namespace Emitters {
 			return this.Style.ToString();
 		}
 		public string RenderVolume() {
-			return ( this.Volume * 100f ).ToString( "N0" );
+			return ( this.Volume * 100f ).ToString( "N0" ) + "%";
 		}
 		public string RenderPitch() {
-			return ( this.Pitch * 100f ).ToString( "N0" );
+			return this.Pitch.ToString( "N3" );
 		}
 		public string RenderDelay() {
 			return this.Delay.ToString();
