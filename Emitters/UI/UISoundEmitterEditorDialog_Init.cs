@@ -81,8 +81,8 @@ namespace Emitters.UI {
 				hoverText: "",
 				isInt: true,
 				ticks: 0,
-				minRange: 1f,
-				maxRange: 39f );		//Temporary until slider is adjusted for style 
+				minRange:-1f,
+				maxRange: 50f );		//Temporary until slider is adjusted for style 
 			this.StyleSliderElem.Top.Set(yOffset, 0f);
 			this.StyleSliderElem.Left.Set(64f, 0f);
 			this.StyleSliderElem.Width.Set(-64f, 1f);
@@ -120,8 +120,8 @@ namespace Emitters.UI {
 				hoverText: "",
 				isInt: false,
 				ticks: 0,
-				minRange: -4f,
-				maxRange: 4f); //Pitch goes by octave so a reasonable range should suffice
+				minRange: -1f,
+				maxRange: 1f); 
 			this.PitchSliderElem.Top.Set(yOffset, 0f);
 			this.PitchSliderElem.Left.Set(64f, 0f);
 			this.PitchSliderElem.Width.Set(-64f, 1f);
