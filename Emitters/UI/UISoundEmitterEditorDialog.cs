@@ -30,7 +30,7 @@ namespace Emitters.UI {
 
 		////////////////
 
-		public UISoundEmitterEditorDialog() : base( UITheme.Vanilla, 600, 400 ) { }
+		public UISoundEmitterEditorDialog() : base( UITheme.Vanilla, 600, 272 ) { }
 
 
 		////////////////

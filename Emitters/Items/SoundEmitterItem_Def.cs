@@ -59,7 +59,7 @@ namespace Emitters.Items {
 		////////////////
 
 		public override void Load( TagCompound tag ) {
-			if( !tag.ContainsKey( "EmitterMode" ) ) {
+			if( !tag.ContainsKey( "SndEmitterType" ) ) {
 				return;
 			}
 
