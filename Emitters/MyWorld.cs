@@ -14,27 +14,32 @@ using HamstarHelpers.Helpers.DotNET.Extensions;
 
 namespace Emitters {
 	public partial class EmittersWorld : ModWorld {
+
 		private IDictionary<ushort, IDictionary<ushort, EmitterDefinition>> Emitters
 			= new ConcurrentDictionary<ushort, IDictionary<ushort, EmitterDefinition>>();
 
+		private IDictionary<ushort, IDictionary<ushort, SoundEmitterDefinition>> SoundEmitters
+			= new ConcurrentDictionary<ushort, IDictionary<ushort, SoundEmitterDefinition>>();
 
 
 		////////////////
 
 		public override void Initialize() {
 			this.Emitters.Clear();
+			this.SoundEmitters.Clear();
 		}
 
 		////////////////
 
 		public override void Load( TagCompound tag ) {
 			this.Emitters.Clear();
-
-			if( !tag.ContainsKey("emitter_count") ) {
+			this.SoundEmitters.Clear();
+			if( !tag.ContainsKey("emitter_count") || !tag.ContainsKey("sound_emitter_count") ) {
 				return;
 			}
 
 			int count = tag.GetInt( "emitter_count" );
+			int soundCount = tag.GetInt("emitter_count");
 
 			try {
 				for( int i = 0; i < count; i++ ) {
@@ -47,6 +52,17 @@ namespace Emitters {
 
 					this.Emitters.Set2D( tileX, tileY, def );
 				}
+				for (int i = 0; i < soundCount; i++)
+				{
+					ushort tileX = (ushort)tag.GetInt("sound_emitter_" + i + "_x");
+					ushort tileY = (ushort)tag.GetInt("sound_emitter_" + i + "_y");
+					string rawDef = tag.GetString("sound_emitter_" + i);
+
+					var def = JsonConvert.DeserializeObject<SoundEmitterDefinition>(rawDef);
+					def.Activate(tag.GetBool("sound_emitter_" + i + "_on"));
+
+					this.SoundEmitters.Set2D(tileX, tileY, def);
+				}
 			} catch( Exception e ) {
 				LogHelpers.Warn( e.ToString() );
 			}
@@ -54,7 +70,9 @@ namespace Emitters {
 
 		public override TagCompound Save() {
 			var tag = new TagCompound {
-				{ "emitter_count", this.Emitters.Count2D() }
+				{ "emitter_count", this.Emitters.Count2D() },
+				{ "sound_emitter_count",this.SoundEmitters.Count2D() },
+				
 			};
 
 			int i = 0;
@@ -64,6 +82,18 @@ namespace Emitters {
 					tag["emitter_" + i + "_y"] = (int)tileY;
 					tag["emitter_" + i] = JsonConvert.SerializeObject( def );
 					tag["emitter_" + i + "_on"] = def.IsActivated;
+					i++;
+				}
+			}
+			i = 0;
+			foreach ((ushort tileX, IDictionary<ushort, SoundEmitterDefinition> tileYs) in this.SoundEmitters)
+			{
+				foreach ((ushort tileY, SoundEmitterDefinition def) in tileYs)
+				{
+					tag["sound_emitter_" + i + "_x"] = (int)tileX;
+					tag["sound_emitter_" + i + "_y"] = (int)tileY;
+					tag["sound_emitter_" + i] = JsonConvert.SerializeObject(def);
+					tag["sound_emitter_" + i + "_on"] = def.IsActivated;
 					i++;
 				}
 			}
@@ -77,13 +107,20 @@ namespace Emitters {
 		public override void NetReceive( BinaryReader reader ) {
 			try {
 				int count = reader.ReadInt32();
+				int soundCount = reader.ReadInt32();
 
 				for( int i = 0; i < count; i++ ) {
 					ushort tileX = reader.ReadUInt16();
 					ushort tileY = reader.ReadUInt16();
 					EmitterDefinition def = EmitterDefinition.Read( reader );
-
-					this.Emitters.Set2D( tileX, tileY, def );
+					this.Emitters.Set2D( tileX, tileY, def );;
+				}
+				for(int i = 0; i < soundCount; i++)
+				{
+					ushort tileX = reader.ReadUInt16();
+					ushort tileY = reader.ReadUInt16();
+					SoundEmitterDefinition sdef = SoundEmitterDefinition.Read(reader);
+					this.SoundEmitters.Set2D(tileX, tileY, sdef);
 				}
 			} catch { }
 		}
@@ -91,6 +128,7 @@ namespace Emitters {
 		public override void NetSend( BinaryWriter writer ) {
 			try {
 				writer.Write( this.Emitters.Count2D() );
+				writer.Write(this.SoundEmitters.Count2D());
 
 				foreach( (ushort tileX, IDictionary<ushort, EmitterDefinition> tileYs) in this.Emitters ) {
 					foreach( (ushort tileY, EmitterDefinition def) in tileYs ) {
@@ -99,6 +137,17 @@ namespace Emitters {
 						EmitterDefinition.Write( def, writer );
 					}
 				}
+
+				foreach ((ushort tileX, IDictionary<ushort, SoundEmitterDefinition> tileYs) in this.SoundEmitters)
+				{
+					foreach ((ushort tileY, SoundEmitterDefinition sdef) in tileYs)
+					{
+						writer.Write(tileX);
+						writer.Write(tileY);
+						SoundEmitterDefinition.Write(sdef, writer);
+					}
+				}
+
 			} catch { }
 		}
 
@@ -117,11 +166,33 @@ namespace Emitters {
 			return this.Emitters.Get2DOrDefault( tileX, tileY );
 		}
 
+		public bool RemoveEmitter(ushort tileX, ushort tileY)
+		{
+			return this.Emitters.Remove2D(tileX, tileY);
+		}
+
+		public void AddSoundEmitter(SoundEmitterDefinition def, ushort tileX, ushort tileY)
+		{
+			if ((tileX < 0 || tileX >= Main.maxTilesX) || (tileY < 0 || tileY >= Main.maxTilesY))
+			{
+				throw new ModHelpersException("Cannot place emitter outside of world.");
+			}
+			//Main.NewText( def.ToString() );
+			this.SoundEmitters.Set2D(tileX, tileY, def);
+		}
+
+		public SoundEmitterDefinition GetSoundEmitter(ushort tileX, ushort tileY)
+		{
+			return this.SoundEmitters.Get2DOrDefault(tileX, tileY);
+		}
+		public bool RemoveSoundEmitter(ushort tileX, ushort tileY)
+		{
+			return this.SoundEmitters.Remove2D(tileX, tileY);
+		}
+
 		////
 
-		public bool RemoveEmitter( ushort tileX, ushort tileY ) {
-			return this.Emitters.Remove2D( tileX, tileY );
-		}
+
 
 
 		////////////////
@@ -133,7 +204,6 @@ namespace Emitters {
 			int tileHeight = Main.screenHeight >> 4;
 			int maxX = leftTile + tileWidth + 1;
 			int maxY = topTile + tileHeight + 1;
-			EmitterDefinition def;
 
 			var scrTiles = new Rectangle( leftTile, topTile, maxX, maxY );
 			maxX += 8;
@@ -144,8 +214,11 @@ namespace Emitters {
 			try {
 				for( ushort x=(ushort)(leftTile - 8); x < maxX; x++ ) {
 					for( ushort y=(ushort)(topTile - 8); y < maxY; y++ ) {
-						if( this.Emitters.TryGetValue2D(x, y, out def) ) {
+						if( this.Emitters.TryGetValue2D(x, y, out EmitterDefinition def) ) {
 							def.Draw( x, y, scrTiles.Contains(x, y) );
+						}
+						if(this.SoundEmitters.TryGetValue2D(x, y, out SoundEmitterDefinition sdef)){
+							sdef.Draw(x, y, scrTiles.Contains(x, y));
 						}
 					}
 				}
