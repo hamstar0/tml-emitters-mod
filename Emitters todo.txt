@@ -7,9 +7,19 @@ v2
 
 
 
-v1.1
--	Define sound emitter item
+v2
+-	Allow arrow keys + mouse hover to adjust sliders
 -	Add shader field
+-	Render emitters of the top of dusts and gores when in add/remove mode
+-	Fix emitter demo mouse position zoom
+-	Restrict inapplicable fields for gores
+-	Increase max delay range
+v1.1
+-	Set sound emitter styles (slider) to adjust to vanilla and modded ranges
+-	Set sound emitter types (slider) to adjust to vanilla and modded ranges
+
+-	Clean up code
+-	Import sound emitter PR code
 v1
 -	@Slider: Add arrow adjusters at ends of widget
 -	Fix gores

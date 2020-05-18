@@ -3,7 +3,7 @@ using System.IO;
 using Microsoft.Xna.Framework;
 
 
-namespace Emitters {
+namespace Emitters.Definitions {
 	public partial class EmitterDefinition {
 		public static EmitterDefinition Read( BinaryReader reader ) {
 			return new EmitterDefinition(

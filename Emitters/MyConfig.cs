@@ -27,5 +27,9 @@ namespace Emitters {
 		[Range( 16 * 16, 16 * 1000 )]
 		[DefaultValue( 16 * 96 )]
 		public int DustEmitterMinimumRangeBeforeEmit { get; set; } = 16 * 96;
+
+		[Range( 16 * 16, 16 * 1000 )]
+		[DefaultValue( 16 * 192 )]
+		public int SoundEmitterMinimumRangeBeforeEmit { get; set; } = 16 * 192;
 	}
 }

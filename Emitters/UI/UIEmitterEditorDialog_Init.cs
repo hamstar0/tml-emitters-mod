@@ -6,8 +6,8 @@ using Terraria.GameContent.UI.Elements;
 using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Classes.UI.Theme;
 using HamstarHelpers.Classes.UI.Elements;
+using HamstarHelpers.Classes.UI.Elements.Slider;
 using HamstarHelpers.Helpers.DotNET.Reflection;
-using UISlider = Emitters.Libraries.Classes.UI.UISlider;
 
 
 namespace Emitters.UI {
@@ -84,8 +84,7 @@ namespace Emitters.UI {
 		}
 
 		private void InitializeWidgetsForType( ref float yOffset ) {
-			int dustCount;
-			if( !ReflectionHelpers.Get( typeof( ModDust ), null, "DustCount", out dustCount ) ) {
+			if( !ReflectionHelpers.Get( typeof( ModDust ), null, "DustCount", out int dustCount ) ) {
 				throw new ModHelpersException( "Could not get dust count." );
 			}
 

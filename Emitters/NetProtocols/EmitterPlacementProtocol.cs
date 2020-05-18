@@ -7,6 +7,7 @@ using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Classes.Protocols.Packet.Interfaces;
 using HamstarHelpers.Helpers.Players;
 using Emitters.Items;
+using Emitters.Definitions;
 
 
 namespace Emitters.NetProtocols {
@@ -19,24 +20,6 @@ namespace Emitters.NetProtocols {
 			protocol.SendToServer( true );
 		}
 
-
-
-		////////////////
-
-		private EmitterDefinition Def => new EmitterDefinition(
-			isGoreMode: this.IsGoreMode,
-			type: this.Type,
-			scale: this.Scale,
-			delay: this.Delay,
-			speedX: this.SpeedX,
-			speedY: this.SpeedY,
-			color: new Color( this.ColorR, this.ColorG, this.ColorB ),
-			alpha: this.Alpha,
-			scatter: this.Scatter,
-			hasGravity: this.HasGravity,
-			hasLight: this.HasLight,
-			isActivated: this.IsActivated
-		);
 
 
 		////////////////
@@ -92,13 +75,31 @@ namespace Emitters.NetProtocols {
 
 
 		////////////////
-		
+
+		private EmitterDefinition GetNewEmitter() => new EmitterDefinition(
+			isGoreMode: this.IsGoreMode,
+			type: this.Type,
+			scale: this.Scale,
+			delay: this.Delay,
+			speedX: this.SpeedX,
+			speedY: this.SpeedY,
+			color: new Color( this.ColorR, this.ColorG, this.ColorB ),
+			alpha: this.Alpha,
+			scatter: this.Scatter,
+			hasGravity: this.HasGravity,
+			hasLight: this.HasLight,
+			isActivated: this.IsActivated
+		);
+
+
+		////////////////
+
 		protected override void ReceiveOnClient() {
 			var myworld = ModContent.GetInstance<EmittersWorld>();
 
 			Main.PlaySound( SoundID.Item108, new Vector2(this.TileX<<4, this.TileY<<4) );
 
-			myworld.AddEmitter( this.Def, this.TileX, this.TileY );
+			myworld.AddEmitter( this.GetNewEmitter(), this.TileX, this.TileY );
 
 			PlayerItemHelpers.RemoveInventoryItemQuantity( Main.player[this.FromWho], ModContent.ItemType<EmitterItem>(), 1 );
 		}
@@ -106,7 +107,7 @@ namespace Emitters.NetProtocols {
 		protected override void ReceiveOnServer( int fromWho ) {
 			var myworld = ModContent.GetInstance<EmittersWorld>();
 
-			myworld.AddEmitter( this.Def, this.TileX, this.TileY );
+			myworld.AddEmitter( this.GetNewEmitter(), this.TileX, this.TileY );
 
 			PlayerItemHelpers.RemoveInventoryItemQuantity( Main.player[this.FromWho], ModContent.ItemType<EmitterItem>(), 1 );
 		}

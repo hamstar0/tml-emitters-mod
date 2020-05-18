@@ -6,6 +6,7 @@ using HamstarHelpers.Services.Timers;
 using HamstarHelpers.Helpers.Items;
 using HamstarHelpers.Helpers.Players;
 using Emitters.NetProtocols;
+using Emitters.Definitions;
 
 
 namespace Emitters.Items {
@@ -21,7 +22,9 @@ namespace Emitters.Items {
 		////////////////
 
 		public static bool CanViewEmitters( Player plr ) {
-			return !plr.HeldItem.IsAir && plr.HeldItem.type == ModContent.ItemType<EmitterItem>();
+			return plr.HeldItem != null
+				&& !plr.HeldItem.IsAir
+				&& plr.HeldItem.type == ModContent.ItemType<EmitterItem>();
 		}
 
 

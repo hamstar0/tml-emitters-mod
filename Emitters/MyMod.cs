@@ -18,10 +18,11 @@ namespace Emitters {
 
 		////////////////
 
-		internal Texture2D Emitter;
+		internal Texture2D EmitterTex;
+		internal Texture2D SoundEmitterTex;
 
 		internal UIEmitterEditorDialog EmitterEditorDialog;
-
+		internal UISoundEmitterEditorDialog SoundEmitterEditorDialog;
 
 
 		////////////////
@@ -33,6 +34,7 @@ namespace Emitters {
 		public override void Load() {
 			if( !Main.dedServ ) {
 				this.EmitterEditorDialog = new UIEmitterEditorDialog();
+				this.SoundEmitterEditorDialog = new UISoundEmitterEditorDialog();
 			}
 		}
 
@@ -44,7 +46,8 @@ namespace Emitters {
 
 		public override void PostSetupContent() {
 			if( !Main.dedServ ) {
-				this.Emitter = this.GetTexture( "Emitter" );
+				this.EmitterTex = this.GetTexture( "Definitions/Emitter" );
+				this.SoundEmitterTex = this.GetTexture( "Definitions/SoundEmitter" );
 			}
 		}
 	}

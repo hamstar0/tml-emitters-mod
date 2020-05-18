@@ -1,5 +1,4 @@
-﻿using System;
-using Terraria.ModLoader;
+﻿using Terraria.ModLoader;
 using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Classes.UI.Elements;
 using HamstarHelpers.Helpers.DotNET.Reflection;
@@ -21,15 +20,13 @@ namespace Emitters.UI {
 			this.ModeGoreFlagElem.Selected = isGoreMode;
 
 			if( !isGoreMode ) {
-				int dustCount;
-				if( !ReflectionHelpers.Get( typeof( ModDust ), null, "DustCount", out dustCount ) ) {
+				if( !ReflectionHelpers.Get( typeof(ModDust), null, "DustCount", out int dustCount) ) {
 					throw new ModHelpersException( "Could not get dust count." );
 				}
 
 				this.TypeSliderElem.SetRange( 0, dustCount-1 );
 			} else {
-				int goreCount;
-				if( !ReflectionHelpers.Get( typeof( ModGore ), null, "GoreCount", out goreCount ) ) {
+				if( !ReflectionHelpers.Get( typeof(ModGore), null, "GoreCount", out int goreCount ) ) {
 					throw new ModHelpersException( "Could not get gore count." );
 				}
 

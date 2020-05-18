@@ -5,9 +5,10 @@ using Terraria;
 using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Classes.UI.Theme;
 using HamstarHelpers.Classes.UI.Elements;
+using HamstarHelpers.Classes.UI.Elements.Slider;
 using HamstarHelpers.Helpers.Debug;
 using Emitters.Items;
-using UISlider = Emitters.Libraries.Classes.UI.UISlider;
+using Emitters.Definitions;
 
 
 namespace Emitters.UI {
@@ -107,8 +108,12 @@ namespace Emitters.UI {
 			}
 
 			var myitem = this.EmitterItem.modItem as EmitterItem;
+			if( myitem == null ) {
+				Main.NewText( "No emitter item selected. Changes not saved.", Color.Red );
+				return;
+			}
 
-			myitem.SetEmitterDefinition( this.CreateEmitterDefinition() );
+			myitem?.SetEmitterDefinition( this.CreateEmitterDefinition() );
 		}
 
 
@@ -122,7 +127,7 @@ namespace Emitters.UI {
 
 		////////////////
 
-		private EmitterDefinition CachedEmitterDef = null;
+		 private EmitterDefinition CachedEmitterDef = null;
 
 		public override void Draw( SpriteBatch sb ) {
 			base.Draw( sb );

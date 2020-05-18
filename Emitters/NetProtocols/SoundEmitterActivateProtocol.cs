@@ -7,11 +7,11 @@ using Emitters.Definitions;
 
 
 namespace Emitters.NetProtocols {
-	class EmitterActivateProtocol : PacketProtocolBroadcast {
+	class SoundEmitterActivateProtocol : PacketProtocolBroadcast {
 		public static void BroadcastFromClient( bool isActivated, ushort tileX, ushort tileY ) {
 			if( Main.netMode != 1 ) { throw new ModHelpersException("Not client."); }
 
-			var protocol = new EmitterActivateProtocol {
+			var protocol = new SoundEmitterActivateProtocol {
 				TileX = tileX,
 				TileY = tileY,
 				IsActivated = isActivated,
@@ -32,21 +32,21 @@ namespace Emitters.NetProtocols {
 
 		////////////////
 
-		private EmitterActivateProtocol() { }
+		private SoundEmitterActivateProtocol() { }
 
 
 		////////////////
 		
 		protected override void ReceiveOnClient() {
 			var myworld = ModContent.GetInstance<EmittersWorld>();
-			EmitterDefinition def = myworld.GetEmitter( this.TileX, this.TileY );
+			SoundEmitterDefinition def = myworld.GetSoundEmitter( this.TileX, this.TileY );
 
 			def.Activate( this.IsActivated );
 		}
 
 		protected override void ReceiveOnServer( int fromWho ) {
 			var myworld = ModContent.GetInstance<EmittersWorld>();
-			EmitterDefinition def = myworld.GetEmitter( this.TileX, this.TileY );
+			SoundEmitterDefinition def = myworld.GetSoundEmitter( this.TileX, this.TileY );
 
 			def.Activate( this.IsActivated );
 		}
