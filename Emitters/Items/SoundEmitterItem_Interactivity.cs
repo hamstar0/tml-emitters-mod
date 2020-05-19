@@ -16,7 +16,7 @@ namespace Emitters.Items {
 			mymod.SoundEmitterEditorDialog.Open();
 			mymod.SoundEmitterEditorDialog.SetItem( soundEmitterItem );
 
-			var myitem = soundEmitterItem.modItem as SoundEmitterItem;
+			/*var myitem = soundEmitterItem.modItem as SoundEmitterItem;
 			if( myitem.Def == null || !myitem.Def.IsActivated ) {
 				return;
 			}
@@ -27,7 +27,7 @@ namespace Emitters.Items {
 					Main.PlaySound( myitem.Def.Type, -1, -1, myitem.Def.Style, myitem.Def.Volume, myitem.Def.Pitch );
 				}
 				return mymod.SoundEmitterEditorDialog.IsOpen;
-			}, true );
+			}, true );*/
 		}
 
 

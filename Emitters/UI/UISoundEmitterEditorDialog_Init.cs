@@ -1,12 +1,13 @@
 ﻿using System;
 using Terraria;
+
+using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.GameContent.UI.Elements;
 using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Classes.UI.Theme;
 using HamstarHelpers.Classes.UI.Elements;
 using HamstarHelpers.Classes.UI.Elements.Slider;
-
 
 namespace Emitters.UI {
 	partial class UISoundEmitterEditorDialog : UIDialog {
@@ -60,12 +61,19 @@ namespace Emitters.UI {
 				hoverText: "",
 				isInt: true,
 				ticks: 0,
-				minRange: -1f,
+				minRange: 0f,
 				maxRange: 50f );
 			this.TypeSliderElem.Top.Set( yOffset, 0f );
 			this.TypeSliderElem.Left.Set( 64f, 0f );
 			this.TypeSliderElem.Width.Set( -64f, 1f );
 			this.TypeSliderElem.SetValue( 1f );
+			this.TypeSliderElem.PreOnChange += ( value ) => {
+				if( value > 41f && value < 50f ) {
+					return false;
+				}
+				this.UpdateStyleSlider( (int)value );
+				return true;
+			};
 			yOffset += 28f;
 
 			this.InnerContainer.Append( (UIElement)this.TypeSliderElem );
@@ -80,11 +88,11 @@ namespace Emitters.UI {
 				isInt: true,
 				ticks: 0,
 				minRange: -1f,
-				maxRange: 50f );        //Temporary until slider is adjusted for style 
+				maxRange: -1f );        //Temporary until slider is adjusted for style 
 			this.StyleSliderElem.Top.Set( yOffset, 0f );
 			this.StyleSliderElem.Left.Set( 64f, 0f );
 			this.StyleSliderElem.Width.Set( -64f, 1f );
-			this.StyleSliderElem.SetValue( 1f );
+			this.StyleSliderElem.SetValue( -1f );
 			yOffset += 28f;
 
 			this.InnerContainer.Append( (UIElement)this.StyleSliderElem );
@@ -145,6 +153,53 @@ namespace Emitters.UI {
 			yOffset += 28f;
 
 			this.InnerContainer.Append( (UIElement)this.DelaySliderElem );
+		}
+
+
+		////////////////
+
+		private void UpdateStyleSlider( int sndType ) {
+			switch( sndType ) {
+			case 2:
+				this.StyleSliderElem.SetRange( 0f, (float)SoundLoader.SoundCount(SoundType.Item) );	//125f
+				break;
+			case 3:
+				this.StyleSliderElem.SetRange( 0f, (float)SoundLoader.SoundCount(SoundType.NPCHit) );	//57f
+				break;
+			case 4:
+				this.StyleSliderElem.SetRange( 0f, (float)SoundLoader.SoundCount(SoundType.NPCKilled) ); //62f
+				break;
+			case 14:
+				this.StyleSliderElem.SetRange( 0f, 0f );    //Main.soundInstanceZombie
+				break;
+			case 15:
+				this.StyleSliderElem.SetRange( 0f, (float)Main.soundInstanceRoar.Length - 1f );	//2f
+				break;
+			case 19:
+				this.StyleSliderElem.SetRange( 0f, (float)Main.soundInstanceSplash.Length - 1f );	//1f
+				break;
+			case 28:
+				this.StyleSliderElem.SetRange( 0f, (float)Main.soundInstanceMech.Length - 1f );	//0f
+				break;
+			case 29:
+			case 32:
+				this.StyleSliderElem.SetRange( 0f, (float)Main.soundInstanceZombie.Length - 1f );	//105f
+				break;
+			case 34:
+			case 35:
+				this.StyleSliderElem.SetRange( 0f, 50f );
+				break;
+			case 36:
+			case 39:
+				this.StyleSliderElem.SetRange( 0f, (float)Main.soundInstanceDrip.Length - 1f );	//2f
+				break;
+			case 50:
+				this.StyleSliderElem.SetRange( 0f, (float)SoundLoader.SoundCount(SoundType.Custom) );
+				break;
+			default:
+				this.StyleSliderElem.SetRange( -1f, -1f );
+				break;
+			}
 		}
 	}
 }
