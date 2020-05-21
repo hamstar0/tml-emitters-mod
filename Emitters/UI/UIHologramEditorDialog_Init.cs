@@ -100,7 +100,7 @@ namespace Emitters.UI {
 		}
 
 		private void InitializeWidgetsForColor( ref float yOffset ) {
-			this.InitializeComponentForTitle( "Color:", false, ref yOffset );
+			this.InitializeComponentForTitle( "Hue:", false, ref yOffset );
 
 			this.HueSliderElem = new UISlider(
 				theme: UITheme.Vanilla,
@@ -182,7 +182,7 @@ namespace Emitters.UI {
 				isInt: true,
 				ticks: 0,
 				minRange: -1f,
-				maxRange: 1f );
+				maxRange: 0f );
 			this.DirectionSliderElem.Top.Set( yOffset, 0f );
 			this.DirectionSliderElem.Left.Set( 64f, 0f );
 			this.DirectionSliderElem.Width.Set( -64f, 1f );
@@ -202,7 +202,7 @@ namespace Emitters.UI {
 				isInt: false,
 				ticks: 0,
 				minRange: 0f,
-				maxRange: 360f);
+				maxRange: 1f);
 			this.RotationSliderElem.Top.Set(yOffset, 0f);
 			this.RotationSliderElem.Left.Set(64f, 0f);
 			this.RotationSliderElem.Width.Set(-64f, 1f);

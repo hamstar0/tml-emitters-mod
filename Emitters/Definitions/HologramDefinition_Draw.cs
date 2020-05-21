@@ -66,7 +66,7 @@ namespace Emitters.Definitions {
 				}
 			}
 			Color spriteColor = this.Color;
-
+			SpriteEffects effects = SpriteEffects.None;
 			Rectangle drawRectangle = new Rectangle( 
 				0,
 				npcTexture.Height / Main.npcFrameCount[this.Type] * frameCounter, 
@@ -76,7 +76,7 @@ namespace Emitters.Definitions {
 
 			Vector2 origin = new Vector2 ( npcTexture.Width / 2 , npcTexture.Height / Main.npcFrameCount[this.Type] );
 			Vector2 scr;
-
+			
 			if(this.WorldLighting){spriteColor = XNAColorHelpers.Mul( Lighting.GetColor( (int)(worldPos.X / 16),(int)(worldPos.Y / 16), Color.White ), spriteColor );}
 
 			if (isUI)
@@ -91,17 +91,20 @@ namespace Emitters.Definitions {
 					(worldPos.Y - origin.Y * this.Scale) + this.OffsetY * this.Scale
 					));
 			}
-
+			if (this.Direction == -1)
+			{
+				effects = SpriteEffects.FlipHorizontally;
+			}
 			
 			Main.spriteBatch.Draw(
 				texture: npcTexture,
 				position: scr,
 				sourceRectangle: drawRectangle,
 				color: spriteColor,
-				rotation: 0f,
-				origin: default(Vector2),
+				rotation: MathHelper.ToRadians(this.Rotation),
+				origin: new Vector2(npcTexture.Width / 2, npcTexture.Height / Main.npcFrameCount[this.Type] / 2),
 				scale: this.Scale * Main.GameZoomTarget,
-				effects: SpriteEffects.None,
+				effects: effects,
 				layerDepth: 1f
 			);
 		}
