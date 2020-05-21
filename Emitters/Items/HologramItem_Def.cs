@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using Terraria.ModLoader.Config;
 using Emitters.Definitions;
 
 
@@ -62,8 +63,10 @@ namespace Emitters.Items {
 
 		public override void Load( TagCompound tag ) {
 			try {
+				NPCDefinition def = NPCDefinition.FromString( tag.GetString("HologramType") );
+
 				this.Def = new HologramDefinition(
-					type: tag.GetInt( "HologramType" ),
+					type: (int)def.Type,
 					scale: tag.GetFloat( "HologramScale" ),
 					color: new Color(
 						tag.GetByte( "HologramColorR" ),
@@ -88,7 +91,7 @@ namespace Emitters.Items {
 			}
 
 			return new TagCompound {
-				{ "HologramType", (int)this.Def.Type },
+				{ "HologramType", (string)this.Def.Type.ToString() },
 				{ "HologramScale", (float)this.Def.Scale },
 				{ "HologramColorR", (byte)this.Def.Color.R },
 				{ "HologramColorG", (byte)this.Def.Color.G },

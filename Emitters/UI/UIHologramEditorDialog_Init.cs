@@ -6,7 +6,8 @@ using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Classes.UI.Theme;
 using HamstarHelpers.Classes.UI.Elements;
 using HamstarHelpers.Classes.UI.Elements.Slider;
-using Microsoft.Xna.Framework;
+using HamstarHelpers.Helpers.Debug;
+
 
 namespace Emitters.UI {
 	partial class UIHologramEditorDialog : UIDialog {
@@ -65,7 +66,7 @@ namespace Emitters.UI {
 				hoverText: "",
 				isInt: true,
 				ticks: 0,
-				minRange: 0f,
+				minRange: 1f,
 				maxRange: Main.npcTexture.Length );
 			this.TypeSliderElem.Top.Set( yOffset, 0f );
 			this.TypeSliderElem.Left.Set( 64f, 0f );
@@ -105,7 +106,7 @@ namespace Emitters.UI {
 				ticks: 0,
 				minRange: 0f,
 				maxRange: 1f,
-				hideTextInput: true,
+				hideTextInput: false,
 				innerBarShader: DelegateMethods.ColorLerp_HSL_H );
 			this.HueSliderElem.Top.Set( yOffset, 0f );
 			this.HueSliderElem.Left.Set( 96f, 0f );
@@ -122,7 +123,7 @@ namespace Emitters.UI {
 				ticks: 0,
 				minRange: 0f,
 				maxRange: 1f,
-				hideTextInput: true );
+				hideTextInput: false );
 			this.SaturationSliderElem.Top.Set( yOffset, 0f );
 			this.SaturationSliderElem.Left.Set( 96f, 0f );
 			this.SaturationSliderElem.Width.Set( -96f, 1f );
@@ -142,7 +143,7 @@ namespace Emitters.UI {
 			this.LightnessSliderElem.Top.Set( yOffset, 0f );
 			this.LightnessSliderElem.Left.Set( 96f, 0f );
 			this.LightnessSliderElem.Width.Set( -96f, 1f );
-			this.LightnessSliderElem.SetValue( 1f );
+			this.LightnessSliderElem.SetValue( 0.5f );
 			yOffset += 28f;
 
 			this.InnerContainer.Append( (UIElement)this.HueSliderElem );
@@ -172,19 +173,33 @@ namespace Emitters.UI {
 		private void InitializeWidgetsForDirection( ref float yOffset ) {
 			this.InitializeComponentForTitle( "Direction:", false, ref yOffset );
 
+			bool isChangingDirection = false;
+
 			this.DirectionSliderElem = new UISlider(
 				theme: UITheme.Vanilla,
 				hoverText: "",
-				isInt: true,
+				isInt: false,
 				ticks: 0,
 				minRange: -1f,
-				maxRange: 0f );
+				maxRange: 1f );
 			this.DirectionSliderElem.Top.Set( yOffset, 0f );
 			this.DirectionSliderElem.Left.Set( 64f, 0f );
 			this.DirectionSliderElem.Width.Set( -64f, 1f );
 			this.DirectionSliderElem.SetValue( 1f );
 			this.DirectionSliderElem.PreOnChange += (value) => {
-				return value != 0f;
+				if( isChangingDirection ) {
+					return true;
+				}
+				isChangingDirection = true;
+
+				if( value >= 0f ) {
+					this.DirectionSliderElem.SetValue( 1f );
+				} else {
+					this.DirectionSliderElem.SetValue( -1f );
+				}
+
+				isChangingDirection = false;
+				return false;
 			};
 			yOffset += 28f;
 
@@ -200,7 +215,7 @@ namespace Emitters.UI {
 				isInt: false,
 				ticks: 0,
 				minRange: 0f,
-				maxRange: MathHelper.Pi * 2f );
+				maxRange: 360f );
 			this.RotationSliderElem.Top.Set( yOffset, 0f );
 			this.RotationSliderElem.Left.Set( 64f, 0f );
 			this.RotationSliderElem.Width.Set( -64f, 1f );
@@ -218,8 +233,8 @@ namespace Emitters.UI {
 				hoverText: "",
 				isInt: true,
 				ticks: 0,
-				minRange: -64f,	//0f
-				maxRange: 64f );	//15f
+				minRange: -256f,	//0f
+				maxRange: 256f );	//15f
 			this.OffsetXSliderElem.Top.Set( yOffset, 0f );
 			this.OffsetXSliderElem.Left.Set( 64f, 0f );
 			this.OffsetXSliderElem.Width.Set( -64f, 1f );
@@ -237,8 +252,8 @@ namespace Emitters.UI {
 				hoverText: "",
 				isInt: true,
 				ticks: 0,
-				minRange: -64f, //0f
-				maxRange: 64f );    //15f
+				minRange: -256f,	//0f
+				maxRange: 256f );	//15f
 			this.OffsetYSliderElem.Top.Set( yOffset, 0f );
 			this.OffsetYSliderElem.Left.Set( 64f, 0f );
 			this.OffsetYSliderElem.Width.Set( -64f, 1f );

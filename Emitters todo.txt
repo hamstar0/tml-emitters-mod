@@ -9,18 +9,34 @@ v2
 v2
 -	Allow arrow keys + mouse hover to adjust sliders
 -	Add shader field
--	Render emitters of the top of dusts and gores when in add/remove mode
 -	Increase max delay range
 v1.2
+-	Render emitters of the top of dusts and gores when in add/remove mode
+-	Fix wire activations
 -	Restrict inapplicable fields for gores
+-	Add hologram fx dialog field
+-	Add frame rate dialog field
+-	Add frame ranges dialog field
+-	@UISlider fixes
+	-	Change PreOnChange to return a nullable value
+	-	Add OnHoverTextOutput
+	-	Add OnInputTextOutput
+	-	Add PreOnChangeViaText
+	-	Put arrows outside of slider bounds
+	-	Only block slider mouse interactivity when text input is active
+	-	Shrink text input vertically
+	-	Highlight text input (recolor) when hovering
+
 -	Hologram fixes
-	-	Alpha?
+	-	Modify to use NPCDefinitions
+	-	Set offsets larger
+	-	Set rotation to degrees
+	-	Alpha
+	-	Luminosity encompasses lightness and saturation (show %value for sat, lum)
 	-	Offsets
-	-	Luminosity encompasses lightness and saturation
 	-	Origin
 	-	Direction slider
 -	Import holograms code
-
 v1.1
 -	Set sound emitter styles (slider) to adjust to vanilla and modded ranges
 -	Set sound emitter types (slider) to adjust to vanilla and modded ranges

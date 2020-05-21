@@ -61,26 +61,27 @@ namespace Emitters.Definitions {
 				return;
 			}
 
-			int maxDistSqr = EmittersConfig.Instance.DustEmitterMinimumRangeBeforeEmit;
+			int maxDistSqr = EmittersConfig.Instance.HologramMinimumRangeBeforeProject;
 			maxDistSqr *= maxDistSqr;
 			if( (Main.LocalPlayer.Center - worldPos).LengthSquared() >= maxDistSqr ) {
 				return;
 			}
 
-			Main.instance.LoadNPC( this.Type );
+			int npcType = this.Type.Type;
+			Main.instance.LoadNPC( npcType );
 
-			Texture2D npcTexture = Main.npcTexture[ this.Type ];
-			int frameHeight = npcTexture.Height / Main.npcFrameCount[this.Type];
+			Texture2D npcTexture = Main.npcTexture[ npcType ];
+			int frameHeight = npcTexture.Height / Main.npcFrameCount[ npcType ];
 
 			if( ++this.FrameTimer > HologramDefinition.FrameDelay ) {
 				this.FrameCounter = this.FrameCounter + 1;
 				this.FrameTimer = 0;
-				if( this.FrameCounter >= Main.npcFrameCount[this.Type] - 1 ) {
+				if( this.FrameCounter >= Main.npcFrameCount[ npcType ] - 1 ) {
 					this.FrameCounter = 0;
 				}
 			}
 
-			Color spriteColor = this.Color;
+			Color color = this.Color;
 			SpriteEffects effects = SpriteEffects.None;
 			Rectangle drawRectangle = new Rectangle(
 				0,
@@ -93,20 +94,18 @@ namespace Emitters.Definitions {
 			Vector2 scrPos;
 
 			if( this.WorldLighting ) {
-				spriteColor = Lighting.GetColor( (int)(worldPos.X/16f), (int)(worldPos.Y/16f) );
-				spriteColor = XNAColorHelpers.Mul( spriteColor, this.Color );
+				color = Lighting.GetColor( (int)(worldPos.X/16f), (int)(worldPos.Y/16f) );
+				color = XNAColorHelpers.Mul( color, this.Color );
 			}
+			color *= (float)this.Alpha / 255f;
 
 			if( isUI ) {
-				Vector2 wldPosOnScr = worldPos - Main.screenPosition;
-				scrPos = wldPosOnScr - (origin * this.Scale);
+				scrPos = worldPos - Main.screenPosition;
 			} else {
-				scrPos = worldPos - (origin * this.Scale);
-				scrPos.X += (float)this.OffsetX * this.Scale;
-				scrPos.Y += (float)this.OffsetY * this.Scale;
-
-				scrPos = UIHelpers.ConvertToScreenPosition( scrPos );
+				scrPos = UIHelpers.ConvertToScreenPosition( worldPos );
 			}
+			scrPos.X += this.OffsetX;
+			scrPos.Y += this.OffsetY;
 
 			if( this.Direction == -1 ) {
 				effects = SpriteEffects.FlipHorizontally;
@@ -116,9 +115,9 @@ namespace Emitters.Definitions {
 				texture: npcTexture,
 				position: scrPos,
 				sourceRectangle: drawRectangle,
-				color: spriteColor,
-				rotation: this.Rotation,
-				origin: origin,
+				color: color,
+				rotation: MathHelper.ToRadians( this.Rotation ),
+				origin: isUI ? default(Vector2) : origin,
 				scale: this.Scale * Main.GameZoomTarget,
 				effects: effects,
 				layerDepth: 1f

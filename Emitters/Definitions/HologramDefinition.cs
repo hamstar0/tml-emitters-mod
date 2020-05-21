@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Microsoft.Xna.Framework;
+using Terraria.ModLoader.Config;
 
 
 namespace Emitters.Definitions {
@@ -26,7 +27,7 @@ namespace Emitters.Definitions {
 		}
 
 		public static void Write( HologramDefinition def, BinaryWriter writer ) {
-			writer.Write( (ushort)def.Type );
+			writer.Write( (ushort)def.Type.Type );
 			writer.Write( (float)def.Scale );
 			writer.Write( (byte)def.Color.R );
 			writer.Write( (byte)def.Color.G );
@@ -50,7 +51,7 @@ namespace Emitters.Definitions {
 
 		////////////////
 
-		public int Type { get; set; }
+		public NPCDefinition Type { get; set; }
 		public float Scale { get; set; }
 		public Color Color { get; set; }
 		public byte Alpha { get; set; }
@@ -95,7 +96,7 @@ namespace Emitters.Definitions {
 					int frame,
 					bool worldLight,
 					bool isActivated ) {
-			this.Type = type;
+			this.Type = new NPCDefinition( type );
 			this.Scale = scale;
 			this.Color = color;
 			this.Alpha = alpha;
@@ -123,7 +124,7 @@ namespace Emitters.Definitions {
 					out int frame,
 					out bool worldLight,
 					out bool isActivated ) {
-			type = this.Type;
+			type = this.Type.Type;
 			scale = this.Scale;
 			color = this.Color;
 			alpha = this.Alpha;
@@ -183,7 +184,7 @@ namespace Emitters.Definitions {
 			return this.Type.ToString();
 		}
 		public string RenderScale() {
-			return ( this.Scale * 100f ).ToString( "N0" );
+			return (this.Scale * 100f).ToString( "N0" );
 		}
 		public string RenderColor() {
 			return this.Color.ToString();
@@ -192,7 +193,7 @@ namespace Emitters.Definitions {
 			return this.Alpha.ToString();
 		}
 		public string RenderDirection() {
-			return this.Direction.ToString( "N2" );
+			return this.Direction.ToString( "N0" );
 		}
 		public string RenderRotation() {
 			return this.Rotation.ToString( "N2" );
@@ -206,6 +207,7 @@ namespace Emitters.Definitions {
 		public string RenderFrame() {
 			return this.Frame.ToString();
 		}
+
 		////////////////
 
 		public override string ToString() {

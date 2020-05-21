@@ -78,7 +78,7 @@ namespace Emitters.UI {
 
 			Vector3 hsl = Main.rgbToHsl( myitem.Def.Color );
 
-			this.TypeSliderElem.SetValue( myitem.Def.Type );
+			this.TypeSliderElem.SetValue( myitem.Def.Type.Type );
 			this.ScaleSliderElem.SetValue( myitem.Def.Scale );
 			this.HueSliderElem.SetValue( hsl.X );
 			this.SaturationSliderElem.SetValue( hsl.Y );
@@ -130,7 +130,7 @@ namespace Emitters.UI {
 
 			this.CachedHologramDef = def;
 
-			Main.instance.LoadNPC(def.Type);
+			Main.instance.LoadNPC( def.Type.Type );
 
 			def.AnimateHologram( Main.MouseWorld, true );
 		}

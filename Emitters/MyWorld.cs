@@ -144,14 +144,13 @@ namespace Emitters {
 					i++;
 				}
 			}
+
 			i = 0;
-			foreach ((ushort tileX, IDictionary<ushort, HologramDefinition> tileYs) in this.Holograms)
-			{
-				foreach ((ushort tileY, HologramDefinition def) in tileYs)
-				{
+			foreach( (ushort tileX, IDictionary<ushort, HologramDefinition> tileYs) in this.Holograms ) {
+				foreach( (ushort tileY, HologramDefinition def) in tileYs ) {
 					tag["hologram_" + i + "_x"] = (int)tileX;
 					tag["hologram_" + i + "_y"] = (int)tileY;
-					tag["hologram_" + i] = (string)JsonConvert.SerializeObject(def);
+					tag["hologram_" + i] = (string)JsonConvert.SerializeObject( def );
 					tag["hologram_" + i + "_on"] = (bool)def.IsActivated;
 					i++;
 				}
