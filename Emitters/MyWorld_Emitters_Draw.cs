@@ -6,7 +6,7 @@ using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Helpers.Debug;
 using HamstarHelpers.Helpers.DotNET.Extensions;
 using Emitters.Definitions;
-
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Emitters {
 	public partial class EmittersWorld : ModWorld {
@@ -35,6 +35,11 @@ namespace Emitters {
 						SoundEmitterDefinition sdef;
 						if( this.SoundEmitters.TryGetValue2D( x, y, out sdef ) ) {
 							sdef.Draw( x, y, scrTiles.Contains( x, y ) );
+						}
+						HologramDefinition hdef;
+						if (this.Holograms.TryGetValue2D(x, y, out hdef))
+						{
+							hdef.Draw(x, y, scrTiles.Contains(x, y));
 						}
 					}
 				}
