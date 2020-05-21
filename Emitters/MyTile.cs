@@ -1,24 +1,28 @@
 ﻿using System;
 using Terraria.ModLoader;
 using Emitters.Definitions;
-using Terraria;
+
 
 namespace Emitters {
 	class EmittersTile : GlobalTile {
 		public override void HitWire( int i, int j, int type ) {
 			var myworld = ModContent.GetInstance<EmittersWorld>();
-			SoundEmitterDefinition sdef = myworld.GetSoundEmitter( (ushort)i, (ushort)j );
-			EmitterDefinition def = myworld.GetEmitter( (ushort)i, (ushort)j );
-			HologramDefinition hdef = myworld.GetHologram((ushort)i, (ushort)j);
-			if ( def == null || sdef == null ) {
-				return;
+			var x = (ushort)i;
+			var y = (ushort)j;
+
+			EmitterDefinition def = myworld.GetEmitter( x, y );
+			SoundEmitterDefinition sdef = myworld.GetSoundEmitter( x, y );
+			HologramDefinition hdef = myworld.GetHologram( x, y );
+
+			if( def != null ) {
+				def.Activate( !def.IsActivated );
 			}
-
-			def.Activate( !def.IsActivated );
-			sdef.Activate( !sdef.IsActivated );
-			hdef.Activate( !hdef.IsActivated );
+			if( sdef != null ) {
+				sdef.Activate( !sdef.IsActivated );
+			}
+			if( hdef != null ) {
+				hdef.Activate( !hdef.IsActivated );
+			}
 		}
-		
 	}
-
 }

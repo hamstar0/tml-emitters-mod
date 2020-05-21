@@ -13,9 +13,6 @@ using Emitters.Definitions;
 
 namespace Emitters.UI {
 	partial class UIHologramEditorDialog : UIDialog {
-
-		////////////////
-
 		private UISlider TypeSliderElem;
 		private UISlider ScaleSliderElem;
 		private UISlider HueSliderElem;
@@ -28,6 +25,7 @@ namespace Emitters.UI {
 		private UISlider OffsetYSliderElem;
 		private UISlider FrameSliderElem;
 		private UICheckbox WorldLightingCheckbox;
+
 		////
 
 		private Item HologramItem = null;
@@ -36,7 +34,7 @@ namespace Emitters.UI {
 
 		////////////////
 
-		public UIHologramEditorDialog() : base( UITheme.Vanilla, 600, 400 ) { }
+		public UIHologramEditorDialog() : base( UITheme.Vanilla, 600, 424 ) { }
 
 
 		////////////////
@@ -53,7 +51,6 @@ namespace Emitters.UI {
 				offsetY: (int)this.OffsetYSliderElem.RememberedInputValue,
 				frame: (int)this.FrameSliderElem.RememberedInputValue,
 				worldLight: this.WorldLightingCheckbox.Selected,
-				
 				isActivated: true
 			);
 		}
@@ -105,7 +102,7 @@ namespace Emitters.UI {
 
 			var myitem = this.HologramItem.modItem as HologramItem;
 			if( myitem == null ) {
-				Main.NewText( "No Hologram item selected. Changes not saved.", Color.Red );
+				Main.NewText( "No hologram item selected. Changes not saved.", Color.Red );
 				return;
 			}
 
@@ -126,15 +123,16 @@ namespace Emitters.UI {
 		 private HologramDefinition CachedHologramDef = null;
 
 		public override void Draw( SpriteBatch sb ) {
-			base.Draw ( sb );
+			base.Draw( sb );
+
 			HologramDefinition def = this.CreateHologramDefinition();
 			def.Timer = this.CachedHologramDef?.Timer ?? 0;
+
 			this.CachedHologramDef = def;
+
 			Main.instance.LoadNPC(def.Type);
-			Vector2 pos = (Main.MouseWorld);
-			def.AnimateHologram(pos, true);
+
+			def.AnimateHologram( Main.MouseWorld, true );
 		}
-
-
 	}
 }

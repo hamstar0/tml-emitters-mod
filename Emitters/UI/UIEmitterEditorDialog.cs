@@ -26,7 +26,7 @@ namespace Emitters.UI {
 		private UISlider SpeedXSliderElem;
 		private UISlider SpeedYSliderElem;
 		private UISlider HueSliderElem;
-		private UISlider IntensitySliderElem;
+		private UISlider SaturationSliderElem;
 		private UISlider AlphaSliderElem;
 		private UISlider ScatterSliderElem;
 		private UICheckbox HasGravityCheckbox;
@@ -67,9 +67,9 @@ namespace Emitters.UI {
 
 		public Color GetColor() {
 			float hue = this.HueSliderElem.RememberedInputValue;
-			float intensity = this.IntensitySliderElem.RememberedInputValue;
+			float saturation = this.SaturationSliderElem.RememberedInputValue;
 
-			Color color = Main.hslToRgb( hue, intensity, 0.5f );
+			Color color = Main.hslToRgb( hue, saturation, 0.5f );
 			return color;
 		}
 
@@ -92,7 +92,7 @@ namespace Emitters.UI {
 			this.SpeedXSliderElem.SetValue( myitem.Def.SpeedX );
 			this.SpeedYSliderElem.SetValue( myitem.Def.SpeedY );
 			this.HueSliderElem.SetValue( hsl.X );
-			this.IntensitySliderElem.SetValue( hsl.Y );
+			this.SaturationSliderElem.SetValue( hsl.Y );
 			this.AlphaSliderElem.SetValue( myitem.Def.Alpha );
 			this.ScatterSliderElem.SetValue( myitem.Def.Scatter );
 			this.HasGravityCheckbox.Selected = myitem.Def.HasGravity;

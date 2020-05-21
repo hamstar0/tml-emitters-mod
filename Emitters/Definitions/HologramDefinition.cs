@@ -34,10 +34,10 @@ namespace Emitters.Definitions {
 			writer.Write( (byte)def.Alpha );
 			writer.Write( (ushort)def.Direction );
 			writer.Write( (float)def.Rotation );
-			writer.Write((ushort)def.OffsetX);
-			writer.Write((ushort)def.OffsetY);
-			writer.Write((ushort)def.Frame);
-			writer.Write((bool)def.WorldLighting);
+			writer.Write( (ushort)def.OffsetX );
+			writer.Write( (ushort)def.OffsetY );
+			writer.Write( (ushort)def.Frame );
+			writer.Write( (bool)def.WorldLighting );
 			writer.Write( (bool)def.IsActivated );
 		}
 
@@ -194,20 +194,16 @@ namespace Emitters.Definitions {
 		public string RenderDirection() {
 			return this.Direction.ToString( "N2" );
 		}
-		public string RenderRotation()
-		{
-			return this.Rotation.ToString("N2");
+		public string RenderRotation() {
+			return this.Rotation.ToString( "N2" );
 		}
-		public string RenderOffsetX()
-		{
+		public string RenderOffsetX() {
 			return this.OffsetX.ToString();
 		}
-		public string RenderOffsetY()
-		{
+		public string RenderOffsetY() {
 			return this.OffsetY.ToString();
 		}
-		public string RenderFrame()
-		{
+		public string RenderFrame() {
 			return this.Frame.ToString();
 		}
 		////////////////

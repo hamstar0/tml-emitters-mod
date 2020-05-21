@@ -30,7 +30,7 @@ namespace Emitters {
 
 		public void AddSoundEmitter( SoundEmitterDefinition def, ushort tileX, ushort tileY ) {
 			if( ( tileX < 0 || tileX >= Main.maxTilesX ) || ( tileY < 0 || tileY >= Main.maxTilesY ) ) {
-				throw new ModHelpersException( "Cannot place emitter outside of world." );
+				throw new ModHelpersException( "Cannot place sound emitter outside of world." );
 			}
 			//Main.NewText( def.ToString() );
 			this.SoundEmitters.Set2D( tileX, tileY, def );
@@ -43,27 +43,22 @@ namespace Emitters {
 			return this.SoundEmitters.Remove2D( tileX, tileY );
 		}
 
+
 		////////////////
-		
-		public void AddHologram(HologramDefinition def, ushort tileX, ushort tileY)
-		{
-			if ((tileX < 0 || tileX >= Main.maxTilesX) || (tileY < 0 || tileY >= Main.maxTilesY))
-			{
-				throw new ModHelpersException("Cannot place hologram outside of world.");
+
+		public void AddHologram( HologramDefinition def, ushort tileX, ushort tileY ) {
+			if( ( tileX < 0 || tileX >= Main.maxTilesX ) || ( tileY < 0 || tileY >= Main.maxTilesY ) ) {
+				throw new ModHelpersException( "Cannot place hologram outside of world." );
 			}
 			//Main.NewText( def.ToString() );
-			this.Holograms.Set2D(tileX, tileY, def);
+			this.Holograms.Set2D( tileX, tileY, def );
 		}
 
-		public HologramDefinition GetHologram(ushort tileX, ushort tileY)
-		{
-			return this.Holograms.Get2DOrDefault(tileX, tileY);
+		public HologramDefinition GetHologram( ushort tileX, ushort tileY ) {
+			return this.Holograms.Get2DOrDefault( tileX, tileY );
 		}
-		public bool RemoveHologram( ushort tileX, ushort tileY)
-		{
+		public bool RemoveHologram( ushort tileX, ushort tileY ) {
 			return this.Holograms.Remove2D( tileX, tileY );
 		}
-
-		////////////////
 	}
 }

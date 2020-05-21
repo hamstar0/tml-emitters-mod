@@ -1,7 +1,6 @@
 v2
 -	...
 -	Define 3d scanner item
--	Define hologram emitter item
 -	Implement crafting emitter items from bottled particles
 -	Implement catchable particles (requires net and empty bottles)
 
@@ -11,13 +10,20 @@ v2
 -	Allow arrow keys + mouse hover to adjust sliders
 -	Add shader field
 -	Render emitters of the top of dusts and gores when in add/remove mode
--	Fix emitter demo mouse position zoom
--	Restrict inapplicable fields for gores
 -	Increase max delay range
+v1.2
+-	Restrict inapplicable fields for gores
+-	Hologram fixes
+	-	Alpha?
+	-	Offsets
+	-	Luminosity encompasses lightness and saturation
+	-	Origin
+	-	Direction slider
+-	Import holograms code
+
 v1.1
 -	Set sound emitter styles (slider) to adjust to vanilla and modded ranges
 -	Set sound emitter types (slider) to adjust to vanilla and modded ranges
-
 -	Clean up code
 -	Import sound emitter PR code
 v1

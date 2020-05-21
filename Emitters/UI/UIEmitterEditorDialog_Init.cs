@@ -181,7 +181,7 @@ namespace Emitters.UI {
 		}
 
 		private void InitializeWidgetsForColor( ref float yOffset ) {
-			this.InitializeComponentForTitle( "Color:", false, ref yOffset );
+			this.InitializeComponentForTitle( "Hue:", false, ref yOffset );
 
 			this.HueSliderElem = new UISlider(
 				theme: UITheme.Vanilla,
@@ -198,9 +198,9 @@ namespace Emitters.UI {
 			this.HueSliderElem.SetValue( 0f );
 			yOffset += 28f;
 
-			this.InitializeComponentForTitle( "Intensity:", false, ref yOffset );
+			this.InitializeComponentForTitle( "Saturation:", false, ref yOffset );
 
-			this.IntensitySliderElem = new UISlider(
+			this.SaturationSliderElem = new UISlider(
 				theme: UITheme.Vanilla,
 				hoverText: "",
 				isInt: false,
@@ -208,14 +208,14 @@ namespace Emitters.UI {
 				minRange: 0f,
 				maxRange: 1f,
 				hideTextInput: true );
-			this.IntensitySliderElem.Top.Set( yOffset, 0f );
-			this.IntensitySliderElem.Left.Set( 96f, 0f );
-			this.IntensitySliderElem.Width.Set( -96f, 1f );
-			this.IntensitySliderElem.SetValue( 1f );
+			this.SaturationSliderElem.Top.Set( yOffset, 0f );
+			this.SaturationSliderElem.Left.Set( 96f, 0f );
+			this.SaturationSliderElem.Width.Set( -96f, 1f );
+			this.SaturationSliderElem.SetValue( 1f );
 			yOffset += 28f;
 
 			this.InnerContainer.Append( (UIElement)this.HueSliderElem );
-			this.InnerContainer.Append( (UIElement)this.IntensitySliderElem );
+			this.InnerContainer.Append( (UIElement)this.SaturationSliderElem );
 		}
 
 		private void InitializeWidgetsForAlpha( ref float yOffset ) {

@@ -10,7 +10,8 @@ using Emitters.Items;
 namespace Emitters.Definitions {
 	public partial class EmitterDefinition {
 		public void Draw( int tileX, int tileY, bool isOnScreen ) {
-			this.AnimateEmitter( new Vector2((tileX<<4)+8, (tileY<<4)+8) );
+			var wldPos = new Vector2( (tileX<<4)+8, (tileY<<4)+8 );
+			this.AnimateEmitter( wldPos );
 
 			if( isOnScreen && EmitterItem.CanViewEmitters(Main.LocalPlayer) ) {
 				this.DrawEmitter( tileX, tileY );
