@@ -11,11 +11,11 @@ using Emitters.Definitions;
 
 
 namespace Emitters.NetProtocols {
-	class HolgramPlacementProtocol : PacketProtocolBroadcast {
+	class HologramPlacementProtocol : PacketProtocolBroadcast {
 		public static void BroadcastFromClient( HologramDefinition def, ushort tileX, ushort tileY ) {
 			if( Main.netMode != 1 ) { throw new ModHelpersException("Not client."); }
 
-			var protocol = new HolgramPlacementProtocol( Main.myPlayer, def, tileX, tileY );
+			var protocol = new HologramPlacementProtocol( Main.myPlayer, def, tileX, tileY );
 
 			protocol.SendToServer( true );
 		}
@@ -47,9 +47,9 @@ namespace Emitters.NetProtocols {
 
 		////////////////
 
-		private HolgramPlacementProtocol() { }
+		private HologramPlacementProtocol() { }
 
-		private HolgramPlacementProtocol( int fromWho, HologramDefinition def, ushort tileX, ushort tileY ) {
+		private HologramPlacementProtocol( int fromWho, HologramDefinition def, ushort tileX, ushort tileY ) {
 			def.Output(
 				out this.Type,
 				out this.Scale,

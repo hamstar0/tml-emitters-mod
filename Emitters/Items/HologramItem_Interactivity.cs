@@ -50,10 +50,10 @@ namespace Emitters.Items
 
 			Main.PlaySound(SoundID.Item108, Main.MouseWorld);
 
-			//if (Main.netMode == 1)
-			//{
-			//	HologramPlacementProtocol.BroadcastFromClient(def, tileX, tileY);
-			//}
+			if (Main.netMode == 1)
+			{
+				HologramPlacementProtocol.BroadcastFromClient(def, tileX, tileY);
+			}
 
 			return true;
 		}
@@ -72,10 +72,10 @@ namespace Emitters.Items
 
 			Hologram.Activate(!Hologram.IsActivated);
 
-			//if (Main.netMode == 1)
-			//{
-			//	HologramActivateProtocol.BroadcastFromClient(Hologram.IsActivated, tileX, tileY);
-			//}
+			if (Main.netMode == 1)
+			{
+				HologramActivateProtocol.BroadcastFromClient(Hologram.IsActivated, tileX, tileY);
+			}
 
 			return true;
 		}
@@ -111,11 +111,14 @@ namespace Emitters.Items
 				return false;
 			}
 
-			//if( Main.netMode == 1 ) {
-			//	HologramRemoveProtocol.BroadcastFromClient( tileX, tileY );
-			//} else if( Main.netMode == 2 ) {
-			//	HologramRemoveProtocol.BroadcastFromServer( tileX, tileY );
-			//}
+			if (Main.netMode == 1)
+			{
+				HologramRemoveProtocol.BroadcastFromClient(tileX, tileY);
+			}
+			else if (Main.netMode == 2)
+			{
+				HologramRemoveProtocol.BroadcastFromServer(tileX, tileY);
+			}
 
 			return true;
 		}
