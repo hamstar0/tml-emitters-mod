@@ -6,7 +6,7 @@ using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Helpers.Debug;
 using HamstarHelpers.Helpers.DotNET.Extensions;
 using Emitters.Definitions;
-using Microsoft.Xna.Framework.Graphics;
+
 
 namespace Emitters {
 	public partial class EmittersWorld : ModWorld {
@@ -27,19 +27,21 @@ namespace Emitters {
 			try {
 				for( ushort x = (ushort)( leftTile - 8 ); x < maxX; x++ ) {
 					for( ushort y = (ushort)( topTile - 8 ); y < maxY; y++ ) {
+						bool isOnScr = scrTiles.Contains( x, y );
+
 						EmitterDefinition def;
 						if( this.Emitters.TryGetValue2D( x, y, out def ) ) {
-							def.Draw( x, y, scrTiles.Contains( x, y ) );
+							def.Draw( x, y, isOnScr );
 						}
 
 						SoundEmitterDefinition sdef;
 						if( this.SoundEmitters.TryGetValue2D( x, y, out sdef ) ) {
-							sdef.Draw( x, y, scrTiles.Contains( x, y ) );
+							sdef.Draw( x, y, isOnScr );
 						}
+
 						HologramDefinition hdef;
-						if (this.Holograms.TryGetValue2D(x, y, out hdef))
-						{
-							hdef.Draw(x, y, scrTiles.Contains(x, y));
+						if( this.Holograms.TryGetValue2D( x, y, out hdef ) ) {
+							hdef.Draw( x, y, isOnScr );
 						}
 					}
 				}

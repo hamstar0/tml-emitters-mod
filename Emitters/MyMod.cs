@@ -1,16 +1,11 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using System.Collections.Generic;
 using Terraria.ModLoader;
 using Emitters.UI;
-using System.Linq;
-using Terraria.UI;
-using Emitters.Definitions;
-using Microsoft.Xna.Framework;
+
 
 namespace Emitters {
-	public partial class EmittersMod : Mod
-	{
+	public partial class EmittersMod : Mod {
 		public static string GithubUserName => "hamstar0";
 		public static string GithubProjectName => "tml-emitters-mod";
 
@@ -28,41 +23,35 @@ namespace Emitters {
 		internal Texture2D HologramTex;
 
 		internal UIEmitterEditorDialog EmitterEditorDialog;
-		internal UIHologramEditorDialog HologramEditorDialog;
 		internal UISoundEmitterEditorDialog SoundEmitterEditorDialog;
+		internal UIHologramEditorDialog HologramEditorDialog;
 
 
 		////////////////
 
-		public EmittersMod()
-		{
+		public EmittersMod() {
 			EmittersMod.Instance = this;
 		}
 
-		public override void Load()
-		{
-			if (!Main.dedServ)
-			{
+		public override void Load() {
+			if( !Main.dedServ ) {
 				this.EmitterEditorDialog = new UIEmitterEditorDialog();
 				this.SoundEmitterEditorDialog = new UISoundEmitterEditorDialog();
 				this.HologramEditorDialog = new UIHologramEditorDialog();
 			}
 		}
 
-		public override void Unload()
-		{
+		public override void Unload() {
 			EmittersMod.Instance = null;
 		}
 
 		////
 
-		public override void PostSetupContent()
-		{
-			if (!Main.dedServ)
-			{
-				this.EmitterTex = this.GetTexture("Definitions/Emitter");
-				this.SoundEmitterTex = this.GetTexture("Definitions/SoundEmitter");
-				this.HologramTex = this.GetTexture("Definitions/Hologram");
+		public override void PostSetupContent() {
+			if( !Main.dedServ ) {
+				this.EmitterTex = this.GetTexture( "Definitions/Emitter" );
+				this.SoundEmitterTex = this.GetTexture( "Definitions/SoundEmitter" );
+				this.HologramTex = this.GetTexture( "Definitions/Hologram" );
 			}
 		}
 

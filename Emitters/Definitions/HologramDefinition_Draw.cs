@@ -4,115 +4,124 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using HamstarHelpers.Helpers.Debug;
 using HamstarHelpers.Helpers.UI;
-using Emitters.Items;
 using HamstarHelpers.Helpers.XNA;
+using Emitters.Items;
+
 
 namespace Emitters.Definitions {
 	public partial class HologramDefinition {
-		public void Draw( int tileX, int tileY, bool isOnScreen ) {
-			this.AnimateHologram( new Vector2( (tileX * 16) + 8, (tileY * 16) + 8 ), false );
+		internal const int FrameDelay = 7;
 
-			if ( isOnScreen && HologramItem.CanViewHolograms( Main.LocalPlayer ) ) {
-				this.DrawHologram(tileX, tileY);
+
+
+		////////////////
+
+		internal int FrameCounter = 0;
+		internal int FrameTimer = 0;
+
+
+
+		////////////////
+
+		public void Draw( int tileX, int tileY, bool isOnScreen ) {
+			var wldPos = new Vector2( (tileX<<4)+8, (tileY<<4)+8 );
+			this.AnimateHologram( wldPos, false );
+
+			if( isOnScreen && HologramItem.CanViewHolograms( Main.LocalPlayer ) ) {
+				this.DrawHologram( tileX, tileY );
 			}
 		}
 
 
 		////////////////
-		//
+
 		public void DrawHologram( int tileX, int tileY ) {
-			Vector2 scr = UIHelpers.ConvertToScreenPosition( new Vector2( tileX << 4, tileY << 4 ) );
+			Vector2 scr = UIHelpers.ConvertToScreenPosition( new Vector2(tileX<<4, tileY<<4) );
+			Texture2D tex = EmittersMod.Instance.HologramTex;
+
 			Main.spriteBatch.Draw(
-				texture: EmittersMod.Instance.HologramTex,
+				texture: tex,
 				position: scr,
 				sourceRectangle: null,
 				color: Color.White,
 				rotation: 0f,
-				origin: default(Vector2),
+				origin: default( Vector2 ),
 				scale: Main.GameZoomTarget,
 				effects: SpriteEffects.None,
 				layerDepth: 1f
 			);
-			
+
 		}
 
 
 		////////////////
-		internal int frameCounter = 0;
-		internal int frameTimer = 0;
-		const int frameDelay = 7;
-		public void AnimateHologram(Vector2 worldPos, bool isUI)
-		{
-			if (!this.IsActivated)
-			{
-				return;
-			}
-			int maxDistSqr = EmittersConfig.Instance.DustEmitterMinimumRangeBeforeEmit;
-			maxDistSqr *= maxDistSqr;
-			if ((Main.LocalPlayer.Center - worldPos).LengthSquared() >= maxDistSqr)
-			{
+
+		public void AnimateHologram( Vector2 worldPos, bool isUI ) {
+			if( !this.IsActivated ) {
 				return;
 			}
 
-			Main.instance.LoadNPC(this.Type);
-			Texture2D npcTexture = Main.npcTexture[this.Type];
-			if (++frameTimer > frameDelay)
-			{
-				frameCounter = frameCounter + 1;
-				frameTimer = 0;
-				if (frameCounter >= Main.npcFrameCount[this.Type] - 1)
-				{
-					frameCounter = 0;
+			int maxDistSqr = EmittersConfig.Instance.HologramMinimumRangeBeforeProject;
+			maxDistSqr *= maxDistSqr;
+			if( (Main.LocalPlayer.Center - worldPos).LengthSquared() >= maxDistSqr ) {
+				return;
+			}
+
+			int npcType = this.Type.Type;
+			Main.instance.LoadNPC( npcType );
+
+			Texture2D npcTexture = Main.npcTexture[ npcType ];
+			int frameHeight = npcTexture.Height / Main.npcFrameCount[ npcType ];
+
+			if( ++this.FrameTimer > HologramDefinition.FrameDelay ) {
+				this.FrameCounter = this.FrameCounter + 1;
+				this.FrameTimer = 0;
+				if( this.FrameCounter >= Main.npcFrameCount[ npcType ] - 1 ) {
+					this.FrameCounter = 0;
 				}
 			}
-			Color spriteColor = this.Color;
+
+			Color color = this.Color;
 			SpriteEffects effects = SpriteEffects.None;
-			Rectangle drawRectangle = new Rectangle( 
+			Rectangle drawRectangle = new Rectangle(
 				0,
-				npcTexture.Height / Main.npcFrameCount[this.Type] * frameCounter, 
+				frameHeight * this.FrameCounter,
 				npcTexture.Width,
-				npcTexture.Height / Main.npcFrameCount[this.Type]
+				frameHeight
 			);
 
-			Vector2 origin = new Vector2 ( npcTexture.Width / 2 , npcTexture.Height / Main.npcFrameCount[this.Type] );
-			Vector2 scr;
-			
-			if(this.WorldLighting){spriteColor = XNAColorHelpers.Mul( Lighting.GetColor( (int)(worldPos.X / 16),(int)(worldPos.Y / 16), Color.White ), spriteColor );}
+			Vector2 origin = new Vector2( npcTexture.Width, frameHeight ) * 0.5f;
+			Vector2 scrPos;
 
-			if (isUI)
-			{
-				worldPos -= Main.screenPosition;
-				scr = worldPos - origin;
+			if( this.WorldLighting ) {
+				color = Lighting.GetColor( (int)(worldPos.X/16f), (int)(worldPos.Y/16f) );
+				color = XNAColorHelpers.Mul( color, this.Color );
 			}
-			else
-			{
-				scr = UIHelpers.ConvertToScreenPosition(new Vector2(
-					(worldPos.X - origin.X * this.Scale) + this.OffsetX * this.Scale,
-					(worldPos.Y - origin.Y * this.Scale) + this.OffsetY * this.Scale
-					));
+			color *= (float)this.Alpha / 255f;
+
+			if( isUI ) {
+				scrPos = worldPos - Main.screenPosition;
+			} else {
+				scrPos = UIHelpers.ConvertToScreenPosition( worldPos );
 			}
-			if (this.Direction == -1)
-			{
+			scrPos.X += this.OffsetX;
+			scrPos.Y += this.OffsetY;
+
+			if( this.Direction == -1 ) {
 				effects = SpriteEffects.FlipHorizontally;
 			}
-			
+
 			Main.spriteBatch.Draw(
 				texture: npcTexture,
-				position: scr,
+				position: scrPos,
 				sourceRectangle: drawRectangle,
-				color: spriteColor,
-				rotation: MathHelper.ToRadians(this.Rotation),
-				origin: new Vector2(npcTexture.Width / 2, npcTexture.Height / Main.npcFrameCount[this.Type] / 2),
+				color: color,
+				rotation: MathHelper.ToRadians( this.Rotation ),
+				origin: isUI ? default(Vector2) : origin,
 				scale: this.Scale * Main.GameZoomTarget,
 				effects: effects,
 				layerDepth: 1f
 			);
 		}
-
-
 	}
-	
 }
-
-
-

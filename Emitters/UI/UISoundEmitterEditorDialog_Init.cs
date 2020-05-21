@@ -1,6 +1,5 @@
 ﻿using System;
 using Terraria;
-
 using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.GameContent.UI.Elements;
@@ -8,6 +7,7 @@ using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Classes.UI.Theme;
 using HamstarHelpers.Classes.UI.Elements;
 using HamstarHelpers.Classes.UI.Elements.Slider;
+
 
 namespace Emitters.UI {
 	partial class UISoundEmitterEditorDialog : UIDialog {
@@ -67,13 +67,11 @@ namespace Emitters.UI {
 			this.TypeSliderElem.Left.Set( 64f, 0f );
 			this.TypeSliderElem.Width.Set( -64f, 1f );
 			this.TypeSliderElem.SetValue( 1f );
-			this.TypeSliderElem.PreOnChange += (value) =>
-			{
-				if (value > 41f && value < 50f)
-				{
+			this.TypeSliderElem.PreOnChange += (value) => {
+				if( value > 41f && value < 50f ) {
 					return false;
 				}
-				this.UpdateStyleSlider((int)value);
+				this.UpdateStyleSlider( (int)value );
 				return true;
 			};
 			yOffset += 28f;

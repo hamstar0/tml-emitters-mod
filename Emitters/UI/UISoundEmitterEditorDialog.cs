@@ -13,9 +13,6 @@ using Emitters.Definitions;
 
 namespace Emitters.UI {
 	partial class UISoundEmitterEditorDialog : UIDialog {
-
-		////////////////
-
 		private UISlider TypeSliderElem;
 		private UISlider StyleSliderElem;
 		private UISlider VolumeSliderElem;

@@ -31,5 +31,9 @@ namespace Emitters {
 		[Range( 16 * 16, 16 * 1000 )]
 		[DefaultValue( 16 * 192 )]
 		public int SoundEmitterMinimumRangeBeforeEmit { get; set; } = 16 * 192;
+
+		[Range( 16 * 16, 16 * 1000 )]
+		[DefaultValue( 16 * 160 )]
+		public int HologramMinimumRangeBeforeProject { get; set; } = 16 * 160;
 	}
 }
