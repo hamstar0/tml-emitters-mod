@@ -1,24 +1,30 @@
-v2
--	...
--	Define 3d scanner item
+Future considerations
+-	Define 3d scanner item (grabs particles, sprites, etc. for use in emitters/holograms
 -	Implement crafting emitter items from bottled particles
 -	Implement catchable particles (requires net and empty bottles)
 -	Add shader field for dusts
+-	Allow arrow keys + mouse hover to adjust sliders
+-	Add player holograms
+-	Add tile holograms
 
 
 
 v2
 -	Add shader field for holograms?
--	Add presets
-v1.2
--	Render emitters on top of dusts and gores when in add/remove mode
--	Fix wire activations
+-	Add hologram presets
+-	Add emitter presets
+v1.3
 -	Hide inapplicable fields for gores
+-	Render emitters on top of dusts and gores when in add/remove mode
+-	Add rotation animation dialog field
 -	Add hologram flicker fx dialog field
+-	Add hologram modes (NPC, item, projectile)
+v1.2
+-	Fix wire activations
+
+-	Add hologram sprites
 -	Add frame ranges and rate dialog fields
 -	@UISlider fixes
-	-	Allow arrow keys + mouse hover to adjust sliders
-
 	-	Change PreOnChange to return a nullable value
 	-	Put arrows outside of slider bounds
 	-	Block slider mouse interactivity when text input is active

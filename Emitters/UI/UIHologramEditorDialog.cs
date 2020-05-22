@@ -23,7 +23,9 @@ namespace Emitters.UI {
 		private UISlider RotationSliderElem;
 		private UISlider OffsetXSliderElem;
 		private UISlider OffsetYSliderElem;
-		private UISlider FrameSliderElem;
+		private UISlider FrameStartSliderElem;
+		private UISlider FrameEndSliderElem;
+		private UISlider FrameRateTicksSliderElem;
 		private UICheckbox WorldLightingCheckbox;
 
 		////
@@ -34,7 +36,7 @@ namespace Emitters.UI {
 
 		////////////////
 
-		public UIHologramEditorDialog() : base( UITheme.Vanilla, 600, 424 ) { }
+		public UIHologramEditorDialog() : base( UITheme.Vanilla, 600, 580 ) { }
 
 
 		////////////////
@@ -49,7 +51,9 @@ namespace Emitters.UI {
 				rotation: this.RotationSliderElem.RememberedInputValue,
 				offsetX: (int)this.OffsetXSliderElem.RememberedInputValue,
 				offsetY: (int)this.OffsetYSliderElem.RememberedInputValue,
-				frame: (int)this.FrameSliderElem.RememberedInputValue,
+				frameStart: (int)this.FrameStartSliderElem.RememberedInputValue,
+				frameEnd: (int)this.FrameEndSliderElem.RememberedInputValue,
+				frameRateTicks: (int)this.FrameRateTicksSliderElem.RememberedInputValue,
 				worldLight: this.WorldLightingCheckbox.Selected,
 				isActivated: true
 			);
@@ -88,7 +92,9 @@ namespace Emitters.UI {
 			this.RotationSliderElem.SetValue(myitem.Def.Rotation);
 			this.OffsetXSliderElem.SetValue(myitem.Def.OffsetX);
 			this.OffsetYSliderElem.SetValue(myitem.Def.OffsetY);
-			this.FrameSliderElem.SetValue(myitem.Def.FrameStart);
+			this.FrameStartSliderElem.SetValue(myitem.Def.FrameStart);
+			this.FrameEndSliderElem.SetValue(myitem.Def.FrameEnd);
+			this.FrameRateTicksSliderElem.SetValue(myitem.Def.FrameRateTicks);
 			this.WorldLightingCheckbox.Selected = myitem.Def.WorldLighting;
 		}
 
@@ -126,8 +132,8 @@ namespace Emitters.UI {
 			base.Draw( sb );
 
 			HologramDefinition def = this.CreateHologramDefinition();
-			def.Timer = this.CachedHologramDef?.Timer ?? 0;
-
+			def.CurrentFrame = this.CachedHologramDef?.CurrentFrame ?? 0;
+			def.CurrentFrameElapsedTicks = this.CachedHologramDef?.CurrentFrameElapsedTicks ?? 0;
 			this.CachedHologramDef = def;
 
 			Main.instance.LoadNPC( def.Type.Type );

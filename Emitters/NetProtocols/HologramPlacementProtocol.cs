@@ -39,7 +39,9 @@ namespace Emitters.NetProtocols {
 		public float Rotation;
 		public int OffsetX;
 		public int OffsetY;
-		public int Frame;
+		public int FrameStart;
+		public int FrameEnd;
+		public int FrameRateTicks;
 		public bool WorldLight;
 		public bool IsActivated;
 
@@ -61,7 +63,9 @@ namespace Emitters.NetProtocols {
 				out this.Rotation,
 				out this.OffsetX,
 				out this.OffsetY,
-				out this.Frame,
+				out this.FrameStart,
+				out this.FrameEnd,
+				out this.FrameRateTicks,
 				out this.WorldLight,
 				out this.IsActivated
 			);
@@ -83,7 +87,9 @@ namespace Emitters.NetProtocols {
 			rotation: this.Rotation,
 			offsetX: this.OffsetX,
 			offsetY: this.OffsetY,
-			frame: this.Frame,
+			frameStart: this.FrameStart,
+			frameEnd: this.FrameEnd,
+			frameRateTicks: this.FrameRateTicks,
 			worldLight: this.WorldLight,
 			isActivated: this.IsActivated
 		);

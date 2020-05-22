@@ -10,9 +10,9 @@ using Emitters.Items;
 
 namespace Emitters.Definitions {
 	public partial class HologramDefinition {
-		public int CurrentFrame { get; private set; };
+		public int CurrentFrame { get; internal set; }
 
-		private int CurrentFrameElapsedTicks = 0;
+		internal int CurrentFrameElapsedTicks = 0;
 
 
 
@@ -23,14 +23,14 @@ namespace Emitters.Definitions {
 			this.AnimateHologram( wldPos, false );
 
 			if( isOnScreen && HologramItem.CanViewHolograms( Main.LocalPlayer ) ) {
-				this.DrawHologram( tileX, tileY );
+				this.DrawHologramTile( tileX, tileY );
 			}
 		}
 
 
 		////////////////
 
-		public void DrawHologram( int tileX, int tileY ) {
+		public void DrawHologramTile( int tileX, int tileY ) {
 			Vector2 scr = UIHelpers.ConvertToScreenPosition( new Vector2(tileX<<4, tileY<<4) );
 			Texture2D tex = EmittersMod.Instance.HologramTex;
 
@@ -56,33 +56,31 @@ namespace Emitters.Definitions {
 				return;
 			}
 
+			// Cycle animations at all distances
+			this.AnimateCurrentFrame();
+
 			int maxDistSqr = EmittersConfig.Instance.HologramMinimumRangeBeforeProject;
 			maxDistSqr *= maxDistSqr;
+
+			// Too far away?
 			if( (Main.LocalPlayer.Center - worldPos).LengthSquared() >= maxDistSqr ) {
 				return;
 			}
 
 			int npcType = this.Type.Type;
+			int frameCount = Main.npcFrameCount[ npcType ];
+
 			Main.instance.LoadNPC( npcType );
-
 			Texture2D npcTexture = Main.npcTexture[ npcType ];
-			int frameHeight = npcTexture.Height / Main.npcFrameCount[ npcType ];
-
-			if( ++this.CurrentFrameElapsedTicks > this.FrameRateTicks ) {
-				this.CurrentFrame = this.CurrentFrame + 1;
-				this.CurrentFrameElapsedTicks = 0;
-				if( this.CurrentFrame >= Main.npcFrameCount[ npcType ] - 1 ) {
-					this.CurrentFrame = 0;
-				}
-			}
+			int frameHeight = npcTexture.Height / frameCount;
 
 			Color color = this.Color;
 			SpriteEffects effects = SpriteEffects.None;
 			Rectangle drawRectangle = new Rectangle(
-				0,
-				frameHeight * this.CurrentFrame,
-				npcTexture.Width,
-				frameHeight
+				x: 0,
+				y: frameHeight * this.CurrentFrame,
+				width: npcTexture.Width,
+				height: frameHeight
 			);
 
 			Vector2 origin = new Vector2( npcTexture.Width, frameHeight ) * 0.5f;
@@ -96,6 +94,7 @@ namespace Emitters.Definitions {
 
 			if( isUI ) {
 				scrPos = worldPos - Main.screenPosition;
+				//scrPos.X -= npcTexture.Width;
 			} else {
 				scrPos = UIHelpers.ConvertToScreenPosition( worldPos );
 			}

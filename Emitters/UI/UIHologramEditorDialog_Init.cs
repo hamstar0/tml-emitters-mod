@@ -7,7 +7,7 @@ using HamstarHelpers.Classes.UI.Theme;
 using HamstarHelpers.Classes.UI.Elements;
 using HamstarHelpers.Classes.UI.Elements.Slider;
 using HamstarHelpers.Helpers.Debug;
-
+using HamstarHelpers.Services.Timers;
 
 namespace Emitters.UI {
 	partial class UIHologramEditorDialog : UIDialog {
@@ -27,7 +27,9 @@ namespace Emitters.UI {
 			this.InitializeWidgetsForRotation( ref yOffset );
 			this.InitializeWidgetsForOffsetX( ref yOffset );
 			this.InitializeWidgetsForOffsetY( ref yOffset );
-			this.InitializeWidgetsForFrame( ref yOffset );
+			this.InitializeWidgetsForFrameStart( ref yOffset );
+			this.InitializeWidgetsForFrameEnd( ref yOffset );
+			this.InitializeWidgetsForFrameRateTicks( ref yOffset );
 			this.InitializeWidgetsForWorldLighting( ref yOffset );
 			yOffset -= 15f;
 
@@ -67,11 +69,16 @@ namespace Emitters.UI {
 				isInt: true,
 				ticks: 0,
 				minRange: 1f,
-				maxRange: Main.npcTexture.Length );
+				maxRange: Main.npcTexture.Length - 1 );
 			this.TypeSliderElem.Top.Set( yOffset, 0f );
 			this.TypeSliderElem.Left.Set( 64f, 0f );
 			this.TypeSliderElem.Width.Set( -64f, 1f );
 			this.TypeSliderElem.SetValue( 1f );
+			this.TypeSliderElem.PreOnChange += ( value ) => {
+				this.FrameStartSliderElem.SetRange( 0f, (float)(Main.npcFrameCount[(int)value] - 1) );
+				this.FrameEndSliderElem.SetRange( 0f, (float)(Main.npcFrameCount[(int)value] - 1) );
+				return value;
+			};
 			yOffset += 28f;
 
 			this.InnerContainer.Append( (UIElement)this.TypeSliderElem );
@@ -139,7 +146,7 @@ namespace Emitters.UI {
 				ticks: 0,
 				minRange: 0f,
 				maxRange: 1f,
-				hideTextInput: true );
+				hideTextInput: false );
 			this.LightnessSliderElem.Top.Set( yOffset, 0f );
 			this.LightnessSliderElem.Left.Set( 96f, 0f );
 			this.LightnessSliderElem.Width.Set( -96f, 1f );
@@ -173,8 +180,6 @@ namespace Emitters.UI {
 		private void InitializeWidgetsForDirection( ref float yOffset ) {
 			this.InitializeComponentForTitle( "Direction:", false, ref yOffset );
 
-			bool isChangingDirection = false;
-
 			this.DirectionSliderElem = new UISlider(
 				theme: UITheme.Vanilla,
 				hoverText: "",
@@ -183,23 +188,22 @@ namespace Emitters.UI {
 				minRange: -1f,
 				maxRange: 1f );
 			this.DirectionSliderElem.Top.Set( yOffset, 0f );
-			this.DirectionSliderElem.Left.Set( 64f, 0f );
-			this.DirectionSliderElem.Width.Set( -64f, 1f );
+			this.DirectionSliderElem.Left.Set( 96f, 0f );
+			this.DirectionSliderElem.Width.Set( -96f, 1f );
 			this.DirectionSliderElem.SetValue( 1f );
 			this.DirectionSliderElem.PreOnChange += (value) => {
-				if( isChangingDirection ) {
+				bool isRepeat = Timers.GetTimerTickDuration("HologramDirectionRepeat") >= 1;
+				Timers.SetTimer( "HologramDirectionRepeat", 2, true, () => false );
+				if( isRepeat ) {
 					return null;
 				}
-				isChangingDirection = true;
 
-				if( value >= 0f ) {
-					this.DirectionSliderElem.SetValue( 1f );
+				if( this.DirectionSliderElem.RememberedInputValue < 0f ) {
+					value = 1f;
 				} else {
-					this.DirectionSliderElem.SetValue( -1f );
+					value = -1f;
 				}
-
-				isChangingDirection = false;
-				return null;
+				return value;
 			};
 			yOffset += 28f;
 
@@ -217,8 +221,8 @@ namespace Emitters.UI {
 				minRange: 0f,
 				maxRange: 360f );
 			this.RotationSliderElem.Top.Set( yOffset, 0f );
-			this.RotationSliderElem.Left.Set( 64f, 0f );
-			this.RotationSliderElem.Width.Set( -64f, 1f );
+			this.RotationSliderElem.Left.Set( 96f, 0f );
+			this.RotationSliderElem.Width.Set( -96f, 1f );
 			this.RotationSliderElem.SetValue( 0f );
 			yOffset += 28f;
 
@@ -236,15 +240,15 @@ namespace Emitters.UI {
 				minRange: -256f,	//0f
 				maxRange: 256f );	//15f
 			this.OffsetXSliderElem.Top.Set( yOffset, 0f );
-			this.OffsetXSliderElem.Left.Set( 64f, 0f );
-			this.OffsetXSliderElem.Width.Set( -64f, 1f );
+			this.OffsetXSliderElem.Left.Set( 96f, 0f );
+			this.OffsetXSliderElem.Width.Set( -96f, 1f );
 			this.OffsetXSliderElem.SetValue( 0f );
 			yOffset += 28f;
 
 			this.InnerContainer.Append( (UIElement)this.OffsetXSliderElem );
 		}
-		private void InitializeWidgetsForOffsetY( ref float yOffset ) {
 
+		private void InitializeWidgetsForOffsetY( ref float yOffset ) {
 			this.InitializeComponentForTitle( "Y Offset:", false, ref yOffset );
 
 			this.OffsetYSliderElem = new UISlider(
@@ -255,31 +259,81 @@ namespace Emitters.UI {
 				minRange: -256f,	//0f
 				maxRange: 256f );	//15f
 			this.OffsetYSliderElem.Top.Set( yOffset, 0f );
-			this.OffsetYSliderElem.Left.Set( 64f, 0f );
-			this.OffsetYSliderElem.Width.Set( -64f, 1f );
+			this.OffsetYSliderElem.Left.Set( 96f, 0f );
+			this.OffsetYSliderElem.Width.Set( -96f, 1f );
 			this.OffsetYSliderElem.SetValue( 0f );
 			yOffset += 28f;
 
 			this.InnerContainer.Append( (UIElement)this.OffsetYSliderElem );
 		}
 
-		private void InitializeWidgetsForFrame( ref float yOffset ) {
-			this.InitializeComponentForTitle( "Frame:", false, ref yOffset );
+		private void InitializeWidgetsForFrameStart( ref float yOffset ) {
+			this.InitializeComponentForTitle( "Frame Start:", false, ref yOffset );
 
-			this.FrameSliderElem = new UISlider(
+			this.FrameStartSliderElem = new UISlider(
 				theme: UITheme.Vanilla,
 				hoverText: "",
 				isInt: true,
 				ticks: 0,
 				minRange: 0f,
-				maxRange: 60f );
-			this.FrameSliderElem.Top.Set( yOffset, 0f );
-			this.FrameSliderElem.Left.Set( 64f, 0f );
-			this.FrameSliderElem.Width.Set( -64f, 1f );
-			this.FrameSliderElem.SetValue( 1f );
+				maxRange: (float)(Main.npcFrameCount[1] - 1) );
+			this.FrameStartSliderElem.Top.Set( yOffset, 0f );
+			this.FrameStartSliderElem.Left.Set( 96f, 0f );
+			this.FrameStartSliderElem.Width.Set( -96f, 1f );
+			this.FrameStartSliderElem.SetValue( 0f );
+			this.FrameStartSliderElem.PreOnChange += ( value ) => {
+				if( value > this.FrameEndSliderElem.RememberedInputValue ) {
+					value = this.FrameEndSliderElem.RememberedInputValue;
+				}
+				return value;
+			};
 			yOffset += 28f;
 
-			this.InnerContainer.Append( (UIElement)this.FrameSliderElem );
+			this.InnerContainer.Append( (UIElement)this.FrameStartSliderElem );
+		}
+
+		private void InitializeWidgetsForFrameEnd( ref float yOffset ) {
+			this.InitializeComponentForTitle( "Frame End:", false, ref yOffset );
+
+			this.FrameEndSliderElem = new UISlider(
+				theme: UITheme.Vanilla,
+				hoverText: "",
+				isInt: true,
+				ticks: 0,
+				minRange: 0f,
+				maxRange: (float)(Main.npcFrameCount[1] - 1) );
+			this.FrameEndSliderElem.Top.Set( yOffset, 0f );
+			this.FrameEndSliderElem.Left.Set( 96f, 0f );
+			this.FrameEndSliderElem.Width.Set( -96f, 1f );
+			this.FrameEndSliderElem.SetValue( 0f );
+			this.FrameEndSliderElem.PreOnChange += ( value ) => {
+				if( value < this.FrameStartSliderElem.RememberedInputValue ) {
+					value = this.FrameStartSliderElem.RememberedInputValue;
+				}
+				return value;
+			};
+			yOffset += 28f;
+
+			this.InnerContainer.Append( (UIElement)this.FrameEndSliderElem );
+		}
+
+		private void InitializeWidgetsForFrameRateTicks( ref float yOffset ) {
+			this.InitializeComponentForTitle( "Frame Rate:", false, ref yOffset );
+
+			this.FrameRateTicksSliderElem = new UISlider(
+				theme: UITheme.Vanilla,
+				hoverText: "",
+				isInt: true,
+				ticks: 0,
+				minRange: 1f,
+				maxRange: 60f * 5f );
+			this.FrameRateTicksSliderElem.Top.Set( yOffset, 0f );
+			this.FrameRateTicksSliderElem.Left.Set( 96f, 0f );
+			this.FrameRateTicksSliderElem.Width.Set( -96f, 1f );
+			this.FrameRateTicksSliderElem.SetValue( 8f );
+			yOffset += 28f;
+
+			this.InnerContainer.Append( (UIElement)this.FrameRateTicksSliderElem );
 		}
 
 		private void InitializeWidgetsForWorldLighting( ref float yOffset ) {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.ModLoader.Config;
 
 
@@ -46,11 +47,6 @@ namespace Emitters.Definitions {
 			writer.Write( (bool)def.IsActivated );
 		}
 
-
-
-		////////////////
-
-		internal int Timer = 0;
 
 
 		////////////////
@@ -132,6 +128,24 @@ namespace Emitters.Definitions {
 
 		public void Activate( bool isActivated ) {
 			this.IsActivated = isActivated;
+		}
+
+
+		////////////////
+
+		private void AnimateCurrentFrame() {
+			if( ++this.CurrentFrameElapsedTicks <= this.FrameRateTicks ) {
+				return;
+			}
+
+			int frameCount = Main.npcFrameCount[this.Type.Type];
+
+			this.CurrentFrame++;
+			this.CurrentFrameElapsedTicks = 0;
+
+			if( ( this.CurrentFrame > this.FrameEnd ) || ( this.CurrentFrame >= frameCount ) ) {
+				this.CurrentFrame = this.FrameStart;
+			}
 		}
 	}
 }
