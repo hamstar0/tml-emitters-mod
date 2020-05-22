@@ -10,15 +10,15 @@ namespace Emitters.Definitions {
 		public void Draw( int tileX, int tileY, bool isOnScreen ) {
 			this.AnimateSoundEmitter( new Vector2( (tileX<<4) + 8, (tileY<<4) + 8 ) );
 
-			if( isOnScreen && SoundEmitterItem.CanViewSoundEmitters( Main.LocalPlayer ) ) {
-				this.DrawSoundEmitter( tileX, tileY );
+			if( isOnScreen && SoundEmitterItem.CanViewSoundEmitters(Main.LocalPlayer) ) {
+				this.DrawSoundEmitterTile( tileX, tileY );
 			}
 		}
 
 
 		////////////////
 
-		public void DrawSoundEmitter( int tileX, int tileY ) {
+		public void DrawSoundEmitterTile( int tileX, int tileY ) {
 			Vector2 scr = UIHelpers.ConvertToScreenPosition( new Vector2(tileX<<4, tileY<<4) );
 
 			Main.spriteBatch.Draw(
@@ -44,10 +44,9 @@ namespace Emitters.Definitions {
 				return;
 			}
 
-			if( this.Timer++ < this.Delay ) {
+			if( !this.AnimateTimer() ) {
 				return;
 			}
-			this.Timer = 0;
 
 			int maxDistSqr = EmittersConfig.Instance.SoundEmitterMinimumRangeBeforeEmit;
 			maxDistSqr *= maxDistSqr;

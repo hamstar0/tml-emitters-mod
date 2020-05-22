@@ -71,10 +71,23 @@ namespace Emitters.Definitions {
 			this.IsActivated = isActivated;
 		}
 
-		////////////////
 
+		////////////////
+		
 		public void Activate( bool isActivated ) {
 			this.IsActivated = isActivated;
+		}
+
+
+		////////////////
+
+		internal bool AnimateTimer() {
+			if( this.Timer++ < this.Delay ) {
+				return false;
+			}
+
+			this.Timer = 0;
+			return true;
 		}
 	}
 }

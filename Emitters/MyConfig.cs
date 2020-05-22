@@ -24,6 +24,9 @@ namespace Emitters {
 
 		////////////////
 
+		public bool DebugModeInfo { get; set; } = false;
+
+		
 		[Range( 16 * 16, 16 * 1000 )]
 		[DefaultValue( 16 * 96 )]
 		public int DustEmitterMinimumRangeBeforeEmit { get; set; } = 16 * 96;
