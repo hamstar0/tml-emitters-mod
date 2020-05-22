@@ -22,6 +22,7 @@ v1.3
 v1.2
 -	Fix wire activations
 
+-	Add hologram sprites
 -	Add frame ranges and rate dialog fields
 -	@UISlider fixes
 	-	Change PreOnChange to return a nullable value

@@ -39,7 +39,6 @@ namespace Emitters.Definitions {
 
 		public void AnimateSoundEmitter( Vector2 worldPos ) {
 			//DebugHelpers.Print( "emit_"+this.GetHashCode(), "timer: "+this.Timer+", "+this.ToString() );
-
 			if( !this.IsActivated ) {
 				return;
 			}

@@ -81,7 +81,7 @@ namespace Emitters.Definitions {
 
 		////////////////
 
-		internal bool AnimateTimer() {
+		private bool AnimateTimer() {
 			if( this.Timer++ < this.Delay ) {
 				return false;
 			}
