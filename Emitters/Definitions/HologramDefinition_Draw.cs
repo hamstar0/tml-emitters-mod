@@ -10,14 +10,9 @@ using Emitters.Items;
 
 namespace Emitters.Definitions {
 	public partial class HologramDefinition {
-		internal const int FrameDelay = 7;
+		public int CurrentFrame { get; private set; };
 
-
-
-		////////////////
-
-		internal int FrameCounter = 0;
-		internal int FrameTimer = 0;
+		private int CurrentFrameElapsedTicks = 0;
 
 
 
@@ -73,11 +68,11 @@ namespace Emitters.Definitions {
 			Texture2D npcTexture = Main.npcTexture[ npcType ];
 			int frameHeight = npcTexture.Height / Main.npcFrameCount[ npcType ];
 
-			if( ++this.FrameTimer > HologramDefinition.FrameDelay ) {
-				this.FrameCounter = this.FrameCounter + 1;
-				this.FrameTimer = 0;
-				if( this.FrameCounter >= Main.npcFrameCount[ npcType ] - 1 ) {
-					this.FrameCounter = 0;
+			if( ++this.CurrentFrameElapsedTicks > this.FrameRateTicks ) {
+				this.CurrentFrame = this.CurrentFrame + 1;
+				this.CurrentFrameElapsedTicks = 0;
+				if( this.CurrentFrame >= Main.npcFrameCount[ npcType ] - 1 ) {
+					this.CurrentFrame = 0;
 				}
 			}
 
@@ -85,7 +80,7 @@ namespace Emitters.Definitions {
 			SpriteEffects effects = SpriteEffects.None;
 			Rectangle drawRectangle = new Rectangle(
 				0,
-				frameHeight * this.FrameCounter,
+				frameHeight * this.CurrentFrame,
 				npcTexture.Width,
 				frameHeight
 			);

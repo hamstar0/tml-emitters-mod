@@ -164,7 +164,7 @@ namespace Emitters.UI {
 			this.AlphaSliderElem.Top.Set( yOffset, 0f );
 			this.AlphaSliderElem.Left.Set( 64f, 0f );
 			this.AlphaSliderElem.Width.Set( -64f, 1f );
-			this.AlphaSliderElem.SetValue( 0f );
+			this.AlphaSliderElem.SetValue( 255f );
 			yOffset += 28f;
 
 			this.InnerContainer.Append( (UIElement)this.AlphaSliderElem );
@@ -188,7 +188,7 @@ namespace Emitters.UI {
 			this.DirectionSliderElem.SetValue( 1f );
 			this.DirectionSliderElem.PreOnChange += (value) => {
 				if( isChangingDirection ) {
-					return true;
+					return null;
 				}
 				isChangingDirection = true;
 
@@ -199,7 +199,7 @@ namespace Emitters.UI {
 				}
 
 				isChangingDirection = false;
-				return false;
+				return null;
 			};
 			yOffset += 28f;
 
