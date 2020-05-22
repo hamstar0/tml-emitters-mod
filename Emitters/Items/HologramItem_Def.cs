@@ -78,7 +78,9 @@ namespace Emitters.Items {
 					rotation: tag.GetFloat( "HologramRotation" ),
 					offsetX: tag.GetInt( "HologramOffsetX" ),
 					offsetY: tag.GetInt( "HologramOffsetY" ),
-					frame: tag.GetInt( "HologramFrame" ),
+					frameStart: tag.GetInt( "HologramFrameStart" ),
+					frameEnd: tag.GetInt( "HologramFrameEnd" ),
+					frameRateTicks: tag.GetInt( "HologramFrameRateTicks" ),
 					worldLight: tag.GetBool( "HologramWorldLighting" ),
 					isActivated: tag.GetBool( "HologramIsActivated" )
 				);
@@ -101,7 +103,9 @@ namespace Emitters.Items {
 				{ "HologramRotation", (float)this.Def.Rotation },
 				{ "HologramOffsetX", (int)this.Def.OffsetX },
 				{ "HologramOffsetY", (int)this.Def.OffsetY },
-				{ "HologramFrame", (int)this.Def.Frame },
+				{ "HologramFrameStart", (int)this.Def.FrameStart },
+				{ "HologramFrameEnd", (int)this.Def.FrameEnd },
+				{ "HologramFrameRateTicks", (int)this.Def.FrameRateTicks },
 				{ "HologramWorldLighting", (bool)this.Def.WorldLighting },
 				{ "HologramIsActivated", (bool)this.Def.IsActivated },
 			};
@@ -123,11 +127,10 @@ namespace Emitters.Items {
 			var scaleTip = new TooltipLine( this.mod, "HologramScale", " Scale: " + this.Def?.RenderScale() );
 			var colorTip = new TooltipLine( this.mod, "HologramColor", " Color: " + this.Def?.RenderColor() );
 			var alphaTip = new TooltipLine( this.mod, "HologramAlpha", " Alpha: " + this.Def?.RenderAlpha() );
-			var DirectionTip = new TooltipLine( this.mod, "HologramDirection", " Direction: " + this.Def?.RenderDirection() );
-			var RotationTip = new TooltipLine( this.mod, "HologramRotation", " Rotation: " + this.Def?.RenderRotation() );
-			var OffsetXTip = new TooltipLine( this.mod, "HologramOffsetX", " X Offset: " + this.Def?.RenderOffsetX() );
-			var OffsetYTip = new TooltipLine( this.mod, "HologramOffsetY", " Y Offset: " + this.Def?.RenderOffsetY() );
-			var FrameTip = new TooltipLine( this.mod, "HologramFrame", " Frame: " + this.Def?.RenderFrame() );
+			var directionTip = new TooltipLine( this.mod, "HologramDirection", " Direction: " + this.Def?.RenderDirection() );
+			var rotationTip = new TooltipLine( this.mod, "HologramRotation", " Rotation: " + this.Def?.RenderRotation() );
+			var offsetTip = new TooltipLine( this.mod, "HologramOffset", " Offset: " + this.Def?.RenderOffset() );
+			var frameTip = new TooltipLine( this.mod, "HologramFrame", " Frame: " + this.Def?.RenderFrame() );
 			var WorldLightingTip = new TooltipLine( this.mod, "HologramWorldLighting", " Frame: " + this.Def?.WorldLighting );
 
 			var color = Color.White * 0.75f;
@@ -135,22 +138,20 @@ namespace Emitters.Items {
 			scaleTip.overrideColor = color;
 			colorTip.overrideColor = color;
 			alphaTip.overrideColor = color;
-			DirectionTip.overrideColor = color;
-			RotationTip.overrideColor = color;
-			OffsetXTip.overrideColor = color;
-			OffsetYTip.overrideColor = color;
-			FrameTip.overrideColor = color;
+			directionTip.overrideColor = color;
+			rotationTip.overrideColor = color;
+			offsetTip.overrideColor = color;
+			frameTip.overrideColor = color;
 			WorldLightingTip.overrideColor = color;
 
 			tooltips.Add( typeTip );
 			tooltips.Add( scaleTip );
 			tooltips.Add( colorTip );
 			tooltips.Add( alphaTip );
-			tooltips.Add( DirectionTip );
-			tooltips.Add( RotationTip );
-			tooltips.Add( OffsetXTip );
-			tooltips.Add( OffsetYTip );
-			tooltips.Add( FrameTip );
+			tooltips.Add( directionTip );
+			tooltips.Add( rotationTip );
+			tooltips.Add( offsetTip );
+			tooltips.Add( frameTip );
 			tooltips.Add( WorldLightingTip );
 		}
 

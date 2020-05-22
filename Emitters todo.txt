@@ -3,30 +3,27 @@ v2
 -	Define 3d scanner item
 -	Implement crafting emitter items from bottled particles
 -	Implement catchable particles (requires net and empty bottles)
+-	Add shader field for dusts
 
 
 
 v2
--	Allow arrow keys + mouse hover to adjust sliders
--	Add shader field
--	Increase max delay range
+-	Add shader field for holograms?
+-	Add presets
 v1.2
--	Render emitters of the top of dusts and gores when in add/remove mode
+-	Render emitters on top of dusts and gores when in add/remove mode
 -	Fix wire activations
--	Restrict inapplicable fields for gores
--	Add hologram fx dialog field
--	Add frame rate dialog field
--	Add frame ranges dialog field
+-	Hide inapplicable fields for gores
+-	Add hologram flicker fx dialog field
+-	Add frame ranges and rate dialog fields
 -	@UISlider fixes
+	-	Allow arrow keys + mouse hover to adjust sliders
+
 	-	Change PreOnChange to return a nullable value
-	-	Add OnHoverTextOutput
-	-	Add OnInputTextOutput
-	-	Add PreOnChangeViaText
 	-	Put arrows outside of slider bounds
-	-	Only block slider mouse interactivity when text input is active
+	-	Block slider mouse interactivity when text input is active
 	-	Shrink text input vertically
 	-	Highlight text input (recolor) when hovering
-
 -	Hologram fixes
 	-	Modify to use NPCDefinitions
 	-	Set offsets larger

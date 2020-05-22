@@ -88,7 +88,7 @@ namespace Emitters.UI {
 			this.RotationSliderElem.SetValue(myitem.Def.Rotation);
 			this.OffsetXSliderElem.SetValue(myitem.Def.OffsetX);
 			this.OffsetYSliderElem.SetValue(myitem.Def.OffsetY);
-			this.FrameSliderElem.SetValue(myitem.Def.Frame);
+			this.FrameSliderElem.SetValue(myitem.Def.FrameStart);
 			this.WorldLightingCheckbox.Selected = myitem.Def.WorldLighting;
 		}
 
