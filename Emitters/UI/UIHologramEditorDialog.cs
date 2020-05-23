@@ -36,7 +36,7 @@ namespace Emitters.UI {
 
 		////////////////
 
-		public UIHologramEditorDialog() : base( UITheme.Vanilla, 600, 580 ) { }
+		public UIHologramEditorDialog() : base( UITheme.Vanilla, 600, 500 ) { }
 
 
 		////////////////

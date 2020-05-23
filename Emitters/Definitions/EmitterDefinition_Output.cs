@@ -110,6 +110,7 @@ namespace Emitters.Definitions {
 
 		public override string ToString() {
 			return "Emitter Definition:"
+				+/*"\n"+*/" IsActivated: " + this.IsActivated + ", "
 				+/*"\n"+*/" Mode: " + this.RenderMode() + ", "
 				+/*"\n"+*/" Type: " + this.RenderType() + ", "
 				+/*"\n"+*/" Scale: " + this.RenderScale() + ", "
@@ -120,8 +121,7 @@ namespace Emitters.Definitions {
 				+/*"\n"+*/" Alpha: " + this.RenderAlpha() + ", "
 				+/*"\n"+*/" Scatter: " + this.RenderScatter() + ", "
 				+/*"\n"+*/" HasGravity: " + this.RenderHasGravity() + ", "
-				+/*"\n"+*/" HasLight: " + this.RenderHasLight() + ", "
-				+/*"\n"+*/" IsActivated: " + this.IsActivated;
+				+/*"\n"+*/" HasLight: " + this.RenderHasLight();
 		}
 	}
 }

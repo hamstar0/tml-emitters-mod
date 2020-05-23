@@ -20,6 +20,8 @@ v1.3
 -	Add hologram flicker fx dialog field
 -	Add hologram modes (NPC, item, projectile)
 v1.2
+-	Fix dust 'no light' flag
+-	Show all emitter/holograms while in wire mode
 -	Fix wire activations
 
 -	Add hologram sprites

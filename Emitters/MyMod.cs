@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
@@ -39,6 +40,8 @@ namespace Emitters {
 				this.SoundEmitterEditorDialog = new UISoundEmitterEditorDialog();
 				this.HologramEditorDialog = new UIHologramEditorDialog();
 			}
+			
+			IL.Terraria.Wiring.HitWireSingle += HookWireHit;
 		}
 
 		public override void Unload() {
