@@ -1,3 +1,4 @@
+using System;
 using Emitters.UI;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -47,6 +48,8 @@ namespace Emitters
 				Ref<Effect> ScanlinesPS = new Ref<Effect>(GetEffect("Effects/ScanlinesPS"));
 				GameShaders.Misc["Emitters:ScanlinesPS"] = new MiscShaderData((ScanlinesPS), "ScanlinesPS").UseImage("Images/Misc/Perlin");
 			}
+			
+			IL.Terraria.Wiring.HitWireSingle += HookWireHit;
 		}
 
 		public override void Unload()
