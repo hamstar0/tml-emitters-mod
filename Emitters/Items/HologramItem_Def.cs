@@ -108,6 +108,7 @@ namespace Emitters.Items {
 				{ "HologramFrameEnd", (int)this.Def.FrameEnd },
 				{ "HologramFrameRateTicks", (int)this.Def.FrameRateTicks },
 				{ "HologramWorldLighting", (bool)this.Def.WorldLighting },
+				{"HologramCRTEffect", (bool)this.Def.CrtEffect },
 				{ "HologramIsActivated", (bool)this.Def.IsActivated },
 			};
 		}
@@ -132,7 +133,8 @@ namespace Emitters.Items {
 			var rotationTip = new TooltipLine( this.mod, "HologramRotation", " Rotation: " + this.Def?.RenderRotation() );
 			var offsetTip = new TooltipLine( this.mod, "HologramOffset", " Offset: " + this.Def?.RenderOffset() );
 			var frameTip = new TooltipLine( this.mod, "HologramFrame", " Frame: " + this.Def?.RenderFrame() );
-			var WorldLightingTip = new TooltipLine( this.mod, "HologramWorldLighting", " Frame: " + this.Def?.WorldLighting );
+			var WorldLightingTip = new TooltipLine( this.mod, "HologramWorldLighting", " World Lighting: " + this.Def?.WorldLighting );
+			var CRTEffectTip = new TooltipLine(this.mod, "HologramCRTEffect", " CRT Effect: " + this.Def?.CrtEffect);
 
 			var color = Color.White * 0.75f;
 			typeTip.overrideColor = color;
@@ -144,6 +146,7 @@ namespace Emitters.Items {
 			offsetTip.overrideColor = color;
 			frameTip.overrideColor = color;
 			WorldLightingTip.overrideColor = color;
+			CRTEffectTip.overrideColor = color;
 
 			tooltips.Add( typeTip );
 			tooltips.Add( scaleTip );
@@ -154,6 +157,7 @@ namespace Emitters.Items {
 			tooltips.Add( offsetTip );
 			tooltips.Add( frameTip );
 			tooltips.Add( WorldLightingTip );
+			tooltips.Add(CRTEffectTip);
 		}
 
 

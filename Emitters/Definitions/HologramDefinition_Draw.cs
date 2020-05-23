@@ -1,15 +1,15 @@
-﻿using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria;
-using HamstarHelpers.Helpers.Debug;
+﻿using Emitters.Items;
 using HamstarHelpers.Helpers.UI;
 using HamstarHelpers.Helpers.XNA;
-using Emitters.Items;
-using Terraria.Graphics.Shaders;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using Terraria;
 
-namespace Emitters.Definitions {
-	public partial class HologramDefinition {
+namespace Emitters.Definitions
+{
+	public partial class HologramDefinition
+	{
 		public int CurrentFrame { get; internal set; }
 
 		internal int CurrentFrameElapsedTicks = 0;
@@ -18,20 +18,23 @@ namespace Emitters.Definitions {
 
 		////////////////
 
-		public void Draw( int tileX, int tileY, bool isOnScreen ) {
-			var wldPos = new Vector2( (tileX<<4)+8, (tileY<<4)+8 );
-			this.AnimateHologram( wldPos, false );
+		public void Draw(int tileX, int tileY, bool isOnScreen)
+		{
+			var wldPos = new Vector2((tileX << 4) + 8, (tileY << 4) + 8);
+			this.AnimateHologram(wldPos, false);
 
-			if( isOnScreen && HologramItem.CanViewHolograms( Main.LocalPlayer ) ) {
-				this.DrawHologramTile( tileX, tileY );
+			if (isOnScreen && HologramItem.CanViewHolograms(Main.LocalPlayer))
+			{
+				this.DrawHologramTile(tileX, tileY);
 			}
 		}
 
 
 		////////////////
 
-		public void DrawHologramTile( int tileX, int tileY ) {
-			Vector2 scr = UIHelpers.ConvertToScreenPosition( new Vector2(tileX<<4, tileY<<4) );
+		public void DrawHologramTile(int tileX, int tileY)
+		{
+			Vector2 scr = UIHelpers.ConvertToScreenPosition(new Vector2(tileX << 4, tileY << 4));
 			Texture2D tex = EmittersMod.Instance.HologramTex;
 
 			Main.spriteBatch.Draw(
@@ -40,7 +43,7 @@ namespace Emitters.Definitions {
 				sourceRectangle: null,
 				color: Color.White,
 				rotation: 0f,
-				origin: default( Vector2 ),
+				origin: default(Vector2),
 				scale: Main.GameZoomTarget,
 				effects: SpriteEffects.None,
 				layerDepth: 1f
@@ -74,6 +77,7 @@ namespace Emitters.Definitions {
 
 			Main.instance.LoadNPC(npcType);
 			Texture2D npcTexture = Main.npcTexture[npcType];
+
 			if (this.CrtEffect)
 			{
 				this.CRTEffect(npcTexture);
@@ -136,14 +140,14 @@ namespace Emitters.Definitions {
 				Main.spriteBatch.Begin();
 			}
 		}
-		
+
 		///////////
-		
+
 		public void CRTEffect(Texture2D texture)
 		{
 			Effect Scanlines = EmittersMod.Instance.GetEffect("Effects/ScanlinesPS");
-			Scanlines.Parameters["TexWidth"].SetValue(texture.Width);
-			Scanlines.Parameters["TexHeight"].SetValue(texture.Height);
+			Scanlines.Parameters["TexWidth"].SetValue(texture.Width*this.Scale);
+			Scanlines.Parameters["TexHeight"].SetValue(texture.Height*this.Scale);
 			Random random = new Random();
 			double randVal = random.NextDouble();
 			Scanlines.Parameters["RandValue"].SetValue((float)randVal);

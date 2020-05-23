@@ -17,7 +17,7 @@ float4 Scanlines(float4 sampleColor : COLOR0, float2 coords : TEXCOORD0) : COLOR
 {
     float4 color = tex2D(uImage0, coords);
     float wave = 1 - frac(coords.x + uTime * 0.5f);
-    float pixelY = (coords.y*wave) * 100;
+    float pixelY = (coords.y * wave) * 100;
     if (coords.y != 0 && wave == 0 && color.a != 0)
     {
        color.rgb = 0;

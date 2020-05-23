@@ -33,9 +33,9 @@ PixelShaderOutput ScanlinesPS(PixelShaderInput coords)
 	PixelShaderOutput output;
 	float4 color = tex2D(SpriteTextureSampler, coords.texPos);
     float wave = 1 - frac(coords.texPos.y * TexHeight + uTime * 0.5f);
-    float texY = (frac(coords.texPos.y + uTime ) * TexHeight);
-    float rowDark = floor(texY % 2.0);
-	float voidRand = 0.5 * RandValue * wave;
+    float texY = coords.texPos.y * TexHeight;
+    float rowDark = floor(texY % 0.5);
+	float voidRand = 0.5 * RandValue;
 	float fillRand = 1.0 - voidRand;
     float rowDarkRand = ((rowDark + wave) * fillRand) + voidRand;
     
