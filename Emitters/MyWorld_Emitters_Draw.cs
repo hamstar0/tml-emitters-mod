@@ -29,18 +29,15 @@ namespace Emitters {
 					for( ushort y = (ushort)( topTile - 8 ); y < maxY; y++ ) {
 						bool isOnScr = scrTiles.Contains( x, y );
 
-						EmitterDefinition def;
-						if( this.Emitters.TryGetValue2D( x, y, out def ) ) {
+						if( this.Emitters.TryGetValue2D( x, y, out EmitterDefinition def) ) {
 							def.Draw( x, y, isOnScr );
 						}
 
-						SoundEmitterDefinition sdef;
-						if( this.SoundEmitters.TryGetValue2D( x, y, out sdef ) ) {
+						if( this.SoundEmitters.TryGetValue2D( x, y, out SoundEmitterDefinition sdef) ) {
 							sdef.Draw( x, y, isOnScr );
 						}
 
-						HologramDefinition hdef;
-						if( this.Holograms.TryGetValue2D( x, y, out hdef ) ) {
+						if( this.Holograms.TryGetValue2D( x, y, out HologramDefinition hdef ) ) {
 							hdef.Draw( x, y, isOnScr );
 						}
 					}

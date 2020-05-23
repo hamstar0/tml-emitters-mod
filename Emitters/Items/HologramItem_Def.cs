@@ -82,6 +82,7 @@ namespace Emitters.Items {
 					frameEnd: tag.GetInt( "HologramFrameEnd" ),
 					frameRateTicks: tag.GetInt( "HologramFrameRateTicks" ),
 					worldLight: tag.GetBool( "HologramWorldLighting" ),
+					crtEffect:tag.GetBool("HologramCRTEFfect"),
 					isActivated: tag.GetBool( "HologramIsActivated" )
 				);
 			} catch { }
