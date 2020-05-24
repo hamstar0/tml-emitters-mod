@@ -47,7 +47,7 @@ namespace Emitters {
 		////////////////
 
 		public void AddHologram( HologramDefinition def, ushort tileX, ushort tileY ) {
-			if( ( tileX < 0 || tileX >= Main.maxTilesX ) || ( tileY < 0 || tileY >= Main.maxTilesY ) ) {
+			if( (tileX < 0 || tileX >= Main.maxTilesX) || (tileY < 0 || tileY >= Main.maxTilesY) ) {
 				throw new ModHelpersException( "Cannot place hologram outside of world." );
 			}
 			//Main.NewText( def.ToString() );

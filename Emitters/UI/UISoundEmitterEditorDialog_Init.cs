@@ -69,10 +69,14 @@ namespace Emitters.UI {
 			this.TypeSliderElem.SetValue( 1f );
 			this.TypeSliderElem.PreOnChange += (value) => {
 				if( value > 41f && value < 50f ) {
-					return false;
+					if( this.TypeSliderElem.RememberedInputValue <= 41 ) {
+						value = 50f;
+					} else {
+						value = 41f;
+					}
 				}
 				this.UpdateStyleSlider( (int)value );
-				return true;
+				return value;
 			};
 			yOffset += 28f;
 

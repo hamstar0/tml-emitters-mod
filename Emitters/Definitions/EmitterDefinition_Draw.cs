@@ -14,14 +14,14 @@ namespace Emitters.Definitions {
 			this.AnimateEmitter( wldPos );
 
 			if( isOnScreen && EmitterItem.CanViewEmitters(Main.LocalPlayer) ) {
-				this.DrawEmitter( tileX, tileY );
+				this.DrawEmitterTile( tileX, tileY );
 			}
 		}
 
 
 		////////////////
 
-		public void DrawEmitter( int tileX, int tileY ) {
+		public void DrawEmitterTile( int tileX, int tileY ) {
 			Vector2 scr = UIHelpers.ConvertToScreenPosition( new Vector2(tileX<<4, tileY<<4) );
 
 			Main.spriteBatch.Draw(
@@ -46,10 +46,9 @@ namespace Emitters.Definitions {
 				return;
 			}
 
-			if( this.Timer++ < this.Delay ) {
+			if( !this.AnimateTimer() ) {
 				return;
 			}
-			this.Timer = 0;
 
 			int maxDistSqr = EmittersConfig.Instance.DustEmitterMinimumRangeBeforeEmit;
 			maxDistSqr *= maxDistSqr;

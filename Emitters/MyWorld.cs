@@ -34,6 +34,7 @@ namespace Emitters {
 			this.Holograms.Clear();
 		}
 
+
 		////////////////
 
 		public override void Load( TagCompound tag ) {
@@ -60,6 +61,10 @@ namespace Emitters {
 					def.Activate( tag.GetBool( "emitter_" + i + "_on" ) );
 
 					this.Emitters.Set2D( tileX, tileY, def );
+
+					if( EmittersConfig.Instance.DebugModeInfo ) {
+						LogHelpers.Log( "Loaded emitter " + i + " of " + count + " at " + tileX + ", " + tileY );
+					}
 				}
 			} catch( Exception e ) {
 				LogHelpers.Warn( e.ToString() );
@@ -84,6 +89,10 @@ namespace Emitters {
 					def.Activate( tag.GetBool( "snd_emitter_" + i + "_on" ) );
 
 					this.SoundEmitters.Set2D( tileX, tileY, def );
+
+					if( EmittersConfig.Instance.DebugModeInfo ) {
+						LogHelpers.Log( "Loaded sound emitter " + i + " of " + count + " at " + tileX + ", " + tileY );
+					}
 				}
 			} catch( Exception e ) {
 				LogHelpers.Warn( e.ToString() );
@@ -108,19 +117,28 @@ namespace Emitters {
 					def.Activate( tag.GetBool( "hologram_" + i + "_on" ) );
 
 					this.Holograms.Set2D( tileX, tileY, def );
+
+					if( EmittersConfig.Instance.DebugModeInfo ) {
+						LogHelpers.Log( "Loaded hologram " + i + " of " + count + " at " + tileX + ", " + tileY );
+					}
 				}
 			} catch( Exception e ) {
 				LogHelpers.Warn( e.ToString() );
 			}
 		}
 
+
 		////
 
 		public override TagCompound Save() {
+			int emitterCount = this.Emitters.Count2D();
+			int sndEmitterCount = this.SoundEmitters.Count2D();
+			int hologramCount = this.Holograms.Count2D();
+
 			var tag = new TagCompound {
-				{ "emitter_count", this.Emitters.Count2D() },
-				{ "snd_emitter_count", this.SoundEmitters.Count2D() },
-				{ "hologram_count", this.SoundEmitters.Count2D() },
+				{ "emitter_count", emitterCount },
+				{ "snd_emitter_count", sndEmitterCount },
+				{ "hologram_count", hologramCount },
 			};
 
 			int i = 0;
@@ -131,6 +149,9 @@ namespace Emitters {
 					tag["emitter_" + i] = (string)JsonConvert.SerializeObject( def );
 					tag["emitter_" + i + "_on"] = (bool)def.IsActivated;
 					i++;
+					if( EmittersConfig.Instance.DebugModeInfo ) {
+						LogHelpers.Log( "Saved emitter "+i+" of "+emitterCount+" at "+tileX+", "+tileY );
+					}
 				}
 			}
 
@@ -142,6 +163,9 @@ namespace Emitters {
 					tag["snd_emitter_" + i] = (string)JsonConvert.SerializeObject( def );
 					tag["snd_emitter_" + i + "_on"] = (bool)def.IsActivated;
 					i++;
+					if( EmittersConfig.Instance.DebugModeInfo ) {
+						LogHelpers.Log( "Saved sound emitter "+i+" of "+sndEmitterCount+" at "+tileX+", "+tileY );
+					}
 				}
 			}
 
@@ -153,6 +177,9 @@ namespace Emitters {
 					tag["hologram_" + i] = (string)JsonConvert.SerializeObject( def );
 					tag["hologram_" + i + "_on"] = (bool)def.IsActivated;
 					i++;
+					if( EmittersConfig.Instance.DebugModeInfo ) {
+						LogHelpers.Log( "Saved hologram "+i+" of "+hologramCount+" at "+tileX+", "+tileY );
+					}
 				}
 			}
 			return tag;

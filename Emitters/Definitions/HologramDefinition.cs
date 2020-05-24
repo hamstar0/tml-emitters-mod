@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.ModLoader.Config;
 
 
@@ -20,7 +21,9 @@ namespace Emitters.Definitions {
 				rotation: (float)reader.ReadSingle(),
 				offsetX: (int)reader.ReadUInt16(),
 				offsetY: (int)reader.ReadUInt16(),
-				frame: (int)reader.ReadUInt16(),
+				frameStart: (int)reader.ReadUInt16(),
+				frameEnd: (int)reader.ReadUInt16(),
+				frameRateTicks: (int)reader.ReadUInt16(),
 				worldLight: (bool)reader.ReadBoolean(),
 				isActivated: (bool)reader.ReadBoolean()
 			);
@@ -37,16 +40,13 @@ namespace Emitters.Definitions {
 			writer.Write( (float)def.Rotation );
 			writer.Write( (ushort)def.OffsetX );
 			writer.Write( (ushort)def.OffsetY );
-			writer.Write( (ushort)def.Frame );
+			writer.Write( (ushort)def.FrameStart );
+			writer.Write( (ushort)def.FrameEnd );
+			writer.Write( (ushort)def.FrameRateTicks );
 			writer.Write( (bool)def.WorldLighting );
 			writer.Write( (bool)def.IsActivated );
 		}
 
-
-
-		////////////////
-
-		internal int Timer = 0;
 
 
 		////////////////
@@ -59,9 +59,13 @@ namespace Emitters.Definitions {
 		public float Rotation { get; set; }
 		public int OffsetX { get; set; }
 		public int OffsetY { get; set; }
-		public int Frame { get; set; }
-		////
+		public int FrameStart { get; set; }
+		public int FrameEnd { get; set; }
+		public int FrameRateTicks { get; set; }
 		public bool WorldLighting { get; set; }
+
+		////
+
 		public bool IsActivated { get; set; } = true;
 
 
@@ -79,9 +83,13 @@ namespace Emitters.Definitions {
 			this.Rotation = copy.Rotation;
 			this.OffsetX = copy.OffsetX;
 			this.OffsetY = copy.OffsetY;
-			this.Frame = copy.Frame;
+			this.FrameStart = copy.FrameStart;
+			this.FrameEnd = copy.FrameEnd;
+			this.FrameRateTicks = copy.FrameRateTicks;
 			this.WorldLighting = copy.WorldLighting;
 			this.IsActivated = copy.IsActivated;
+
+			this.CurrentFrame = this.FrameStart;
 		}
 
 		public HologramDefinition(
@@ -93,7 +101,9 @@ namespace Emitters.Definitions {
 					float rotation,
 					int offsetX,
 					int offsetY,
-					int frame,
+					int frameStart,
+					int frameEnd,
+					int frameRateTicks,
 					bool worldLight,
 					bool isActivated ) {
 			this.Type = new NPCDefinition( type );
@@ -104,70 +114,13 @@ namespace Emitters.Definitions {
 			this.Rotation = rotation;
 			this.OffsetX = offsetX;
 			this.OffsetY = offsetY;
-			this.Frame = frame;
+			this.FrameStart = frameStart;
+			this.FrameEnd = frameEnd;
+			this.FrameRateTicks = frameRateTicks;
 			this.WorldLighting = worldLight;
 			this.IsActivated = isActivated;
-		}
 
-
-		////
-
-		public void Output(
-					out int type,
-					out float scale,
-					out Color color,
-					out byte alpha,
-					out int direction,
-					out float rotation,
-					out int offsetX,
-					out int offsetY,
-					out int frame,
-					out bool worldLight,
-					out bool isActivated ) {
-			type = this.Type.Type;
-			scale = this.Scale;
-			color = this.Color;
-			alpha = this.Alpha;
-			direction = this.Direction;
-			rotation = this.Rotation;
-			offsetX = this.OffsetX;
-			offsetY = this.OffsetY;
-			frame = this.Frame;
-			worldLight = this.WorldLighting;
-			isActivated = this.IsActivated;
-		}
-
-		public void Output(
-					out int type,
-					out float scale,
-					out byte colorR,
-					out byte colorG,
-					out byte colorB,
-					out byte alpha,
-					out int direction,
-					out float rotation,
-					out int offsetX,
-					out int offsetY,
-					out int frame,
-					out bool worldLight,
-					out bool isActivated ) {
-			Color color;
-			this.Output(
-				out type,
-				out scale,
-				out color,
-				out alpha,
-				out direction,
-				out rotation,
-				out offsetX,
-				out offsetY,
-				out frame,
-				out worldLight,
-				out isActivated
-			);
-			colorR = color.R;
-			colorG = color.G;
-			colorB = color.B;
+			this.CurrentFrame = frameStart;
 		}
 
 
@@ -180,49 +133,19 @@ namespace Emitters.Definitions {
 
 		////////////////
 
-		public string RenderType() {
-			return this.Type.ToString();
-		}
-		public string RenderScale() {
-			return (this.Scale * 100f).ToString( "N0" );
-		}
-		public string RenderColor() {
-			return this.Color.ToString();
-		}
-		public string RenderAlpha() {
-			return this.Alpha.ToString();
-		}
-		public string RenderDirection() {
-			return this.Direction.ToString( "N0" );
-		}
-		public string RenderRotation() {
-			return this.Rotation.ToString( "N2" );
-		}
-		public string RenderOffsetX() {
-			return this.OffsetX.ToString();
-		}
-		public string RenderOffsetY() {
-			return this.OffsetY.ToString();
-		}
-		public string RenderFrame() {
-			return this.Frame.ToString();
-		}
+		private void AnimateCurrentFrame() {
+			if( ++this.CurrentFrameElapsedTicks <= this.FrameRateTicks ) {
+				return;
+			}
 
-		////////////////
+			int frameCount = Main.npcFrameCount[this.Type.Type];
 
-		public override string ToString() {
-			return "Emitter Definition:"
-				+/*"\n"+*/" Type: " + this.RenderType() + ", "
-				+/*"\n"+*/" Scale: " + this.RenderScale() + ", "
-				+/*"\n"+*/" Color: " + this.RenderColor() + ", "
-				+/*"\n"+*/" Alpha: " + this.RenderAlpha() + ", "
-				+/*"\n"+*/" Direction: " + this.RenderDirection() + ", "
-				+/*"\n"+*/" Rotation: " + this.RenderRotation() + ", "
-				+/*"\n"+*/" OffsetX: " + this.RenderOffsetX() + ", "
-				+/*"\n"+*/" OffsetY: " + this.RenderOffsetY() + ", "
-				+/*"\n"+*/" Frame: " + this.RenderFrame() + ", "
-				+/*"\n"+*/" WorldLight: " + this.WorldLighting + ", "
-				+/*"\n"+*/" IsActivated: " + this.IsActivated;
+			this.CurrentFrame++;
+			this.CurrentFrameElapsedTicks = 0;
+
+			if( ( this.CurrentFrame > this.FrameEnd ) || ( this.CurrentFrame >= frameCount ) ) {
+				this.CurrentFrame = this.FrameStart;
+			}
 		}
 	}
 }
