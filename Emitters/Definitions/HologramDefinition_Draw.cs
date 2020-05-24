@@ -98,7 +98,7 @@ namespace Emitters.Definitions {
 			fx.Parameters["Frame"].SetValue( (float)this.CurrentFrame );
 			fx.Parameters["FrameMax"].SetValue( (float)Main.npcFrameCount[this.Type.Type] );
 
-			fx.Parameters["UserColor"].SetValue( this.Color.ToVector4() );
+			fx.Parameters["UserColor"].SetValue( color.ToVector4() );
 
 			Main.spriteBatch.End();
 			/*Main.spriteBatch.Begin(
