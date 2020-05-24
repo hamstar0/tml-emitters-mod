@@ -115,8 +115,8 @@ namespace Emitters.Definitions {
 				SamplerState.LinearClamp,
 				DepthStencilState.Default,
 				RasterizerState.CullNone,
-				fx,
-				Main.GameViewMatrix.ZoomMatrix
+				fx
+				//Main.GameViewMatrix.ZoomMatrix
 			);
 		}
 
@@ -126,7 +126,7 @@ namespace Emitters.Definitions {
 		}
 
 
-		///////////
+		////
 
 		public void DrawHologramRaw( Vector2 worldPos, bool isUI ) {
 			int npcType = this.Type.Type;
