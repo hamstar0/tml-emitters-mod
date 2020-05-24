@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.GameContent.UI;
 using HamstarHelpers.Helpers.Items;
 using HamstarHelpers.Helpers.Players;
 using HamstarHelpers.Services.Timers;
@@ -34,9 +35,10 @@ namespace Emitters.Items {
 		////////////////
 
 		public static bool CanViewSoundEmitters( Player plr ) {
-			return plr.HeldItem != null
-				&& !plr.HeldItem.IsAir
-				&& plr.HeldItem.type == ModContent.ItemType<SoundEmitterItem>();
+			return WiresUI.Settings.DrawWires || (
+					plr.HeldItem != null
+					&& !plr.HeldItem.IsAir
+					&& plr.HeldItem.type == ModContent.ItemType<SoundEmitterItem>() );
 		}
 
 

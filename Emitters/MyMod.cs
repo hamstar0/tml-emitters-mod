@@ -57,7 +57,7 @@ namespace Emitters {
 		////
 
 		public override void PostSetupContent() {
-			if( !Main.dedServ ) {
+			if( !Main.dedServ && Main.netMode != 2 ) {
 				this.EmitterTex = this.GetTexture( "Definitions/Emitter" );
 				this.SoundEmitterTex = this.GetTexture( "Definitions/SoundEmitter" );
 				this.HologramTex = this.GetTexture( "Definitions/Hologram" );
@@ -81,7 +81,6 @@ namespace Emitters {
 		//		},
 		//			InterfaceScaleType.UI)
 		//		);
-
 		//}
 	}
 }

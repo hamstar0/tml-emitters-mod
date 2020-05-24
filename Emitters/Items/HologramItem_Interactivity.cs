@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.GameContent.UI;
 using static Terraria.ModLoader.ModContent;
 using HamstarHelpers.Services.Timers;
 using HamstarHelpers.Helpers.Items;
@@ -23,9 +24,10 @@ namespace Emitters.Items {
 		////////////////
 
 		public static bool CanViewHolograms( Player plr ) {
-			return plr.HeldItem != null
-				&& !plr.HeldItem.IsAir
-				&& plr.HeldItem.type == ModContent.ItemType<HologramItem>();
+			return WiresUI.Settings.DrawWires || (
+					plr.HeldItem != null
+					&& !plr.HeldItem.IsAir
+					&& plr.HeldItem.type == ModContent.ItemType<HologramItem>() );
 		}
 
 

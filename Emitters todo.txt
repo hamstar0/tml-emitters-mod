@@ -22,9 +22,9 @@ v1.3
 -	Add hologram modes (NPC, item, projectile)
 -	Add shader modes
 -	Add tabs
+
 v1.2
 -	Show all emitter/holograms while in wire mode
-
 -	Re-implement color and alpha for CRT fx
 -	Add hologram CRT fx dialog field (imported from Chloe)
 -	Fix wire activations
