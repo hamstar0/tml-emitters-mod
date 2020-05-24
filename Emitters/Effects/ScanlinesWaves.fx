@@ -13,7 +13,8 @@ float3 uLightSource;
 float2 uImageSize0;
 float2 uImageSize1;
 int count;
-float4 Scanlines(float4 sampleColor : COLOR0, float2 coords : TEXCOORD0) : COLOR0
+
+float4 ScanlinesWaves( float4 sampleColor : COLOR0, float2 coords : TEXCOORD0 ) : COLOR0
 {
     float4 color = tex2D(uImage0, coords);
     float wave = 1 - frac(coords.x + uTime * 0.5f);
@@ -28,8 +29,8 @@ float4 Scanlines(float4 sampleColor : COLOR0, float2 coords : TEXCOORD0) : COLOR
 
 technique Technique1
 {
-    pass Scanlines
+    pass ScanlinesWaves
     {
-        PixelShader = compile ps_2_0 Scanlines();
+        PixelShader = compile ps_2_0 ScanlinesWaves();
     }
 }
