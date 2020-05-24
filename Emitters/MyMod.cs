@@ -22,6 +22,7 @@ namespace Emitters {
 		internal Texture2D EmitterTex;
 		internal Texture2D SoundEmitterTex;
 		internal Texture2D HologramTex;
+		internal Effect HologramFX;
 
 		internal UIEmitterEditorDialog EmitterEditorDialog;
 		internal UISoundEmitterEditorDialog SoundEmitterEditorDialog;
@@ -35,12 +36,17 @@ namespace Emitters {
 		}
 
 		public override void Load() {
-			if( !Main.dedServ ) {
+			if( !Main.dedServ && Main.netMode != 2 ) {
 				this.EmitterEditorDialog = new UIEmitterEditorDialog();
 				this.SoundEmitterEditorDialog = new UISoundEmitterEditorDialog();
 				this.HologramEditorDialog = new UIHologramEditorDialog();
+
+				this.HologramFX = this.GetEffect( "Effects/ScanlinesCRT" );
+				//var scanlinesCRT = new Ref<Effect>( this.HologramFX );
+				//GameShaders.Misc["Emitters:ScanlinesPS"] = new MiscShaderData( scanlinesCRT, "P0" )
+				//	.UseImage( "Images/Misc/Perlin" );	//?
 			}
-			
+
 			IL.Terraria.Wiring.HitWireSingle += HookWireHit;
 		}
 
@@ -51,7 +57,7 @@ namespace Emitters {
 		////
 
 		public override void PostSetupContent() {
-			if( !Main.dedServ ) {
+			if( !Main.dedServ && Main.netMode != 2 ) {
 				this.EmitterTex = this.GetTexture( "Definitions/Emitter" );
 				this.SoundEmitterTex = this.GetTexture( "Definitions/SoundEmitter" );
 				this.HologramTex = this.GetTexture( "Definitions/Hologram" );
@@ -75,7 +81,6 @@ namespace Emitters {
 		//		},
 		//			InterfaceScaleType.UI)
 		//		);
-
 		//}
 	}
 }

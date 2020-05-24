@@ -9,6 +9,7 @@ using HamstarHelpers.Classes.UI.Elements.Slider;
 using HamstarHelpers.Helpers.Debug;
 using HamstarHelpers.Services.Timers;
 
+
 namespace Emitters.UI {
 	partial class UIHologramEditorDialog : UIDialog {
 		public override void InitializeComponents() {
@@ -31,6 +32,7 @@ namespace Emitters.UI {
 			this.InitializeWidgetsForFrameEnd( ref yOffset );
 			this.InitializeWidgetsForFrameRateTicks( ref yOffset );
 			this.InitializeWidgetsForWorldLighting( ref yOffset );
+			this.InitializeWidgetsForCrtEffect( ref yOffset );
 			yOffset -= 15f;
 
 			var applyButton = new UITextPanelButton( UITheme.Vanilla, "Apply" );
@@ -75,8 +77,8 @@ namespace Emitters.UI {
 			this.TypeSliderElem.Width.Set( -64f, 1f );
 			this.TypeSliderElem.SetValue( 1f );
 			this.TypeSliderElem.PreOnChange += ( value ) => {
-				this.FrameStartSliderElem.SetRange( 0f, (float)(Main.npcFrameCount[(int)value] - 1) );
-				this.FrameEndSliderElem.SetRange( 0f, (float)(Main.npcFrameCount[(int)value] - 1) );
+				this.FrameStartSliderElem.SetRange( 0f, (float)( Main.npcFrameCount[(int)value] - 1 ) );
+				this.FrameEndSliderElem.SetRange( 0f, (float)( Main.npcFrameCount[(int)value] - 1 ) );
 				return value;
 			};
 			yOffset += 28f;
@@ -191,14 +193,14 @@ namespace Emitters.UI {
 			this.DirectionSliderElem.Left.Set( 96f, 0f );
 			this.DirectionSliderElem.Width.Set( -96f, 1f );
 			this.DirectionSliderElem.SetValue( 1f );
-			this.DirectionSliderElem.PreOnChange += (value) => {
-				bool isRepeat = Timers.GetTimerTickDuration("HologramDirectionRepeat") >= 1;
+			this.DirectionSliderElem.PreOnChange += ( value ) => {
+				bool isRepeat = Timers.GetTimerTickDuration( "HologramDirectionRepeat" ) >= 1;
 				Timers.SetTimer( "HologramDirectionRepeat", 2, true, () => false );
 				if( isRepeat ) {
 					return null;
 				}
 
-				if( this.DirectionSliderElem.RememberedInputValue < 0f ) {
+				if( this.DirectionSliderElem.RememberedInputValue < 0f && this.DirectionSliderElem.RememberedInputValue != value ) {
 					value = 1f;
 				} else {
 					value = -1f;
@@ -237,8 +239,8 @@ namespace Emitters.UI {
 				hoverText: "",
 				isInt: true,
 				ticks: 0,
-				minRange: -256f,	//0f
-				maxRange: 256f );	//15f
+				minRange: -256f,    //0f
+				maxRange: 256f );    //15f
 			this.OffsetXSliderElem.Top.Set( yOffset, 0f );
 			this.OffsetXSliderElem.Left.Set( 96f, 0f );
 			this.OffsetXSliderElem.Width.Set( -96f, 1f );
@@ -256,8 +258,8 @@ namespace Emitters.UI {
 				hoverText: "",
 				isInt: true,
 				ticks: 0,
-				minRange: -256f,	//0f
-				maxRange: 256f );	//15f
+				minRange: -256f,    //0f
+				maxRange: 256f );    //15f
 			this.OffsetYSliderElem.Top.Set( yOffset, 0f );
 			this.OffsetYSliderElem.Left.Set( 96f, 0f );
 			this.OffsetYSliderElem.Width.Set( -96f, 1f );
@@ -276,7 +278,7 @@ namespace Emitters.UI {
 				isInt: true,
 				ticks: 0,
 				minRange: 0f,
-				maxRange: (float)(Main.npcFrameCount[1] - 1) );
+				maxRange: (float)( Main.npcFrameCount[1] - 1 ) );
 			this.FrameStartSliderElem.Top.Set( yOffset, 0f );
 			this.FrameStartSliderElem.Left.Set( 96f, 0f );
 			this.FrameStartSliderElem.Width.Set( -96f, 1f );
@@ -301,7 +303,7 @@ namespace Emitters.UI {
 				isInt: true,
 				ticks: 0,
 				minRange: 0f,
-				maxRange: (float)(Main.npcFrameCount[1] - 1) );
+				maxRange: (float)( Main.npcFrameCount[1] - 1 ) );
 			this.FrameEndSliderElem.Top.Set( yOffset, 0f );
 			this.FrameEndSliderElem.Left.Set( 96f, 0f );
 			this.FrameEndSliderElem.Width.Set( -96f, 1f );
@@ -343,6 +345,14 @@ namespace Emitters.UI {
 			yOffset += 28f;
 
 			this.InnerContainer.Append( (UIElement)this.WorldLightingCheckbox );
+		}
+		private void InitializeWidgetsForCrtEffect( ref float yOffset ) {
+			this.CRTEffectCheckbox = new UICheckbox( UITheme.Vanilla, "CRT Effect", "" );
+			this.CRTEffectCheckbox.Top.Set( yOffset, 0f );
+			this.CRTEffectCheckbox.Selected = true;
+			yOffset += 28f;
+
+			this.InnerContainer.Append( (UIElement)this.CRTEffectCheckbox );
 		}
 	}
 }

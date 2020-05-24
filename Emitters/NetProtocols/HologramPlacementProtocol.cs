@@ -43,6 +43,7 @@ namespace Emitters.NetProtocols {
 		public int FrameEnd;
 		public int FrameRateTicks;
 		public bool WorldLight;
+		public bool CrtEffect;
 		public bool IsActivated;
 
 
@@ -67,8 +68,9 @@ namespace Emitters.NetProtocols {
 				out this.FrameEnd,
 				out this.FrameRateTicks,
 				out this.WorldLight,
+				out this.CrtEffect,
 				out this.IsActivated
-			);
+			) ;
 
 			this.FromWho = fromWho;
 			this.TileX = tileX;
@@ -91,6 +93,7 @@ namespace Emitters.NetProtocols {
 			frameEnd: this.FrameEnd,
 			frameRateTicks: this.FrameRateTicks,
 			worldLight: this.WorldLight,
+			crtEffect: this.CrtEffect,
 			isActivated: this.IsActivated
 		);
 

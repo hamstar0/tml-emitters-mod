@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.GameContent.UI;
 using HamstarHelpers.Services.Timers;
 using HamstarHelpers.Helpers.Items;
 using HamstarHelpers.Helpers.Players;
@@ -22,9 +23,10 @@ namespace Emitters.Items {
 		////////////////
 
 		public static bool CanViewEmitters( Player plr ) {
-			return plr.HeldItem != null
-				&& !plr.HeldItem.IsAir
-				&& plr.HeldItem.type == ModContent.ItemType<EmitterItem>();
+			return WiresUI.Settings.DrawWires || (
+					plr.HeldItem != null
+					&& !plr.HeldItem.IsAir
+					&& plr.HeldItem.type == ModContent.ItemType<EmitterItem>() );
 		}
 
 

@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using HamstarHelpers.Helpers.Debug;
 using HamstarHelpers.Helpers.UI;
 using HamstarHelpers.Helpers.XNA;
 using Emitters.Items;
@@ -19,7 +18,7 @@ namespace Emitters.Definitions {
 		////////////////
 
 		public void Draw( int tileX, int tileY, bool isOnScreen ) {
-			var wldPos = new Vector2( (tileX<<4)+8, (tileY<<4)+8 );
+			var wldPos = new Vector2( (tileX << 4) + 8, (tileY << 4) + 8 );
 			this.AnimateHologram( wldPos, false );
 
 			if( isOnScreen && HologramItem.CanViewHolograms( Main.LocalPlayer ) ) {
@@ -31,7 +30,7 @@ namespace Emitters.Definitions {
 		////////////////
 
 		public void DrawHologramTile( int tileX, int tileY ) {
-			Vector2 scr = UIHelpers.ConvertToScreenPosition( new Vector2(tileX<<4, tileY<<4) );
+			Vector2 scr = UIHelpers.ConvertToScreenPosition( new Vector2( tileX << 4, tileY << 4 ) );
 			Texture2D tex = EmittersMod.Instance.HologramTex;
 
 			Main.spriteBatch.Draw(
@@ -47,7 +46,6 @@ namespace Emitters.Definitions {
 			);
 
 		}
-
 
 		////////////////
 
@@ -67,11 +65,73 @@ namespace Emitters.Definitions {
 				return;
 			}
 
-			int npcType = this.Type.Type;
-			int frameCount = Main.npcFrameCount[ npcType ];
+			Main.instance.LoadNPC( this.Type.Type );
 
-			Main.instance.LoadNPC( npcType );
-			Texture2D npcTexture = Main.npcTexture[ npcType ];
+			if( this.CrtEffect ) {
+				this.CRTEffectBegin();
+			}
+
+			try {
+				this.DrawHologramRaw( worldPos, isUI );
+			} finally {
+				if( this.CrtEffect ) {
+					this.CRTEffectEnd();
+				}
+			}
+		}
+
+
+		///////////
+
+		public void CRTEffectBegin() {
+			Texture2D tex = Main.npcTexture[ this.Type.Type ];
+			Effect fx = EmittersMod.Instance.HologramFX;
+
+			Color color = this.Color;
+			color.A = this.Alpha;
+
+			fx.Parameters["TexWidth"].SetValue( (float)tex.Width * this.Scale );
+			fx.Parameters["TexHeight"].SetValue( (float)tex.Height * this.Scale );
+			fx.Parameters["RandValue"].SetValue( Main.rand.NextFloat() );
+			fx.Parameters["Time"].SetValue( Main.GlobalTime % 3600f );
+
+			fx.Parameters["Frame"].SetValue( (float)this.CurrentFrame );
+			fx.Parameters["FrameMax"].SetValue( (float)Main.npcFrameCount[this.Type.Type] );
+
+			fx.Parameters["UserColor"].SetValue( color.ToVector4() );
+
+			Main.spriteBatch.End();
+			/*Main.spriteBatch.Begin(
+				SpriteSortMode.Immediate,
+				BlendState.AlphaBlend,
+				Main.DefaultSamplerState,
+				DepthStencilState.None,
+				Main.instance.Rasterizer,
+				fx
+			);*/
+			Main.spriteBatch.Begin(
+				SpriteSortMode.Immediate,
+				BlendState.AlphaBlend,
+				SamplerState.LinearClamp,
+				DepthStencilState.Default,
+				RasterizerState.CullNone,
+				fx
+				//Main.GameViewMatrix.ZoomMatrix
+			);
+		}
+
+		public void CRTEffectEnd() {
+			Main.spriteBatch.End();
+			Main.spriteBatch.Begin();
+		}
+
+
+		////
+
+		public void DrawHologramRaw( Vector2 worldPos, bool isUI ) {
+			int npcType = this.Type.Type;
+			Texture2D npcTexture = Main.npcTexture[npcType];
+			int frameCount = Main.npcFrameCount[npcType];
 			int frameHeight = npcTexture.Height / frameCount;
 
 			Color color = this.Color;
@@ -87,7 +147,7 @@ namespace Emitters.Definitions {
 			Vector2 scrPos;
 
 			if( this.WorldLighting ) {
-				color = Lighting.GetColor( (int)(worldPos.X/16f), (int)(worldPos.Y/16f) );
+				color = Lighting.GetColor( (int)( worldPos.X / 16f ), (int)( worldPos.Y / 16f ) );
 				color = XNAColorHelpers.Mul( color, this.Color );
 			}
 			color *= (float)this.Alpha / 255f;
@@ -95,11 +155,14 @@ namespace Emitters.Definitions {
 			if( isUI ) {
 				scrPos = worldPos - Main.screenPosition;
 				//scrPos.X -= npcTexture.Width;
+				scrPos.X += this.OffsetX;
+				scrPos.Y += this.OffsetY;
+				scrPos *= Main.GameZoomTarget;
 			} else {
 				scrPos = UIHelpers.ConvertToScreenPosition( worldPos );
+				scrPos.X += this.OffsetX;
+				scrPos.Y += this.OffsetY;
 			}
-			scrPos.X += this.OffsetX;
-			scrPos.Y += this.OffsetY;
 
 			if( this.Direction == -1 ) {
 				effects = SpriteEffects.FlipHorizontally;

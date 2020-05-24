@@ -13,17 +13,21 @@ v2
 -	Add shader field for holograms?
 -	Add hologram presets
 -	Add emitter presets
+v1.4
+-	Add search function
+-	Add rotation animation dialog field
 v1.3
 -	Hide inapplicable fields for gores
 -	Render emitters on top of dusts and gores when in add/remove mode
--	Add rotation animation dialog field
--	Add hologram flicker fx dialog field
 -	Add hologram modes (NPC, item, projectile)
-v1.2
--	Fix dust 'no light' flag
--	Show all emitter/holograms while in wire mode
--	Fix wire activations
+-	Add shader modes
+-	Add tabs
 
+v1.2
+-	Show all emitter/holograms while in wire mode
+-	Re-implement color and alpha for CRT fx
+-	Add hologram CRT fx dialog field (imported from Chloe)
+-	Fix wire activations
 -	Add hologram sprites
 -	Add frame ranges and rate dialog fields
 -	@UISlider fixes

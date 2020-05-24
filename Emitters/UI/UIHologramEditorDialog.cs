@@ -27,7 +27,7 @@ namespace Emitters.UI {
 		private UISlider FrameEndSliderElem;
 		private UISlider FrameRateTicksSliderElem;
 		private UICheckbox WorldLightingCheckbox;
-
+		private UICheckbox CRTEffectCheckbox;
 		////
 
 		private Item HologramItem = null;
@@ -55,6 +55,7 @@ namespace Emitters.UI {
 				frameEnd: (int)this.FrameEndSliderElem.RememberedInputValue,
 				frameRateTicks: (int)this.FrameRateTicksSliderElem.RememberedInputValue,
 				worldLight: this.WorldLightingCheckbox.Selected,
+				crtEffect: this.CRTEffectCheckbox.Selected,
 				isActivated: true
 			);
 		}
@@ -96,6 +97,7 @@ namespace Emitters.UI {
 			this.FrameEndSliderElem.SetValue(myitem.Def.FrameEnd);
 			this.FrameRateTicksSliderElem.SetValue(myitem.Def.FrameRateTicks);
 			this.WorldLightingCheckbox.Selected = myitem.Def.WorldLighting;
+			this.CRTEffectCheckbox.Selected = myitem.Def.CrtEffect;
 		}
 
 

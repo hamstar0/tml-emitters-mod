@@ -10,7 +10,7 @@ using Emitters.Definitions;
 namespace Emitters {
 	public partial class EmittersWorld : ModWorld {
 		public void AddEmitter( EmitterDefinition def, ushort tileX, ushort tileY ) {
-			if( ( tileX < 0 || tileX >= Main.maxTilesX ) || ( tileY < 0 || tileY >= Main.maxTilesY ) ) {
+			if( (tileX < 0 || tileX >= Main.maxTilesX) || (tileY < 0 || tileY >= Main.maxTilesY) ) {
 				throw new ModHelpersException( "Cannot place emitter outside of world." );
 			}
 			//Main.NewText( def.ToString() );
@@ -29,7 +29,7 @@ namespace Emitters {
 		////////////////
 
 		public void AddSoundEmitter( SoundEmitterDefinition def, ushort tileX, ushort tileY ) {
-			if( ( tileX < 0 || tileX >= Main.maxTilesX ) || ( tileY < 0 || tileY >= Main.maxTilesY ) ) {
+			if( (tileX < 0 || tileX >= Main.maxTilesX) || (tileY < 0 || tileY >= Main.maxTilesY) ) {
 				throw new ModHelpersException( "Cannot place sound emitter outside of world." );
 			}
 			//Main.NewText( def.ToString() );
