@@ -25,6 +25,7 @@ namespace Emitters.Definitions {
 				frameEnd: (int)reader.ReadUInt16(),
 				frameRateTicks: (int)reader.ReadUInt16(),
 				worldLight: (bool)reader.ReadBoolean(),
+				crtEffect: (bool)reader.ReadBoolean(),
 				isActivated: (bool)reader.ReadBoolean()
 			);
 		}
@@ -44,6 +45,7 @@ namespace Emitters.Definitions {
 			writer.Write( (ushort)def.FrameEnd );
 			writer.Write( (ushort)def.FrameRateTicks );
 			writer.Write( (bool)def.WorldLighting );
+			writer.Write( (bool)def.CrtEffect );
 			writer.Write( (bool)def.IsActivated );
 		}
 
@@ -63,6 +65,7 @@ namespace Emitters.Definitions {
 		public int FrameEnd { get; set; }
 		public int FrameRateTicks { get; set; }
 		public bool WorldLighting { get; set; }
+		public bool CrtEffect { get; set; }
 
 		////
 
@@ -87,6 +90,7 @@ namespace Emitters.Definitions {
 			this.FrameEnd = copy.FrameEnd;
 			this.FrameRateTicks = copy.FrameRateTicks;
 			this.WorldLighting = copy.WorldLighting;
+			this.CrtEffect = copy.CrtEffect;
 			this.IsActivated = copy.IsActivated;
 
 			this.CurrentFrame = this.FrameStart;
@@ -105,6 +109,7 @@ namespace Emitters.Definitions {
 					int frameEnd,
 					int frameRateTicks,
 					bool worldLight,
+					bool crtEffect,
 					bool isActivated ) {
 			this.Type = new NPCDefinition( type );
 			this.Scale = scale;
@@ -118,6 +123,7 @@ namespace Emitters.Definitions {
 			this.FrameEnd = frameEnd;
 			this.FrameRateTicks = frameRateTicks;
 			this.WorldLighting = worldLight;
+			this.CrtEffect = crtEffect;
 			this.IsActivated = isActivated;
 
 			this.CurrentFrame = frameStart;

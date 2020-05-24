@@ -17,6 +17,7 @@ namespace Emitters.Definitions {
 					out int frameEnd,
 					out int frameRateTicks,
 					out bool worldLight,
+					out bool crtEffect,
 					out bool isActivated ) {
 			type = this.Type.Type;
 			scale = this.Scale;
@@ -30,6 +31,7 @@ namespace Emitters.Definitions {
 			frameEnd = this.FrameEnd;
 			frameRateTicks = this.FrameRateTicks;
 			worldLight = this.WorldLighting;
+			crtEffect = this.CrtEffect;
 			isActivated = this.IsActivated;
 		}
 
@@ -48,6 +50,7 @@ namespace Emitters.Definitions {
 					out int frameEnd,
 					out int frameRateTicks,
 					out bool worldLight,
+					out bool crtEffect,
 					out bool isActivated ) {
 			Color color;
 			this.Output(
@@ -63,6 +66,7 @@ namespace Emitters.Definitions {
 				out frameEnd,
 				out frameRateTicks,
 				out worldLight,
+				out crtEffect,
 				out isActivated
 			);
 			colorR = color.R;
@@ -126,6 +130,7 @@ namespace Emitters.Definitions {
 				+/*"\n"+*/" Offset: " + this.RenderOffset() + ", "
 				+/*"\n"+*/" Frame: " + this.RenderFrame() + ", "
 				+/*"\n"+*/" WorldLight: " + this.WorldLighting + ", "
+				+/*"\n"+*/" CRTEffect: " + this.CrtEffect + ", "
 				+/*"\n"+*/" IsActivated: " + this.IsActivated;
 		}
 	}
