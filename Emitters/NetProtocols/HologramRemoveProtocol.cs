@@ -1,5 +1,4 @@
 ﻿using HamstarHelpers.Classes.Protocols.Packet.Interfaces;
-using System;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;

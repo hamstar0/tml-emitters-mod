@@ -1,11 +1,10 @@
-﻿using System;
-using Microsoft.Xna.Framework;
-
+﻿using Microsoft.Xna.Framework;
 
 namespace Emitters.Definitions {
 	public partial class HologramDefinition {
 		public void Output(
 					out int type,
+					out int mode,
 					out float scale,
 					out Color color,
 					out byte alpha,
@@ -19,7 +18,8 @@ namespace Emitters.Definitions {
 					out bool worldLight,
 					out bool crtEffect,
 					out bool isActivated ) {
-			type = this.Type.Type;
+			type = this.Type;
+			mode = this.Mode;
 			scale = this.Scale;
 			color = this.Color;
 			alpha = this.Alpha;
@@ -37,6 +37,7 @@ namespace Emitters.Definitions {
 
 		public void Output(
 					out int type,
+					out int mode,
 					out float scale,
 					out byte colorR,
 					out byte colorG,
@@ -55,6 +56,7 @@ namespace Emitters.Definitions {
 			Color color;
 			this.Output(
 				out type,
+				out mode,
 				out scale,
 				out color,
 				out alpha,
@@ -79,6 +81,10 @@ namespace Emitters.Definitions {
 
 		public string RenderType() {
 			return this.Type.ToString();
+		}
+		public string RenderMode()
+		{
+			return this.Mode.ToString();
 		}
 		public string RenderScale() {
 			return (this.Scale * 100f).ToString( "N0" );
@@ -122,6 +128,7 @@ namespace Emitters.Definitions {
 		public override string ToString() {
 			return "Emitter Definition:"
 				+/*"\n"+*/" Type: " + this.RenderType() + ", "
+				+/*"\n"+*/" Mode: " + this.RenderType() + ", "
 				+/*"\n"+*/" Scale: " + this.RenderScale() + ", "
 				+/*"\n"+*/" Color: " + this.RenderColor() + ", "
 				+/*"\n"+*/" Alpha: " + this.RenderAlpha() + ", "

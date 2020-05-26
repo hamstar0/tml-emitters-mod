@@ -103,16 +103,16 @@ namespace Emitters.Items {
 			}
 
 			var typeTip = new TooltipLine( this.mod, "SndEmitterType", " Type: " + this.Def?.RenderType() );
-			var VolumeTip = new TooltipLine( this.mod, "SndEmitterVolume", " Volume: " + this.Def?.RenderVolume() );
+			var volumeTip = new TooltipLine( this.mod, "SndEmitterVolume", " Volume: " + this.Def?.RenderVolume() );
 			var delayTip = new TooltipLine( this.mod, "SndEmitterDelay", " Delay: " + this.Def?.RenderDelay() );
 
 			var color = Color.White * 0.75f;
 			typeTip.overrideColor = color;
-			VolumeTip.overrideColor = color;
+			volumeTip.overrideColor = color;
 			delayTip.overrideColor = color;
 
 			tooltips.Add( typeTip );
-			tooltips.Add( VolumeTip );
+			tooltips.Add( volumeTip );
 			tooltips.Add( delayTip );
 		}
 

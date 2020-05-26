@@ -1,12 +1,9 @@
-﻿using System;
-using Terraria;
+﻿using Terraria;
 using Terraria.UI;
 using Terraria.GameContent.UI.Elements;
-using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Classes.UI.Theme;
 using HamstarHelpers.Classes.UI.Elements;
 using HamstarHelpers.Classes.UI.Elements.Slider;
-using HamstarHelpers.Helpers.Debug;
 using HamstarHelpers.Services.Timers;
 
 
@@ -20,6 +17,7 @@ namespace Emitters.UI {
 			this.InnerContainer.Append( (UIElement)textElem );
 			yOffset += 48f;
 
+			this.InitializeWidgetsForMode(ref yOffset);
 			this.InitializeWidgetsForType( ref yOffset );
 			this.InitializeWidgetsForScale( ref yOffset );
 			this.InitializeWidgetsForColor( ref yOffset );
@@ -33,7 +31,7 @@ namespace Emitters.UI {
 			this.InitializeWidgetsForFrameRateTicks( ref yOffset );
 			this.InitializeWidgetsForWorldLighting( ref yOffset );
 			this.InitializeWidgetsForCrtEffect( ref yOffset );
-			yOffset -= 15f;
+			yOffset -= 40f;
 
 			var applyButton = new UITextPanelButton( UITheme.Vanilla, "Apply" );
 			applyButton.Top.Set( yOffset, 0f );
@@ -61,13 +59,35 @@ namespace Emitters.UI {
 		}
 
 		////
+		private void InitializeWidgetsForMode(ref float yOffset)
+		{
+			this.InitializeComponentForTitle("Mode:", false, ref yOffset);
+
+			this.ModeSliderElem = new UISlider(
+				theme: UITheme.Vanilla,
+				hoverText: "",
+				isInt: true,
+				ticks: 0,
+				minRange: 1f,
+				maxRange: 3f);
+			this.ModeSliderElem.Top.Set(yOffset, 0f);
+			this.ModeSliderElem.Left.Set(64f, 0f);
+			this.ModeSliderElem.Width.Set(-64f, 1f);
+			this.ModeSliderElem.SetValue(1f);
+			this.ModeSliderElem.PreOnChange += (value) => {
+				this.SetHologramMode((int)value);
+				return value;
+			};
+			yOffset += 28f;
+
+			this.InnerContainer.Append((UIElement)this.ModeSliderElem);
+		}
 
 		private void InitializeWidgetsForType( ref float yOffset ) {
 			this.InitializeComponentForTitle( "Type:", false, ref yOffset );
-
 			this.TypeSliderElem = new UISlider(
 				theme: UITheme.Vanilla,
-				hoverText: "",
+				hoverText:"",
 				isInt: true,
 				ticks: 0,
 				minRange: 1f,
@@ -76,13 +96,14 @@ namespace Emitters.UI {
 			this.TypeSliderElem.Left.Set( 64f, 0f );
 			this.TypeSliderElem.Width.Set( -64f, 1f );
 			this.TypeSliderElem.SetValue( 1f );
-			this.TypeSliderElem.PreOnChange += ( value ) => {
-				this.FrameStartSliderElem.SetRange( 0f, (float)( Main.npcFrameCount[(int)value] - 1 ) );
-				this.FrameEndSliderElem.SetRange( 0f, (float)( Main.npcFrameCount[(int)value] - 1 ) );
+			this.TypeSliderElem.PreOnChange += (value) =>
+			{
+				int mode = (int) ModeSliderElem.RememberedInputValue;
+				this.FrameStartSliderElem.SetRange(0f, (float) (EmitterUtils.GetFrameCount(mode, (int) value) - 1));
+				this.FrameEndSliderElem.SetRange(0f, (float) (EmitterUtils.GetFrameCount(mode, (int) value) - 1));
 				return value;
 			};
 			yOffset += 28f;
-
 			this.InnerContainer.Append( (UIElement)this.TypeSliderElem );
 		}
 
@@ -349,7 +370,7 @@ namespace Emitters.UI {
 		private void InitializeWidgetsForCrtEffect( ref float yOffset ) {
 			this.CRTEffectCheckbox = new UICheckbox( UITheme.Vanilla, "CRT Effect", "" );
 			this.CRTEffectCheckbox.Top.Set( yOffset, 0f );
-			this.CRTEffectCheckbox.Selected = true;
+			this.CRTEffectCheckbox.Selected = false;
 			yOffset += 28f;
 
 			this.InnerContainer.Append( (UIElement)this.CRTEffectCheckbox );

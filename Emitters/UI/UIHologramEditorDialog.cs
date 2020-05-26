@@ -1,18 +1,22 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Classes.UI.Theme;
 using HamstarHelpers.Classes.UI.Elements;
 using HamstarHelpers.Classes.UI.Elements.Slider;
-using HamstarHelpers.Helpers.Debug;
 using Emitters.Items;
 using Emitters.Definitions;
 
 
-namespace Emitters.UI {
-	partial class UIHologramEditorDialog : UIDialog {
+namespace Emitters.UI
+{
+	partial class UIHologramEditorDialog : UIDialog
+	{
+
+		private int HologramMod => (int)this.ModeSliderElem.RememberedInputValue;
+
+		private UISlider ModeSliderElem;
 		private UISlider TypeSliderElem;
 		private UISlider ScaleSliderElem;
 		private UISlider HueSliderElem;
@@ -43,6 +47,7 @@ namespace Emitters.UI {
 
 		public HologramDefinition CreateHologramDefinition() {
 			return new HologramDefinition(
+				mode: (int)this.ModeSliderElem.RememberedInputValue,
 				type: (int)this.TypeSliderElem.RememberedInputValue,
 				scale: this.ScaleSliderElem.RememberedInputValue,
 				color: this.GetColor(),
@@ -83,7 +88,8 @@ namespace Emitters.UI {
 
 			Vector3 hsl = Main.rgbToHsl( myitem.Def.Color );
 
-			this.TypeSliderElem.SetValue( myitem.Def.Type.Type );
+			this.ModeSliderElem.SetValue(myitem.Def.Mode);
+			this.TypeSliderElem.SetValue( myitem.Def.Type );
 			this.ScaleSliderElem.SetValue( myitem.Def.Scale );
 			this.HueSliderElem.SetValue( hsl.X );
 			this.SaturationSliderElem.SetValue( hsl.Y );
@@ -132,14 +138,10 @@ namespace Emitters.UI {
 
 		public override void Draw( SpriteBatch sb ) {
 			base.Draw( sb );
-
 			HologramDefinition def = this.CreateHologramDefinition();
 			def.CurrentFrame = this.CachedHologramDef?.CurrentFrame ?? 0;
 			def.CurrentFrameElapsedTicks = this.CachedHologramDef?.CurrentFrameElapsedTicks ?? 0;
 			this.CachedHologramDef = def;
-
-			Main.instance.LoadNPC( def.Type.Type );
-
 			def.AnimateHologram( Main.MouseWorld, true );
 		}
 	}

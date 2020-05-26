@@ -29,6 +29,7 @@ namespace Emitters.NetProtocols {
 		public ushort TileX;
 		public ushort TileY;
 
+		public int Mode;
 		public int Type;
 		public float Scale;
 		public byte ColorR;
@@ -54,6 +55,7 @@ namespace Emitters.NetProtocols {
 
 		private HologramPlacementProtocol( int fromWho, HologramDefinition def, ushort tileX, ushort tileY ) {
 			def.Output(
+				out this.Mode,
 				out this.Type,
 				out this.Scale,
 				out this.ColorR,
@@ -81,6 +83,7 @@ namespace Emitters.NetProtocols {
 		////////////////
 
 		private HologramDefinition GetNewHologram() => new HologramDefinition(
+			mode: this.Mode,
 			type: this.Type,
 			scale: this.Scale,
 			color: new Color(this.ColorR, this.ColorG, this.ColorB),

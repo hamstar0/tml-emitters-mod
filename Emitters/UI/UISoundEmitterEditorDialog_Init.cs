@@ -1,9 +1,7 @@
-﻿using System;
-using Terraria;
+﻿using Terraria;
 using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.GameContent.UI.Elements;
-using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Classes.UI.Theme;
 using HamstarHelpers.Classes.UI.Elements;
 using HamstarHelpers.Classes.UI.Elements.Slider;
@@ -168,7 +166,7 @@ namespace Emitters.UI {
 				this.StyleSliderElem.SetRange( 0f, (float)SoundLoader.SoundCount(SoundType.Item) );	//125f
 				break;
 			case 3:
-				this.StyleSliderElem.SetRange( 0f, (float)SoundLoader.SoundCount(SoundType.NPCHit) );	//57f
+				this.StyleSliderElem.SetRange( 1f, (float)SoundLoader.SoundCount(SoundType.NPCHit) );	//57f
 				break;
 			case 4:
 				this.StyleSliderElem.SetRange( 0f, (float)SoundLoader.SoundCount(SoundType.NPCKilled) ); //62f

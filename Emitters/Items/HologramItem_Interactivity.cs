@@ -3,7 +3,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent.UI;
-using static Terraria.ModLoader.ModContent;
 using HamstarHelpers.Services.Timers;
 using HamstarHelpers.Helpers.Items;
 using HamstarHelpers.Helpers.Players;
