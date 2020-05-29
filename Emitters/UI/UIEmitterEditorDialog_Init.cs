@@ -1,5 +1,4 @@
-﻿using System;
-using Terraria;
+﻿using Terraria;
 using Terraria.UI;
 using Terraria.ModLoader;
 using Terraria.GameContent.UI.Elements;

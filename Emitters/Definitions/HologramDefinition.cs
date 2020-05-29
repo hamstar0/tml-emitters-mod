@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using Microsoft.Xna.Framework;
-using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 
 
@@ -9,6 +11,7 @@ namespace Emitters.Definitions {
 	public partial class HologramDefinition {
 		public static HologramDefinition Read( BinaryReader reader ) {
 			return new HologramDefinition(
+				mode: (int)reader.ReadInt16(),
 				type: (int)reader.ReadUInt16(),
 				scale: (float)reader.ReadSingle(),
 				color: new Color(
@@ -31,7 +34,8 @@ namespace Emitters.Definitions {
 		}
 
 		public static void Write( HologramDefinition def, BinaryWriter writer ) {
-			writer.Write( (ushort)def.Type.Type );
+			writer.Write((ushort)def.Mode);
+			writer.Write( (ushort)def.Type );
 			writer.Write( (float)def.Scale );
 			writer.Write( (byte)def.Color.R );
 			writer.Write( (byte)def.Color.G );
@@ -49,11 +53,10 @@ namespace Emitters.Definitions {
 			writer.Write( (bool)def.IsActivated );
 		}
 
-
-
 		////////////////
 
-		public NPCDefinition Type { get; set; }
+		public int Mode { get ; set; }
+		public int Type { get; set; }
 		public float Scale { get; set; }
 		public Color Color { get; set; }
 		public byte Alpha { get; set; }
@@ -71,13 +74,27 @@ namespace Emitters.Definitions {
 
 		public bool IsActivated { get; set; } = true;
 
-
+		
+		public object SetHologramType()
+		{
+			switch (this.Mode)
+			{
+				case 1:
+					return new NPCDefinition[this.Type];
+				case 2:
+					return new ItemDefinition[this.Type];
+				case 3:
+					return new NPCDefinition[this.Type];
+			}
+			return new object();
+		}
 
 		////////////////
 
 		public HologramDefinition() { }
 
 		public HologramDefinition( HologramDefinition copy ) {
+			this.Mode = copy.Mode;
 			this.Type = copy.Type;
 			this.Scale = copy.Scale;
 			this.Color = copy.Color;
@@ -97,6 +114,7 @@ namespace Emitters.Definitions {
 		}
 
 		public HologramDefinition(
+					int mode,
 					int type,
 					float scale,
 					Color color,
@@ -110,8 +128,10 @@ namespace Emitters.Definitions {
 					int frameRateTicks,
 					bool worldLight,
 					bool crtEffect,
-					bool isActivated ) {
-			this.Type = new NPCDefinition( type );
+					bool isActivated )
+		{
+			this.Mode = mode;
+			this.Type = type;
 			this.Scale = scale;
 			this.Color = color;
 			this.Alpha = alpha;
@@ -143,15 +163,42 @@ namespace Emitters.Definitions {
 			if( ++this.CurrentFrameElapsedTicks <= this.FrameRateTicks ) {
 				return;
 			}
-
-			int frameCount = Main.npcFrameCount[this.Type.Type];
-
+			int frameCount = EmitterUtils.GetFrameCount(this.Mode,this.Type);
 			this.CurrentFrame++;
 			this.CurrentFrameElapsedTicks = 0;
 
-			if( ( this.CurrentFrame > this.FrameEnd ) || ( this.CurrentFrame >= frameCount ) ) {
+			if ((this.CurrentFrame > this.FrameEnd) || (this.CurrentFrame >= frameCount))
+			{
 				this.CurrentFrame = this.FrameStart;
 			}
+		}
+
+		private bool CheckIfNull()
+		{
+			if (this.Type >= NPCID.Count) {
+				switch (this.Mode)
+				{
+					case 1:
+						if (NPCLoader.GetNPC(this.Type) == null) {
+							return true;
+						}
+
+						break;
+					case 2:
+						if (ItemLoader.GetItem(this.Type) == null) {
+							return true;
+						}
+
+						break;
+					case 3:
+						if (ProjectileLoader.GetProjectile(this.Type) == null) {
+							return true;
+						}
+
+						break;
+				}
+			}
+			return false;
 		}
 	}
 }

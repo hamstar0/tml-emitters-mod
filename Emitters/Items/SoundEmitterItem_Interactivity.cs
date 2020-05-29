@@ -100,8 +100,8 @@ namespace Emitters.Items {
 			var tileX = (ushort)tilePos.X;
 			var tileY = (ushort)tilePos.Y;
 
-			SoundEmitterDefinition SoundEmitter = myworld.GetSoundEmitter( tileX, tileY );
-			if( SoundEmitter == null ) {
+			SoundEmitterDefinition soundEmitter = myworld.GetSoundEmitter( tileX, tileY );
+			if( soundEmitter == null ) {
 				return false;
 			}
 

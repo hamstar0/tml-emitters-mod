@@ -62,11 +62,11 @@ namespace Emitters.Items {
 		////////////////
 
 		public override void Load( TagCompound tag ) {
-			try {
-				NPCDefinition def = NPCDefinition.FromString( tag.GetString("HologramType") );
-
+			try
+			{
 				this.Def = new HologramDefinition(
-					type: (int)def.Type,
+					mode: (int)tag.GetInt("HologramMode"),
+					type: (int)GetHologramType(tag),
 					scale: tag.GetFloat( "HologramScale" ),
 					color: new Color(
 						tag.GetByte( "HologramColorR" ),
@@ -88,13 +88,27 @@ namespace Emitters.Items {
 			} catch { }
 		}
 
+		public int GetHologramType(TagCompound tag)
+		{
+			switch((int)tag.GetInt("HologramMode"))
+			{
+				case 1:
+				return NPCDefinition.FromString(tag.GetString("HologramType")).Type;
+				case 2:
+				return ItemDefinition.FromString(tag.GetString("HologramType")).Type;
+				case 3:
+				return ProjectileDefinition.FromString(tag.GetString("HologramType")).Type;
+			}
+			return 1;
+		}
+
 		public override TagCompound Save() {
 			if( this.Def == null ) {
 				return new TagCompound();
 			}
-
 			return new TagCompound {
-				{ "HologramType", (string)this.Def.Type.ToString() },
+				{ "HologramMode", (int)this.Def.Mode },
+				{ "HologramType", (string)this.Def.SetHologramType().ToString()},
 				{ "HologramScale", (float)this.Def.Scale },
 				{ "HologramColorR", (byte)this.Def.Color.R },
 				{ "HologramColorG", (byte)this.Def.Color.G },
@@ -108,7 +122,7 @@ namespace Emitters.Items {
 				{ "HologramFrameEnd", (int)this.Def.FrameEnd },
 				{ "HologramFrameRateTicks", (int)this.Def.FrameRateTicks },
 				{ "HologramWorldLighting", (bool)this.Def.WorldLighting },
-				{"HologramCRTEffect", (bool)this.Def.CrtEffect },
+				{ "HologramCRTEffect", (bool)this.Def.CrtEffect },
 				{ "HologramIsActivated", (bool)this.Def.IsActivated },
 			};
 		}
@@ -125,6 +139,7 @@ namespace Emitters.Items {
 				return;
 			}
 
+			var modeTip = new TooltipLine(this.mod, "HologramMode", " Mode: " + this.Def?.RenderMode());
 			var typeTip = new TooltipLine( this.mod, "HologramType", " Type: " + this.Def?.RenderType() );
 			var scaleTip = new TooltipLine( this.mod, "HologramScale", " Scale: " + this.Def?.RenderScale() );
 			var colorTip = new TooltipLine( this.mod, "HologramColor", " Color: " + this.Def?.RenderColor() );
@@ -133,10 +148,11 @@ namespace Emitters.Items {
 			var rotationTip = new TooltipLine( this.mod, "HologramRotation", " Rotation: " + this.Def?.RenderRotation() );
 			var offsetTip = new TooltipLine( this.mod, "HologramOffset", " Offset: " + this.Def?.RenderOffset() );
 			var frameTip = new TooltipLine( this.mod, "HologramFrame", " Frame: " + this.Def?.RenderFrame() );
-			var WorldLightingTip = new TooltipLine( this.mod, "HologramWorldLighting", " World Lighting: " + this.Def?.WorldLighting );
+			var worldLightingTip = new TooltipLine( this.mod, "HologramWorldLighting", " World Lighting: " + this.Def?.WorldLighting );
 			var CRTEffectTip = new TooltipLine(this.mod, "HologramCRTEffect", " CRT Effect: " + this.Def?.CrtEffect);
 
 			var color = Color.White * 0.75f;
+			modeTip.overrideColor = color;
 			typeTip.overrideColor = color;
 			scaleTip.overrideColor = color;
 			colorTip.overrideColor = color;
@@ -145,10 +161,11 @@ namespace Emitters.Items {
 			rotationTip.overrideColor = color;
 			offsetTip.overrideColor = color;
 			frameTip.overrideColor = color;
-			WorldLightingTip.overrideColor = color;
+			worldLightingTip.overrideColor = color;
 			CRTEffectTip.overrideColor = color;
 
-			tooltips.Add( typeTip );
+			tooltips.Add(modeTip);
+			tooltips.Add(typeTip);
 			tooltips.Add( scaleTip );
 			tooltips.Add( colorTip );
 			tooltips.Add( alphaTip );
@@ -156,7 +173,7 @@ namespace Emitters.Items {
 			tooltips.Add( rotationTip );
 			tooltips.Add( offsetTip );
 			tooltips.Add( frameTip );
-			tooltips.Add( WorldLightingTip );
+			tooltips.Add( worldLightingTip );
 			tooltips.Add(CRTEffectTip);
 		}
 

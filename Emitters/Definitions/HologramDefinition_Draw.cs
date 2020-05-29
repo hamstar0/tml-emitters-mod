@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using HamstarHelpers.Helpers.UI;
@@ -44,13 +43,20 @@ namespace Emitters.Definitions {
 				effects: SpriteEffects.None,
 				layerDepth: 1f
 			);
-
+			
 		}
 
 		////////////////
 
 		public void AnimateHologram( Vector2 worldPos, bool isUI ) {
+			
+		
+
 			if( !this.IsActivated ) {
+				return;
+			}	
+			
+			if (CheckIfNull()) {
 				return;
 			}
 
@@ -65,9 +71,28 @@ namespace Emitters.Definitions {
 				return;
 			}
 
-			Main.instance.LoadNPC( this.Type.Type );
+			Main.spriteBatch.End();
+			Main.spriteBatch.Begin(
+				SpriteSortMode.Immediate,
+				BlendState.AlphaBlend,
+				this.Mode == 2 || this.Mode == 3 ? SamplerState.PointClamp : SamplerState.LinearClamp,
+				DepthStencilState.Default,
+				RasterizerState.CullNone
+			);
+			
+			switch (this.Mode)
+			{
+				case 1:
+					Main.instance.LoadNPC(this.Type);
+					break;
+				case 3:
+					Main.instance.LoadProjectile(this.Type);
+					break;
+				default:
+					break;
+			}
 
-			if( this.CrtEffect ) {
+			if ( this.CrtEffect ) {
 				this.CRTEffectBegin();
 			}
 
@@ -83,10 +108,10 @@ namespace Emitters.Definitions {
 
 		///////////
 
-		public void CRTEffectBegin() {
-			Texture2D tex = Main.npcTexture[ this.Type.Type ];
+		public void CRTEffectBegin()
+		{
+			Texture2D tex = EmitterUtils.GetTexture(this.Mode, this.Type);
 			Effect fx = EmittersMod.Instance.HologramFX;
-
 			Color color = this.Color;
 			color.A = this.Alpha;
 
@@ -96,23 +121,15 @@ namespace Emitters.Definitions {
 			fx.Parameters["Time"].SetValue( Main.GlobalTime % 3600f );
 
 			fx.Parameters["Frame"].SetValue( (float)this.CurrentFrame );
-			fx.Parameters["FrameMax"].SetValue( (float)Main.npcFrameCount[this.Type.Type] );
+			fx.Parameters["FrameMax"].SetValue( (float)Main.npcFrameCount[this.Type] );
 
 			fx.Parameters["UserColor"].SetValue( color.ToVector4() );
 
 			Main.spriteBatch.End();
-			/*Main.spriteBatch.Begin(
-				SpriteSortMode.Immediate,
-				BlendState.AlphaBlend,
-				Main.DefaultSamplerState,
-				DepthStencilState.None,
-				Main.instance.Rasterizer,
-				fx
-			);*/
 			Main.spriteBatch.Begin(
 				SpriteSortMode.Immediate,
 				BlendState.AlphaBlend,
-				SamplerState.LinearClamp,
+				SamplerState.PointClamp,
 				DepthStencilState.Default,
 				RasterizerState.CullNone,
 				fx
@@ -128,22 +145,26 @@ namespace Emitters.Definitions {
 
 		////
 
-		public void DrawHologramRaw( Vector2 worldPos, bool isUI ) {
-			int npcType = this.Type.Type;
-			Texture2D npcTexture = Main.npcTexture[npcType];
-			int frameCount = Main.npcFrameCount[npcType];
-			int frameHeight = npcTexture.Height / frameCount;
+		public void DrawHologramRaw( Vector2 worldPos, bool isUI )
+		{
+			Texture2D hologramTexture = EmitterUtils.GetTexture(this.Mode,this.Type);
+			int hologramType = this.Type;
+			int frameCount = EmitterUtils.GetFrameCount(this.Mode, this.Type);
+			if (frameCount == 1)
+			{
 
+			}
+			int frameHeight = hologramTexture.Height / frameCount;
 			Color color = this.Color;
 			SpriteEffects effects = SpriteEffects.None;
-			Rectangle drawRectangle = new Rectangle(
+			Rectangle frame = new Rectangle(
 				x: 0,
 				y: frameHeight * this.CurrentFrame,
-				width: npcTexture.Width,
+				width: hologramTexture.Width,
 				height: frameHeight
 			);
 
-			Vector2 origin = new Vector2( npcTexture.Width, frameHeight ) * 0.5f;
+			Vector2 origin = new Vector2( hologramTexture.Width, frameHeight ) * 0.5f;
 			Vector2 scrPos;
 
 			if( this.WorldLighting ) {
@@ -169,9 +190,9 @@ namespace Emitters.Definitions {
 			}
 
 			Main.spriteBatch.Draw(
-				texture: npcTexture,
+				texture: hologramTexture,
 				position: scrPos,
-				sourceRectangle: drawRectangle,
+				sourceRectangle: frame,
 				color: color,
 				rotation: MathHelper.ToRadians( this.Rotation ),
 				origin: isUI ? default(Vector2) : origin,
@@ -180,5 +201,7 @@ namespace Emitters.Definitions {
 				layerDepth: 1f
 			);
 		}
+
+		
 	}
 }

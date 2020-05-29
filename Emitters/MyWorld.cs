@@ -3,10 +3,8 @@ using System.IO;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
 using Newtonsoft.Json;
-using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Helpers.Debug;
 using HamstarHelpers.Helpers.DotNET.Extensions;
 using Emitters.Definitions;
@@ -23,7 +21,6 @@ namespace Emitters {
 		
 		private IDictionary<ushort, IDictionary<ushort, HologramDefinition>> Holograms
 			= new ConcurrentDictionary<ushort, IDictionary<ushort, HologramDefinition>>();
-
 
 
 		////////////////

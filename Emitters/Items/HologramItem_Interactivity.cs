@@ -3,7 +3,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent.UI;
-using static Terraria.ModLoader.ModContent;
 using HamstarHelpers.Services.Timers;
 using HamstarHelpers.Helpers.Items;
 using HamstarHelpers.Helpers.Players;
@@ -13,10 +12,10 @@ using Emitters.Definitions;
 
 namespace Emitters.Items {
 	public partial class HologramItem : ModItem {
+
 		public static void OpenUI( Item HologramItem ) {
 			var mymod = EmittersMod.Instance;
-
-			mymod.HologramEditorDialog.Open();
+			mymod.HologramEditorDialog.Open(); 
 			mymod.HologramEditorDialog.SetItem( HologramItem );
 		}
 

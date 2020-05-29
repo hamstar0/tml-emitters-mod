@@ -38,12 +38,12 @@ PixelShaderOutput ScanlinesCRT( PixelShaderInput coords ) {
 
 	float frameHeightPerc = 1.0 / FrameMax;
 	float frameYPosPerc = min( (coords.texPos.y - (frameHeightPerc * Frame)) / frameHeightPerc, 1.0 );
-
+	
+    float timeWave = max(frac(Time), 0.001);
+    float wave = frac(frameYPosPerc / timeWave);
+	
     float texY = frameYPosPerc * TexHeight;
-    float rowDark = 1 - floor( texY % 2.0 );
-
-	float timeWave = max( frac(Time), 0.001 );
-	float wave = frac( frameYPosPerc / timeWave );
+    float rowDark = 1 - floor(texY % 2.0) + wave;
     
 	output.color = UserColor * color * rowDark * wave;
     
