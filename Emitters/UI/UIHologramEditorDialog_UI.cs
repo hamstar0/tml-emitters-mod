@@ -23,24 +23,12 @@ namespace Emitters.UI {
 			switch (hologramMode)
 			{
 				case 1:
-					if (!ReflectionHelpers.Get(typeof(ModNPC), null, "NPCCount", out int npcCount))
-					{
-						throw new ModHelpersException("Could not get NPC count.");
-					}
-					this.TypeSliderElem.SetRange(0,npcCount);
+					this.TypeSliderElem.SetRange(0,NPCLoader.NPCCount);
 					break;
 				case 2:
-					//if (!ReflectionHelpers.Get(typeof(ModItem), null, "ItemCount", out int itemCount))
-					//{
-					//	throw new ModHelpersException("Could not get item count.");
-					//}
-					this.TypeSliderElem.SetRange(0, Main.item.Length - 1);
+					this.TypeSliderElem.SetRange(0, ItemLoader.ItemCount - 1);
 					break;
 				case 3:
-					//if (!ReflectionHelpers.Get(typeof(ModProjectile), null, "ProjectileCounta", out int projectileCount))
-					//{
-					//	throw new ModHelpersException("Could not get projectile count.");
-					//}
 					this.TypeSliderElem.SetRange(0, ProjectileLoader.ProjectileCount - 1);
 					break;
 				default:
