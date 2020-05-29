@@ -10,6 +10,7 @@ using Terraria.UI;
 
 namespace Emitters.UI
 {
+	/// TODO: implement shader settings tab 
 	partial class UIHologramEditorDialog : UIDialog
 	{
 
@@ -159,10 +160,6 @@ namespace Emitters.UI
 			this.TypeSliderElem.PreOnChange += (value) =>
 			{
 				int mode = (int)ModeSliderElem.RememberedInputValue;
-				if (TypeSliderElem.RememberedInputValue > NPCLoader.NPCCount)
-				{
-					return NPCLoader.NPCCount;
-				}
 				this.FrameStartSliderElem.SetRange(0f, (float)(EmitterUtils.GetFrameCount(mode, (int)value) - 1));
 				this.FrameEndSliderElem.SetRange(0f, (float)(EmitterUtils.GetFrameCount(mode, (int)value) - 1)); 
 				return value;

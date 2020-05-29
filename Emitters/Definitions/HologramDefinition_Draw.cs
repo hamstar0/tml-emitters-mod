@@ -56,10 +56,10 @@ namespace Emitters.Definitions {
 				return;
 			}	
 			
-			if (CheckIfNull())
-			{
+			if (CheckIfNull()) {
 				return;
 			}
+
 			// Cycle animations at all distances
 			this.AnimateCurrentFrame();
 

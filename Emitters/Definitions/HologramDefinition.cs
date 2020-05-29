@@ -175,8 +175,7 @@ namespace Emitters.Definitions {
 
 		private bool CheckIfNull()
 		{
-			if (this.Type >= NPCID.Count)
-			{
+			if (this.Type >= NPCID.Count) {
 				switch (this.Mode)
 				{
 					case 1:
@@ -199,9 +198,7 @@ namespace Emitters.Definitions {
 						break;
 				}
 			}
-
 			return false;
-
 		}
 	}
 }
