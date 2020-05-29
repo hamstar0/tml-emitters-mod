@@ -1,5 +1,9 @@
-﻿using System.IO;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
 using Microsoft.Xna.Framework;
+using Terraria.ID;
+using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 
 
@@ -53,12 +57,6 @@ namespace Emitters.Definitions {
 
 		public int Mode { get ; set; }
 		public int Type { get; set; }
-		//public enum HologramType
-		//{
-		//	NPCDefinition,
-		//	ItemDefiniton,
-		//	ProjectileDefiniton
-		//}
 		public float Scale { get; set; }
 		public Color Color { get; set; }
 		public byte Alpha { get; set; }
@@ -76,7 +74,7 @@ namespace Emitters.Definitions {
 
 		public bool IsActivated { get; set; } = true;
 
-
+		
 		public object SetHologramType()
 		{
 			switch (this.Mode)
@@ -173,6 +171,37 @@ namespace Emitters.Definitions {
 			{
 				this.CurrentFrame = this.FrameStart;
 			}
+		}
+
+		private bool CheckIfNull()
+		{
+			if (this.Type >= NPCID.Count)
+			{
+				switch (this.Mode)
+				{
+					case 1:
+						if (NPCLoader.GetNPC(this.Type) == null) {
+							return true;
+						}
+
+						break;
+					case 2:
+						if (ItemLoader.GetItem(this.Type) == null) {
+							return true;
+						}
+
+						break;
+					case 3:
+						if (ProjectileLoader.GetProjectile(this.Type) == null) {
+							return true;
+						}
+
+						break;
+				}
+			}
+
+			return false;
+
 		}
 	}
 }

@@ -64,8 +64,6 @@ namespace Emitters.Items {
 		public override void Load( TagCompound tag ) {
 			try
 			{
-				
-
 				this.Def = new HologramDefinition(
 					mode: (int)tag.GetInt("HologramMode"),
 					type: (int)GetHologramType(tag),

@@ -43,16 +43,23 @@ namespace Emitters.Definitions {
 				effects: SpriteEffects.None,
 				layerDepth: 1f
 			);
-
+			
 		}
 
 		////////////////
 
 		public void AnimateHologram( Vector2 worldPos, bool isUI ) {
+			
+		
+
 			if( !this.IsActivated ) {
 				return;
+			}	
+			
+			if (CheckIfNull())
+			{
+				return;
 			}
-
 			// Cycle animations at all distances
 			this.AnimateCurrentFrame();
 
@@ -63,6 +70,7 @@ namespace Emitters.Definitions {
 			if( (Main.LocalPlayer.Center - worldPos).LengthSquared() >= maxDistSqr ) {
 				return;
 			}
+
 			Main.spriteBatch.End();
 			Main.spriteBatch.Begin(
 				SpriteSortMode.Immediate,
@@ -104,7 +112,6 @@ namespace Emitters.Definitions {
 		{
 			Texture2D tex = EmitterUtils.GetTexture(this.Mode, this.Type);
 			Effect fx = EmittersMod.Instance.HologramFX;
-
 			Color color = this.Color;
 			color.A = this.Alpha;
 

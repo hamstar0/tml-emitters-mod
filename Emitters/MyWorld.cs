@@ -23,7 +23,6 @@ namespace Emitters {
 			= new ConcurrentDictionary<ushort, IDictionary<ushort, HologramDefinition>>();
 
 
-
 		////////////////
 
 		public override void Initialize() {
