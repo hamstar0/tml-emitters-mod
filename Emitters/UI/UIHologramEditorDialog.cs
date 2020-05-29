@@ -214,6 +214,7 @@ namespace Emitters.UI
 
 					//Set height appropriately
 					OuterContainer.Height.Set(yOffset, 0f);
+					OuterContainer.Top.Set(108f,0f);
 					RecalculateMe();
 					break;
 
