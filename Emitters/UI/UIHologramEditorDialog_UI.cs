@@ -1,6 +1,8 @@
-﻿using Terraria.ModLoader;
+﻿using Terraria;
+using Terraria.ModLoader;
 using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Classes.UI.Elements;
+using HamstarHelpers.Services.Timers;
 
 
 namespace Emitters.UI {
@@ -39,6 +41,12 @@ namespace Emitters.UI {
 
 			this.OuterContainer.Height.Set( this.TabStartHeight + tabHeight, 0f );
 			this.RecalculateMe();
+
+			// I'll look into why this doesn't recalc right away, later:
+			Timers.SetTimer( "HologramDialogTabs", 2, true, () => {
+				this.RecalculateMe();
+				return false;
+			} );
 
 			this.IsTabBeingSet = false;
 		}

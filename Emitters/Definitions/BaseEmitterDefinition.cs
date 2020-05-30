@@ -12,6 +12,7 @@ namespace Emitters.Definitions {
 
 
 
+
 	public abstract class BaseEmitterDefinition {
 		public bool IsActivated { get; set; } = true;
 
