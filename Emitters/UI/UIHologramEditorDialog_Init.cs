@@ -29,19 +29,18 @@ namespace Emitters.UI {
 
 			// Apply button
 			this.ApplyButton = new UITextPanelButton( UITheme.Vanilla, "Apply" );
-			this.ApplyButton.Top.Set( yOffset - 28f, 0f );
+			this.ApplyButton.Top.Set( -32f, 1f );
 			this.ApplyButton.Left.Set( -64f, 1f );
 			this.ApplyButton.Height.Set( this.ApplyButton.GetOuterDimensions().Height + 4f, 0f );
 			this.ApplyButton.OnClick += ( _, __ ) => {
 				this.Close();
 				this.ApplySettingsToCurrentItem();
 			};
-
 			this.InnerContainer.Append( (UIElement)this.ApplyButton );
 
 			yOffset += 28;
-			this.OuterContainer.Height.Set( yOffset, 0f );
-			//this.OuterContainer.Top.Set( 108f, 0f );
+
+			this.SwitchTab( HologramUITab.MainSettings );
 		}
 
 
@@ -78,16 +77,19 @@ namespace Emitters.UI {
 					out UIThemedPanel colorTab,
 					out UIThemedPanel shaderTab ) {
 			mainTab = new UIThemedPanel( UITheme.Vanilla, false );
+			mainTab.Width.Set( 0f, 1f );
 			mainTab.Top.Set( yOffset, 0f );
 			mainTab.Hide();
 			this.InnerContainer.Append( (UIElement)mainTab );
 
 			colorTab = new UIThemedPanel( UITheme.Vanilla, false );
+			colorTab.Width.Set( 0f, 1f );
 			colorTab.Top.Set( yOffset, 0f );
 			colorTab.Hide();
 			this.InnerContainer.Append( (UIElement)colorTab );
 
 			shaderTab = new UIThemedPanel( UITheme.Vanilla, false );
+			shaderTab.Width.Set( 0f, 1f );
 			shaderTab.Top.Set( yOffset, 0f );
 			shaderTab.Hide();
 			this.InnerContainer.Append( (UIElement)shaderTab );

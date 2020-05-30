@@ -11,6 +11,8 @@ namespace Emitters.UI {
 
 			this.InitializeWidgetsForColor( container, ref yOffset );
 			this.InitializeWidgetsForAlpha( container, ref yOffset );
+
+			container.Height.Set( yOffset, 0f );
 		}
 
 

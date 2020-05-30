@@ -7,6 +7,7 @@ namespace Emitters.Definitions {
 
 
 		////////////////
+
 		public int Type { get; set; }
 		public int Style { get; set; }
 		public float Volume { get; set; }
