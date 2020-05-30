@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="C:\Users\nepla\OneDrive\Documents\My Games\Terraria\ModLoader\references\tModLoader.targets" />
+  <Import Project="C:\Users\Spinach\Documents\My Games\Terraria\ModLoader\references\tModLoader.targets" />
   <PropertyGroup>
     <AssemblyName>Emitters</AssemblyName>
     <TargetFramework>net452</TargetFramework>
@@ -11,11 +11,8 @@
     <Exec Command="&quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath) -define $(DefineConstants) -unsafe $(AllowUnsafeBlocks)" />
   </Target>
   <ItemGroup>
-    <None Include="..\.editorconfig" Link=".editorconfig" />
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="HamstarHelpers">
-      <HintPath>..\..\..\..\OneDrive\Documents\My Games\Terraria\ModLoader\references\mods\HamstarHelpers_v5.7.2.dll</HintPath>
+      <HintPath>..\..\..\Mod Helpers\v5 (tML11)\HamstarHelpers\bin\Release\net452\HamstarHelpers.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

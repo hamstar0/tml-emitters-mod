@@ -6,7 +6,7 @@ using Emitters.Items;
 
 
 namespace Emitters.Definitions {
-	public partial class SoundEmitterDefinition {
+	public partial class SoundEmitterDefinition : BaseEmitterDefinition {
 		public void Draw( int tileX, int tileY, bool isOnScreen ) {
 			this.AnimateSoundEmitter( new Vector2( (tileX<<4) + 8, (tileY<<4) + 8 ) );
 

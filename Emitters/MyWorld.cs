@@ -12,7 +12,6 @@ using Emitters.Definitions;
 
 namespace Emitters {
 	public partial class EmittersWorld : ModWorld {
-
 		private IDictionary<ushort, IDictionary<ushort, EmitterDefinition>> Emitters
 			= new ConcurrentDictionary<ushort, IDictionary<ushort, EmitterDefinition>>();
 
@@ -35,151 +34,79 @@ namespace Emitters {
 		////////////////
 
 		public override void Load( TagCompound tag ) {
-			this.LoadEmitters( tag );
-			this.LoadSoundEmitters( tag );
-			this.LoadHolograms( tag );
+			this.LoadEmitterType( this.Emitters, tag, "emitter" );
+			this.LoadEmitterType( this.SoundEmitters, tag, "snd_emitter" );
+			this.LoadEmitterType( this.Holograms, tag, "hologram" );
 		}
 
-		private void LoadEmitters( TagCompound tag ) {
-			this.Emitters.Clear();
-			if( !tag.ContainsKey( "emitter_count" ) ) {
-				return;
-			}
+		public override TagCompound Save() {
+			var tag = new TagCompound();
 
-			int count = tag.GetInt( "emitter_count" );
+			this.SaveEmitterType( tag, "emitter", this.Emitters );
+			this.SaveEmitterType( tag, "snd_emitter", this.SoundEmitters );
+			this.SaveEmitterType( tag, "hologram", this.Holograms );
 
-			try {
-				for( int i = 0; i < count; i++ ) {
-					ushort tileX = (ushort)tag.GetInt( "emitter_" + i + "_x" );
-					ushort tileY = (ushort)tag.GetInt( "emitter_" + i + "_y" );
-					string rawDef = tag.GetString( "emitter_" + i );
-
-					var def = JsonConvert.DeserializeObject<EmitterDefinition>( rawDef );
-					def.Activate( tag.GetBool( "emitter_" + i + "_on" ) );
-
-					this.Emitters.Set2D( tileX, tileY, def );
-
-					if( EmittersConfig.Instance.DebugModeInfo ) {
-						LogHelpers.Log( "Loaded emitter " + i + " of " + count + " at " + tileX + ", " + tileY );
-					}
-				}
-			} catch( Exception e ) {
-				LogHelpers.Warn( e.ToString() );
-			}
+			return tag;
 		}
-
-		private void LoadSoundEmitters( TagCompound tag ) {
-			this.SoundEmitters.Clear();
-			if( !tag.ContainsKey( "snd_emitter_count" ) ) {
-				return;
-			}
-
-			int count = tag.GetInt( "snd_emitter_count" );
-
-			try {
-				for( int i = 0; i < count; i++ ) {
-					ushort tileX = (ushort)tag.GetInt( "snd_emitter_" + i + "_x" );
-					ushort tileY = (ushort)tag.GetInt( "snd_emitter_" + i + "_y" );
-					string rawDef = tag.GetString( "snd_emitter_" + i );
-
-					var def = JsonConvert.DeserializeObject<SoundEmitterDefinition>( rawDef );
-					def.Activate( tag.GetBool( "snd_emitter_" + i + "_on" ) );
-
-					this.SoundEmitters.Set2D( tileX, tileY, def );
-
-					if( EmittersConfig.Instance.DebugModeInfo ) {
-						LogHelpers.Log( "Loaded sound emitter " + i + " of " + count + " at " + tileX + ", " + tileY );
-					}
-				}
-			} catch( Exception e ) {
-				LogHelpers.Warn( e.ToString() );
-			}
-		}
-
-		private void LoadHolograms( TagCompound tag ) {
-			this.Holograms.Clear();
-			if( !tag.ContainsKey( "hologram_count" ) ) {
-				return;
-			}
-
-			int count = tag.GetInt( "hologram_count" );
-
-			try {
-				for( int i = 0; i < count; i++ ) {
-					ushort tileX = (ushort)tag.GetInt( "hologram_" + i + "_x" );
-					ushort tileY = (ushort)tag.GetInt( "hologram_" + i + "_y" );
-					string rawDef = tag.GetString( "hologram_" + i );
-
-					var def = JsonConvert.DeserializeObject<HologramDefinition>( rawDef );
-					def.Activate( tag.GetBool( "hologram_" + i + "_on" ) );
-
-					this.Holograms.Set2D( tileX, tileY, def );
-
-					if( EmittersConfig.Instance.DebugModeInfo ) {
-						LogHelpers.Log( "Loaded hologram " + i + " of " + count + " at " + tileX + ", " + tileY );
-					}
-				}
-			} catch( Exception e ) {
-				LogHelpers.Warn( e.ToString() );
-			}
-		}
-
 
 		////
 
-		public override TagCompound Save() {
-			int emitterCount = this.Emitters.Count2D();
-			int sndEmitterCount = this.SoundEmitters.Count2D();
-			int hologramCount = this.Holograms.Count2D();
+		private IDictionary<ushort, IDictionary<ushort, T>> LoadEmitterType<T>(
+					IDictionary<ushort, IDictionary<ushort, T>> dict2d,
+					TagCompound tag,
+					string prefix ) where T : BaseEmitterDefinition {
+			dict2d.Clear();
 
-			var tag = new TagCompound {
-				{ "emitter_count", emitterCount },
-				{ "snd_emitter_count", sndEmitterCount },
-				{ "hologram_count", hologramCount },
-			};
+			if( !tag.ContainsKey( prefix + "_count" ) ) {
+				return null;
+			}
+
+			int count = tag.GetInt( prefix + "_count" );
+
+			try {
+				for( int i = 0; i < count; i++ ) {
+					ushort tileX = (ushort)tag.GetInt( prefix + "_" + i + "_x" );
+					ushort tileY = (ushort)tag.GetInt( prefix + "_" + i + "_y" );
+					string rawDef = tag.GetString( prefix + "_" + i );
+
+					var def = JsonConvert.DeserializeObject<T>( rawDef );
+					def.Activate( tag.GetBool( prefix + "_" + i + "_on" ) );
+
+					dict2d.Set2D( tileX, tileY, def );
+
+					if( EmittersConfig.Instance.DebugModeInfo ) {
+						LogHelpers.Log( "Loaded " + prefix + " " + i + " of " + count + " at " + tileX + ", " + tileY );
+					}
+				}
+			} catch( Exception e ) {
+				LogHelpers.Warn( e.ToString() );
+			}
+
+			return dict2d;
+		}
+
+		private void SaveEmitterType<T>(
+					TagCompound tag,
+					string prefix,
+					IDictionary<ushort, IDictionary<ushort, T>> dict2d ) where T : BaseEmitterDefinition {
+			int count = dict2d.Count2D();
+
+			tag[ prefix+"_count" ] = count;
 
 			int i = 0;
-			foreach( (ushort tileX, IDictionary<ushort, EmitterDefinition> tileYs) in this.Emitters ) {
-				foreach( (ushort tileY, EmitterDefinition def) in tileYs ) {
-					tag["emitter_" + i + "_x"] = (int)tileX;
-					tag["emitter_" + i + "_y"] = (int)tileY;
-					tag["emitter_" + i] = (string)JsonConvert.SerializeObject( def );
-					tag["emitter_" + i + "_on"] = (bool)def.IsActivated;
+			foreach( (ushort tileX, IDictionary<ushort, T> tileYs) in dict2d ) {
+				foreach( (ushort tileY, T def) in tileYs ) {
+					tag[prefix+"_"+i+"_x"] = (int)tileX;
+					tag[prefix+"_"+i+"_y"] = (int)tileY;
+					tag[prefix+"_"+i] = (string)JsonConvert.SerializeObject( def );
+					tag[prefix+"_"+i+"_on"] = (bool)def.IsActivated;
 					i++;
-					if( EmittersConfig.Instance.DebugModeInfo ) {
-						LogHelpers.Log( "Saved emitter "+i+" of "+emitterCount+" at "+tileX+", "+tileY );
-					}
-				}
-			}
 
-			i = 0;
-			foreach( (ushort tileX, IDictionary<ushort, SoundEmitterDefinition> tileYs) in this.SoundEmitters ) {
-				foreach( (ushort tileY, SoundEmitterDefinition def) in tileYs ) {
-					tag["snd_emitter_" + i + "_x"] = (int)tileX;
-					tag["snd_emitter_" + i + "_y"] = (int)tileY;
-					tag["snd_emitter_" + i] = (string)JsonConvert.SerializeObject( def );
-					tag["snd_emitter_" + i + "_on"] = (bool)def.IsActivated;
-					i++;
 					if( EmittersConfig.Instance.DebugModeInfo ) {
-						LogHelpers.Log( "Saved sound emitter "+i+" of "+sndEmitterCount+" at "+tileX+", "+tileY );
+						LogHelpers.Log( "Saved "+prefix+" "+i+" of "+count+" at "+tileX+", "+tileY );
 					}
 				}
 			}
-
-			i = 0;
-			foreach( (ushort tileX, IDictionary<ushort, HologramDefinition> tileYs) in this.Holograms ) {
-				foreach( (ushort tileY, HologramDefinition def) in tileYs ) {
-					tag["hologram_" + i + "_x"] = (int)tileX;
-					tag["hologram_" + i + "_y"] = (int)tileY;
-					tag["hologram_" + i] = (string)JsonConvert.SerializeObject( def );
-					tag["hologram_" + i + "_on"] = (bool)def.IsActivated;
-					i++;
-					if( EmittersConfig.Instance.DebugModeInfo ) {
-						LogHelpers.Log( "Saved hologram "+i+" of "+hologramCount+" at "+tileX+", "+tileY );
-					}
-				}
-			}
-			return tag;
 		}
 
 
@@ -191,30 +118,13 @@ namespace Emitters {
 			this.Holograms.Clear();
 
 			try {
-				int count = reader.ReadInt32();
-				int soundCount = reader.ReadInt32();
+				int emitCount = reader.ReadInt32();
+				int sndEmitCount = reader.ReadInt32();
 				int hologramCount = reader.ReadInt32();
 
-				for( int i = 0; i < count; i++ ) {
-					ushort tileX = reader.ReadUInt16();
-					ushort tileY = reader.ReadUInt16();
-					var def = EmitterDefinition.Read( reader );
-					this.Emitters.Set2D( tileX, tileY, def );
-				}
-
-				for( int i = 0; i < soundCount; i++ ) {
-					ushort tileX = reader.ReadUInt16();
-					ushort tileY = reader.ReadUInt16();
-					var sdef = SoundEmitterDefinition.Read( reader );
-					this.SoundEmitters.Set2D( tileX, tileY, sdef );
-				}
-
-				for( int i = 0; i < hologramCount; i++ ) {
-					ushort tileX = reader.ReadUInt16();
-					ushort tileY = reader.ReadUInt16();
-					var sdef = HologramDefinition.Read( reader );
-					this.Holograms.Set2D( tileX, tileY, sdef );
-				}
+				this.NetReceiveEmitterType( emitCount, reader, this.Emitters );
+				this.NetReceiveEmitterType( sndEmitCount, reader, this.SoundEmitters );
+				this.NetReceiveEmitterType( hologramCount, reader, this.Holograms );
 			} catch { }
 		}
 
@@ -224,27 +134,39 @@ namespace Emitters {
 				writer.Write( (int)this.SoundEmitters.Count2D() );
 				writer.Write((int)this.Holograms.Count2D());
 
-				foreach ( (ushort tileX, IDictionary<ushort, EmitterDefinition> tileYs) in this.Emitters ) {
-					foreach( (ushort tileY, EmitterDefinition def) in tileYs ) {
-						writer.Write( tileX );
-						writer.Write( tileY );
-						EmitterDefinition.Write( def, writer );
-					}
-				}
+				this.NetSendEmitterType( writer, this.Emitters );
+				this.NetSendEmitterType( writer, this.SoundEmitters );
+				this.NetSendEmitterType( writer, this.Holograms );
+			} catch { }
+		}
 
-				foreach( (ushort tileX, IDictionary<ushort, SoundEmitterDefinition> tileYs) in this.SoundEmitters ) {
-					foreach( (ushort tileY, SoundEmitterDefinition sdef) in tileYs ) {
-						writer.Write( tileX );
-						writer.Write( tileY );
-						SoundEmitterDefinition.Write( sdef, writer );
-					}
-				}
+		////
 
-				foreach( (ushort tileX, IDictionary<ushort, HologramDefinition> tileYs) in this.Holograms ) {
-					foreach( (ushort tileY, HologramDefinition sdef) in tileYs ) {
+		private void NetReceiveEmitterType<T>(
+					int count,
+					BinaryReader reader,
+					IDictionary<ushort, IDictionary<ushort, T>> dict2d ) where T : BaseEmitterDefinition {
+			dict2d.Clear();
+
+			for( int i = 0; i < count; i++ ) {
+				ushort tileX = reader.ReadUInt16();
+				ushort tileY = reader.ReadUInt16();
+				var def = Activator.CreateInstance<T>();
+				def.Read( reader );
+
+				dict2d.Set2D( tileX, tileY, def );
+			}
+		}
+
+		private void NetSendEmitterType<T>(
+					BinaryWriter writer,
+					IDictionary<ushort, IDictionary<ushort, T>> dict2d ) where T : BaseEmitterDefinition {
+			try {
+				foreach( (ushort tileX, IDictionary<ushort, T> tileYs) in dict2d ) {
+					foreach( (ushort tileY, T def) in tileYs ) {
 						writer.Write( tileX );
 						writer.Write( tileY );
-						HologramDefinition.Write( sdef, writer );
+						def.Write( writer );
 					}
 				}
 			} catch { }

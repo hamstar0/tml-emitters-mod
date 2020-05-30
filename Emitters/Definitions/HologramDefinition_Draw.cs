@@ -7,7 +7,7 @@ using Emitters.Items;
 
 
 namespace Emitters.Definitions {
-	public partial class HologramDefinition {
+	public partial class HologramDefinition : BaseEmitterDefinition {
 		public int CurrentFrame { get; internal set; }
 
 		internal int CurrentFrameElapsedTicks = 0;
@@ -43,20 +43,16 @@ namespace Emitters.Definitions {
 				effects: SpriteEffects.None,
 				layerDepth: 1f
 			);
-			
+
 		}
 
 		////////////////
 
 		public void AnimateHologram( Vector2 worldPos, bool isUI ) {
-			
-		
-
 			if( !this.IsActivated ) {
 				return;
-			}	
-			
-			if (CheckIfNull()) {
+			}
+			if( HologramDefinition.IsBadType(this.Mode, this.Type) ) {
 				return;
 			}
 
@@ -71,28 +67,16 @@ namespace Emitters.Definitions {
 				return;
 			}
 
-			Main.spriteBatch.End();
-			Main.spriteBatch.Begin(
-				SpriteSortMode.Immediate,
-				BlendState.AlphaBlend,
-				this.Mode == 2 || this.Mode == 3 ? SamplerState.PointClamp : SamplerState.LinearClamp,
-				DepthStencilState.Default,
-				RasterizerState.CullNone
-			);
-			
-			switch (this.Mode)
-			{
-				case 1:
-					Main.instance.LoadNPC(this.Type);
-					break;
-				case 3:
-					Main.instance.LoadProjectile(this.Type);
-					break;
-				default:
-					break;
+			switch( this.Mode ) {
+			case HologramMode.NPC:
+				Main.instance.LoadNPC( this.Type );
+				break;
+			case HologramMode.Projectile:
+				Main.instance.LoadProjectile( this.Type );
+				break;
 			}
 
-			if ( this.CrtEffect ) {
+			if( this.CrtEffect ) {
 				this.CRTEffectBegin();
 			}
 
@@ -108,9 +92,8 @@ namespace Emitters.Definitions {
 
 		///////////
 
-		public void CRTEffectBegin()
-		{
-			Texture2D tex = EmitterUtils.GetTexture(this.Mode, this.Type);
+		public void CRTEffectBegin() {
+			Texture2D tex = HologramDefinition.GetTexture( this.Mode, this.Type );
 			Effect fx = EmittersMod.Instance.HologramFX;
 			Color color = this.Color;
 			color.A = this.Alpha;
@@ -129,7 +112,9 @@ namespace Emitters.Definitions {
 			Main.spriteBatch.Begin(
 				SpriteSortMode.Immediate,
 				BlendState.AlphaBlend,
-				SamplerState.PointClamp,
+				this.Mode == HologramMode.Item || this.Mode == HologramMode.Projectile
+					? SamplerState.PointClamp
+					: SamplerState.LinearClamp,
 				DepthStencilState.Default,
 				RasterizerState.CullNone,
 				fx
@@ -145,26 +130,20 @@ namespace Emitters.Definitions {
 
 		////
 
-		public void DrawHologramRaw( Vector2 worldPos, bool isUI )
-		{
-			Texture2D hologramTexture = EmitterUtils.GetTexture(this.Mode,this.Type);
-			int hologramType = this.Type;
-			int frameCount = EmitterUtils.GetFrameCount(this.Mode, this.Type);
-			if (frameCount == 1)
-			{
+		public void DrawHologramRaw( Vector2 worldPos, bool isUI ) {
+			Texture2D tex = HologramDefinition.GetTexture( this.Mode, this.Type );
+			int frameCount = HologramDefinition.GetFrameCount( this.Mode, this.Type );
 
-			}
-			int frameHeight = hologramTexture.Height / frameCount;
+			int frameHeight = tex.Height / frameCount;
 			Color color = this.Color;
 			SpriteEffects effects = SpriteEffects.None;
 			Rectangle frame = new Rectangle(
 				x: 0,
 				y: frameHeight * this.CurrentFrame,
-				width: hologramTexture.Width,
+				width: tex.Width,
 				height: frameHeight
 			);
-
-			Vector2 origin = new Vector2( hologramTexture.Width, frameHeight ) * 0.5f;
+			Vector2 origin = new Vector2( tex.Width, frameHeight ) * 0.5f;
 			Vector2 scrPos;
 
 			if( this.WorldLighting ) {
@@ -190,7 +169,7 @@ namespace Emitters.Definitions {
 			}
 
 			Main.spriteBatch.Draw(
-				texture: hologramTexture,
+				texture: tex,
 				position: scrPos,
 				sourceRectangle: frame,
 				color: color,
@@ -201,7 +180,5 @@ namespace Emitters.Definitions {
 				layerDepth: 1f
 			);
 		}
-
-		
 	}
 }

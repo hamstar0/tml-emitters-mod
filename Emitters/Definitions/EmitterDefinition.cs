@@ -3,49 +3,7 @@ using Microsoft.Xna.Framework;
 
 
 namespace Emitters.Definitions {
-	public partial class EmitterDefinition {
-		public static EmitterDefinition Read( BinaryReader reader ) {
-			return new EmitterDefinition(
-				isGoreMode: (bool)reader.ReadBoolean(),
-				type: (int)reader.ReadUInt16(),
-				scale: (float)reader.ReadSingle(),
-				delay: (int)reader.ReadInt16(),
-				speedX: (float)reader.ReadSingle(),
-				speedY: (float)reader.ReadSingle(),
-				color: new Color(
-					(byte)reader.ReadByte(),
-					(byte)reader.ReadByte(),
-					(byte)reader.ReadByte()
-				),
-				alpha: (byte)reader.ReadByte(),
-				scatter: (float)reader.ReadSingle(),
-				hasGravity: (bool)reader.ReadBoolean(),
-				hasLight: (bool)reader.ReadBoolean(),
-				isActivated: (bool)reader.ReadBoolean()
-			);
-		}
-
-		public static void Write( EmitterDefinition def, BinaryWriter writer ) {
-			writer.Write( (bool)def.IsGoreMode );
-			writer.Write( (ushort)def.Type );
-			writer.Write( (float)def.Scale );
-			writer.Write( (ushort)def.Delay );
-			writer.Write( (float)def.SpeedX );
-			writer.Write( (float)def.SpeedY );
-			writer.Write( (byte)def.Color.R );
-			writer.Write( (byte)def.Color.G );
-			writer.Write( (byte)def.Color.B );
-			writer.Write( (byte)def.Alpha );
-			writer.Write( (float)def.Scatter );
-			writer.Write( (bool)def.HasGravity );
-			writer.Write( (bool)def.HasLight );
-			writer.Write( (bool)def.IsActivated );
-		}
-
-
-
-		////////////////
-
+	public partial class EmitterDefinition : BaseEmitterDefinition {
 		internal int Timer = 0;
 
 
@@ -62,10 +20,6 @@ namespace Emitters.Definitions {
 		public float Scatter { get; set; }
 		public bool HasGravity { get; set; }
 		public bool HasLight { get; set; }
-
-		////
-
-		public bool IsActivated { get; set; } = true;
 
 
 
@@ -116,10 +70,45 @@ namespace Emitters.Definitions {
 		}
 
 
+
 		////////////////
 
-		public void Activate( bool isActivated ) {
-			this.IsActivated = isActivated;
+		public override BaseEmitterDefinition Read( BinaryReader reader ) {
+			return new EmitterDefinition(
+				isGoreMode: (bool)reader.ReadBoolean(),
+				type: (int)reader.ReadUInt16(),
+				scale: (float)reader.ReadSingle(),
+				delay: (int)reader.ReadInt16(),
+				speedX: (float)reader.ReadSingle(),
+				speedY: (float)reader.ReadSingle(),
+				color: new Color(
+					(byte)reader.ReadByte(),
+					(byte)reader.ReadByte(),
+					(byte)reader.ReadByte()
+				),
+				alpha: (byte)reader.ReadByte(),
+				scatter: (float)reader.ReadSingle(),
+				hasGravity: (bool)reader.ReadBoolean(),
+				hasLight: (bool)reader.ReadBoolean(),
+				isActivated: (bool)reader.ReadBoolean()
+			);
+		}
+
+		public override void Write( BinaryWriter writer ) {
+			writer.Write( (bool)this.IsGoreMode );
+			writer.Write( (ushort)this.Type );
+			writer.Write( (float)this.Scale );
+			writer.Write( (ushort)this.Delay );
+			writer.Write( (float)this.SpeedX );
+			writer.Write( (float)this.SpeedY );
+			writer.Write( (byte)this.Color.R );
+			writer.Write( (byte)this.Color.G );
+			writer.Write( (byte)this.Color.B );
+			writer.Write( (byte)this.Alpha );
+			writer.Write( (float)this.Scatter );
+			writer.Write( (bool)this.HasGravity );
+			writer.Write( (bool)this.HasLight );
+			writer.Write( (bool)this.IsActivated );
 		}
 
 

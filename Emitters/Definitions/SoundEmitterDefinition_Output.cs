@@ -2,7 +2,7 @@
 
 
 namespace Emitters.Definitions {
-	public partial class SoundEmitterDefinition {
+	public partial class SoundEmitterDefinition : BaseEmitterDefinition {
 		public void Output(
 					out int type,
 					out int style,
