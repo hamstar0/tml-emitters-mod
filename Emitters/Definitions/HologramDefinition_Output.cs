@@ -1,10 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 
+
 namespace Emitters.Definitions {
-	public partial class HologramDefinition {
+	public partial class HologramDefinition : BaseEmitterDefinition {
 		public void Output(
 					out int type,
-					out int mode,
+					out HologramMode mode,
 					out float scale,
 					out Color color,
 					out byte alpha,
@@ -37,7 +38,7 @@ namespace Emitters.Definitions {
 
 		public void Output(
 					out int type,
-					out int mode,
+					out HologramMode mode,
 					out float scale,
 					out byte colorR,
 					out byte colorG,

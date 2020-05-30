@@ -1,31 +1,8 @@
 ﻿using System.IO;
 
+
 namespace Emitters.Definitions {
-	public partial class SoundEmitterDefinition {
-		public static SoundEmitterDefinition Read( BinaryReader reader ) {
-			return new SoundEmitterDefinition(
-				type: (int)reader.ReadUInt16(),
-				style: (int)reader.ReadUInt16(),
-				volume: (float)reader.ReadSingle(),
-				pitch: (float)reader.ReadSingle(),
-				delay: (int)reader.ReadInt16(),
-				isActivated: (bool)reader.ReadBoolean()
-			);
-		}
-
-		public static void Write( SoundEmitterDefinition def, BinaryWriter writer ) {
-			writer.Write( (ushort)def.Type );
-			writer.Write( (ushort)def.Style );
-			writer.Write( (float)def.Volume );
-			writer.Write( (float)def.Pitch );
-			writer.Write( (ushort)def.Delay );
-			writer.Write( (bool)def.IsActivated );
-		}
-
-
-
-		////////////////
-
+	public partial class SoundEmitterDefinition : BaseEmitterDefinition {
 		internal int Timer = 0;
 
 
@@ -35,10 +12,6 @@ namespace Emitters.Definitions {
 		public float Volume { get; set; }
 		public float Pitch { get; set; }
 		public int Delay { get; set; }
-
-		////
-
-		public bool IsActivated { get; set; } = true;
 
 
 
@@ -72,9 +45,25 @@ namespace Emitters.Definitions {
 
 
 		////////////////
-		
-		public void Activate( bool isActivated ) {
-			this.IsActivated = isActivated;
+
+		public override BaseEmitterDefinition Read( BinaryReader reader ) {
+			return new SoundEmitterDefinition(
+				type: (int)reader.ReadUInt16(),
+				style: (int)reader.ReadUInt16(),
+				volume: (float)reader.ReadSingle(),
+				pitch: (float)reader.ReadSingle(),
+				delay: (int)reader.ReadInt16(),
+				isActivated: (bool)reader.ReadBoolean()
+			);
+		}
+
+		public override void Write( BinaryWriter writer ) {
+			writer.Write( (ushort)this.Type );
+			writer.Write( (ushort)this.Style );
+			writer.Write( (float)this.Volume );
+			writer.Write( (float)this.Pitch );
+			writer.Write( (ushort)this.Delay );
+			writer.Write( (bool)this.IsActivated );
 		}
 
 

@@ -65,7 +65,7 @@ namespace Emitters.Items {
 			try
 			{
 				this.Def = new HologramDefinition(
-					mode: (int)tag.GetInt("HologramMode"),
+					mode: (HologramMode)tag.GetInt("HologramMode"),
 					type: (int)GetHologramType(tag),
 					scale: tag.GetFloat( "HologramScale" ),
 					color: new Color(

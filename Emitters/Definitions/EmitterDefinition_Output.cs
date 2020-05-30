@@ -1,10 +1,9 @@
 ﻿using System;
-using System.IO;
 using Microsoft.Xna.Framework;
 
 
 namespace Emitters.Definitions {
-	public partial class EmitterDefinition {
+	public partial class EmitterDefinition : BaseEmitterDefinition {
 		public void Output(
 					out bool isGoreMode,
 					out int type,

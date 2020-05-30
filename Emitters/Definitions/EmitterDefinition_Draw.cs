@@ -8,7 +8,7 @@ using Emitters.Items;
 
 
 namespace Emitters.Definitions {
-	public partial class EmitterDefinition {
+	public partial class EmitterDefinition : BaseEmitterDefinition {
 		public void Draw( int tileX, int tileY, bool isOnScreen ) {
 			var wldPos = new Vector2( (tileX<<4)+8, (tileY<<4)+8 );
 			this.AnimateEmitter( wldPos );

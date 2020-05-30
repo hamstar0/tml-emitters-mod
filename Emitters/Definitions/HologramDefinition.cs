@@ -1,61 +1,72 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
+using HamstarHelpers.Classes.Errors;
 
 
 namespace Emitters.Definitions {
-	public partial class HologramDefinition {
-		public static HologramDefinition Read( BinaryReader reader ) {
-			return new HologramDefinition(
-				mode: (int)reader.ReadInt16(),
-				type: (int)reader.ReadUInt16(),
-				scale: (float)reader.ReadSingle(),
-				color: new Color(
-					(byte)reader.ReadByte(),
-					(byte)reader.ReadByte(),
-					(byte)reader.ReadByte()
-				),
-				alpha: (byte)reader.ReadByte(),
-				direction: (int)reader.ReadUInt16(),
-				rotation: (float)reader.ReadSingle(),
-				offsetX: (int)reader.ReadUInt16(),
-				offsetY: (int)reader.ReadUInt16(),
-				frameStart: (int)reader.ReadUInt16(),
-				frameEnd: (int)reader.ReadUInt16(),
-				frameRateTicks: (int)reader.ReadUInt16(),
-				worldLight: (bool)reader.ReadBoolean(),
-				crtEffect: (bool)reader.ReadBoolean(),
-				isActivated: (bool)reader.ReadBoolean()
-			);
+	public enum HologramMode {
+		NPC,
+		Item,
+		Projectile
+	}
+
+
+
+	public partial class HologramDefinition : BaseEmitterDefinition {
+		public static bool IsBadType( HologramMode mode, int type ) {
+			if( type < NPCID.Count ) {
+				return false;
+			}
+
+			switch( mode ) {
+			case HologramMode.NPC:
+				return NPCLoader.GetNPC( type ) == null;
+			case HologramMode.Item:
+				return ItemLoader.GetItem( type ) == null;
+			case HologramMode.Projectile:
+				return ProjectileLoader.GetProjectile( type ) == null;
+			default:
+				throw new ModHelpersException( "Invalid hologram type" );
+			}
 		}
 
-		public static void Write( HologramDefinition def, BinaryWriter writer ) {
-			writer.Write((ushort)def.Mode);
-			writer.Write( (ushort)def.Type );
-			writer.Write( (float)def.Scale );
-			writer.Write( (byte)def.Color.R );
-			writer.Write( (byte)def.Color.G );
-			writer.Write( (byte)def.Color.B );
-			writer.Write( (byte)def.Alpha );
-			writer.Write( (ushort)def.Direction );
-			writer.Write( (float)def.Rotation );
-			writer.Write( (ushort)def.OffsetX );
-			writer.Write( (ushort)def.OffsetY );
-			writer.Write( (ushort)def.FrameStart );
-			writer.Write( (ushort)def.FrameEnd );
-			writer.Write( (ushort)def.FrameRateTicks );
-			writer.Write( (bool)def.WorldLighting );
-			writer.Write( (bool)def.CrtEffect );
-			writer.Write( (bool)def.IsActivated );
+		public static Texture2D GetTexture( HologramMode mode, int type ) {
+			switch( mode ) {
+			case HologramMode.NPC:
+				return Main.npcTexture[type];
+			case HologramMode.Item:
+				return Main.itemTexture[type];
+			case HologramMode.Projectile:
+				return Main.projectileTexture[type];
+			default:
+				throw new ModHelpersException( "Invalid hologram type" );
+			}
 		}
+
+		public static int GetFrameCount( HologramMode mode, int type ) {
+			switch( mode ) {
+			case HologramMode.NPC:
+				return Main.npcFrameCount[type];
+			case HologramMode.Item:
+				return 1;
+			case HologramMode.Projectile:
+				return Main.projFrames[type];
+			default:
+				throw new ModHelpersException( "Invalid hologram type" );
+			}
+		}
+
+
 
 		////////////////
 
-		public int Mode { get ; set; }
+		public HologramMode Mode { get; set; }
 		public int Type { get; set; }
 		public float Scale { get; set; }
 		public Color Color { get; set; }
@@ -70,23 +81,21 @@ namespace Emitters.Definitions {
 		public bool WorldLighting { get; set; }
 		public bool CrtEffect { get; set; }
 
-		////
 
-		public bool IsActivated { get; set; } = true;
 
-		
-		public object SetHologramType()
-		{
-			switch (this.Mode)
-			{
-				case 1:
-					return new NPCDefinition[this.Type];
-				case 2:
-					return new ItemDefinition[this.Type];
-				case 3:
-					return new NPCDefinition[this.Type];
+		////////////////
+
+		public EntityDefinition SetHologramType() {
+			switch( this.Mode ) {
+			case HologramMode.NPC:
+				return new NPCDefinition( this.Type );
+			case HologramMode.Item:
+				return new ItemDefinition( this.Type );
+			case HologramMode.Projectile:
+				return new ProjectileDefinition( this.Type );
+			default:
+				throw new ModHelpersException( "Invalid hologram type" );
 			}
-			return new object();
 		}
 
 		////////////////
@@ -114,7 +123,7 @@ namespace Emitters.Definitions {
 		}
 
 		public HologramDefinition(
-					int mode,
+					HologramMode mode,
 					int type,
 					float scale,
 					Color color,
@@ -128,8 +137,7 @@ namespace Emitters.Definitions {
 					int frameRateTicks,
 					bool worldLight,
 					bool crtEffect,
-					bool isActivated )
-		{
+					bool isActivated ) {
 			this.Mode = mode;
 			this.Type = type;
 			this.Scale = scale;
@@ -149,11 +157,50 @@ namespace Emitters.Definitions {
 			this.CurrentFrame = frameStart;
 		}
 
-
 		////////////////
 
-		public void Activate( bool isActivated ) {
-			this.IsActivated = isActivated;
+		public override BaseEmitterDefinition Read( BinaryReader reader ) {
+			return new HologramDefinition(
+				mode: (HologramMode)reader.ReadInt16(),
+				type: (int)reader.ReadUInt16(),
+				scale: (float)reader.ReadSingle(),
+				color: new Color(
+					(byte)reader.ReadByte(),
+					(byte)reader.ReadByte(),
+					(byte)reader.ReadByte()
+				),
+				alpha: (byte)reader.ReadByte(),
+				direction: (int)reader.ReadUInt16(),
+				rotation: (float)reader.ReadSingle(),
+				offsetX: (int)reader.ReadUInt16(),
+				offsetY: (int)reader.ReadUInt16(),
+				frameStart: (int)reader.ReadUInt16(),
+				frameEnd: (int)reader.ReadUInt16(),
+				frameRateTicks: (int)reader.ReadUInt16(),
+				worldLight: (bool)reader.ReadBoolean(),
+				crtEffect: (bool)reader.ReadBoolean(),
+				isActivated: (bool)reader.ReadBoolean()
+			);
+		}
+
+		public override void Write( BinaryWriter writer ) {
+			writer.Write( (ushort)this.Mode );
+			writer.Write( (ushort)this.Type );
+			writer.Write( (float)this.Scale );
+			writer.Write( (byte)this.Color.R );
+			writer.Write( (byte)this.Color.G );
+			writer.Write( (byte)this.Color.B );
+			writer.Write( (byte)this.Alpha );
+			writer.Write( (ushort)this.Direction );
+			writer.Write( (float)this.Rotation );
+			writer.Write( (ushort)this.OffsetX );
+			writer.Write( (ushort)this.OffsetY );
+			writer.Write( (ushort)this.FrameStart );
+			writer.Write( (ushort)this.FrameEnd );
+			writer.Write( (ushort)this.FrameRateTicks );
+			writer.Write( (bool)this.WorldLighting );
+			writer.Write( (bool)this.CrtEffect );
+			writer.Write( (bool)this.IsActivated );
 		}
 
 
@@ -163,42 +210,15 @@ namespace Emitters.Definitions {
 			if( ++this.CurrentFrameElapsedTicks <= this.FrameRateTicks ) {
 				return;
 			}
-			int frameCount = EmitterUtils.GetFrameCount(this.Mode,this.Type);
+
+			int frameCount = HologramDefinition.GetFrameCount( this.Mode, this.Type );
+
 			this.CurrentFrame++;
 			this.CurrentFrameElapsedTicks = 0;
 
-			if ((this.CurrentFrame > this.FrameEnd) || (this.CurrentFrame >= frameCount))
-			{
+			if( (this.CurrentFrame > this.FrameEnd) || (this.CurrentFrame >= frameCount) ) {
 				this.CurrentFrame = this.FrameStart;
 			}
-		}
-
-		private bool CheckIfNull()
-		{
-			if (this.Type >= NPCID.Count) {
-				switch (this.Mode)
-				{
-					case 1:
-						if (NPCLoader.GetNPC(this.Type) == null) {
-							return true;
-						}
-
-						break;
-					case 2:
-						if (ItemLoader.GetItem(this.Type) == null) {
-							return true;
-						}
-
-						break;
-					case 3:
-						if (ProjectileLoader.GetProjectile(this.Type) == null) {
-							return true;
-						}
-
-						break;
-				}
-			}
-			return false;
 		}
 	}
 }

@@ -6,15 +6,15 @@ using HamstarHelpers.Helpers.DotNET.Reflection;
 
 namespace Emitters.UI {
 	partial class UIEmitterEditorDialog : UIDialog {
-		private bool IsSettingMode = false;
+		private bool IsModeBeingSet = false; // TODO Recheck if these need to exist?
 
 
 
 		////////////////
 
 		public void SetGoreMode( bool isGoreMode ) {
-			if( this.IsSettingMode ) { return; }
-			this.IsSettingMode = true;
+			if( this.IsModeBeingSet ) { return; }
+			this.IsModeBeingSet = true;
 
 			this.ModeDustFlagElem.Selected = !isGoreMode;
 			this.ModeGoreFlagElem.Selected = isGoreMode;
@@ -33,7 +33,7 @@ namespace Emitters.UI {
 				this.TypeSliderElem.SetRange( 0, goreCount-1 );
 			}
 
-			this.IsSettingMode = false;
+			this.IsModeBeingSet = false;
 		}
 	}
 }

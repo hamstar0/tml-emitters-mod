@@ -13,10 +13,14 @@ using Emitters.Definitions;
 namespace Emitters.Items {
 	public partial class HologramItem : ModItem {
 
-		public static void OpenUI( Item HologramItem ) {
+		public static void OpenUI( Item hologramItem ) {
 			var mymod = EmittersMod.Instance;
-			mymod.HologramEditorDialog.Open(); 
-			mymod.HologramEditorDialog.SetItem( HologramItem );
+
+			mymod.HologramEditorDialog.Open();
+
+			if( !mymod.HologramEditorDialog.SetItem(hologramItem) ) {
+				mymod.HologramEditorDialog.Close();
+			}
 		}
 
 
