@@ -80,8 +80,7 @@ namespace Emitters.Definitions {
 		public int FrameRateTicks { get; set; }
 		public bool WorldLighting { get; set; }
 		public bool CrtEffect { get; set; }
-
-
+		public float ShaderTime { get; set; }
 
 		////////////////
 
@@ -117,6 +116,7 @@ namespace Emitters.Definitions {
 			this.FrameRateTicks = copy.FrameRateTicks;
 			this.WorldLighting = copy.WorldLighting;
 			this.CrtEffect = copy.CrtEffect;
+			this.ShaderTime = copy.ShaderTime;
 			this.IsActivated = copy.IsActivated;
 
 			this.CurrentFrame = this.FrameStart;
@@ -137,6 +137,7 @@ namespace Emitters.Definitions {
 					int frameRateTicks,
 					bool worldLight,
 					bool crtEffect,
+					float shaderTime,
 					bool isActivated ) {
 			this.Mode = mode;
 			this.Type = type;
@@ -152,6 +153,7 @@ namespace Emitters.Definitions {
 			this.FrameRateTicks = frameRateTicks;
 			this.WorldLighting = worldLight;
 			this.CrtEffect = crtEffect;
+			this.ShaderTime = shaderTime;
 			this.IsActivated = isActivated;
 
 			this.CurrentFrame = frameStart;
@@ -179,6 +181,7 @@ namespace Emitters.Definitions {
 				frameRateTicks: (int)reader.ReadUInt16(),
 				worldLight: (bool)reader.ReadBoolean(),
 				crtEffect: (bool)reader.ReadBoolean(),
+				shaderTime: (float)reader.ReadSingle(),
 				isActivated: (bool)reader.ReadBoolean()
 			);
 		}
@@ -200,6 +203,7 @@ namespace Emitters.Definitions {
 			writer.Write( (ushort)this.FrameRateTicks );
 			writer.Write( (bool)this.WorldLighting );
 			writer.Write( (bool)this.CrtEffect );
+			writer.Write((float)this.ShaderTime);
 			writer.Write( (bool)this.IsActivated );
 		}
 

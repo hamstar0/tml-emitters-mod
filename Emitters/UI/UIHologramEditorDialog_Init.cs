@@ -1,10 +1,10 @@
-﻿using Terraria;
-using Terraria.UI;
-using HamstarHelpers.Classes.UI.Elements;
+﻿using HamstarHelpers.Classes.UI.Elements;
 using HamstarHelpers.Classes.UI.Theme;
+using Terraria.UI;
 
 
-namespace Emitters.UI {
+namespace Emitters.UI
+{
 	partial class UIHologramEditorDialog : UIDialog {
 		public override void InitializeComponents() {
 			float yOffset = 0f;
@@ -23,13 +23,18 @@ namespace Emitters.UI {
 
 			this.InitializeMainTab( this.MainTabElem );
 			this.InitializeColorTab( this.ColorTabElem );
-			//this.InitializeShadersTab( this.ShaderTabElem );
+			this.InitializeShadersTab( this.ShaderTabElem );
+
+			this.HologramUIContainers.Add(MainTabElem);
+			this.HologramUIContainers.Add(ColorTabElem);
+			this.HologramUIContainers.Add(ShaderTabElem);
+
 
 			yOffset += this.MainTabElem.Height.Pixels;
 
 			// Apply button
 			this.ApplyButton = new UITextPanelButton( UITheme.Vanilla, "Apply" );
-			this.ApplyButton.Top.Set( -32f, 1f );
+			this.ApplyButton.Top.Set( -14f, 1f );
 			this.ApplyButton.Left.Set( -64f, 1f );
 			this.ApplyButton.Height.Set( this.ApplyButton.GetOuterDimensions().Height + 4f, 0f );
 			this.ApplyButton.OnClick += ( _, __ ) => {
@@ -37,9 +42,9 @@ namespace Emitters.UI {
 				this.ApplySettingsToCurrentItem();
 			};
 			this.InnerContainer.Append( (UIElement)this.ApplyButton );
-
+			this.HologramUIContainers.Add(ApplyButton);
 			yOffset += 28;
-
+			this.OuterContainer.Top.Set( this.TabStartHeight - 28f, 0f );
 			this.SwitchTab( HologramUITab.MainSettings );
 		}
 
@@ -67,7 +72,18 @@ namespace Emitters.UI {
 			};
 			this.InnerContainer.Append( (UIElement)colorTabBut );
 
-			yOffset += 36f;
+			// Shader tab button
+			var shaderTabBut = new UITextPanelButton( UITheme.Vanilla, "Shader Tab" );
+			shaderTabBut.Top.Set( yOffset, 0f );
+			shaderTabBut.Left.Set( -372f, 1f );
+			shaderTabBut.Height.Set( shaderTabBut.GetOuterDimensions().Height - 4f, 0f );
+			shaderTabBut.OnClick += ( _, __ ) => {
+				this.SwitchTab( HologramUITab.ShaderSettings );
+			};
+			this.InnerContainer.Append( (UIElement)shaderTabBut );
+
+			yOffset += 36;
+
 		}
 
 
@@ -79,19 +95,19 @@ namespace Emitters.UI {
 			mainTab = new UIThemedPanel( UITheme.Vanilla, false );
 			mainTab.Width.Set( 0f, 1f );
 			mainTab.Top.Set( yOffset, 0f );
-			mainTab.Hide();
+			//mainTab.Hide();
 			this.InnerContainer.Append( (UIElement)mainTab );
 
 			colorTab = new UIThemedPanel( UITheme.Vanilla, false );
 			colorTab.Width.Set( 0f, 1f );
 			colorTab.Top.Set( yOffset, 0f );
-			colorTab.Hide();
+			//colorTab.Hide();
 			this.InnerContainer.Append( (UIElement)colorTab );
 
 			shaderTab = new UIThemedPanel( UITheme.Vanilla, false );
 			shaderTab.Width.Set( 0f, 1f );
 			shaderTab.Top.Set( yOffset, 0f );
-			shaderTab.Hide();
+			//shaderTab.Hide();
 			this.InnerContainer.Append( (UIElement)shaderTab );
 		}
 

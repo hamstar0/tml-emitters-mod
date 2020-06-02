@@ -45,6 +45,7 @@ namespace Emitters.NetProtocols {
 		public int FrameRateTicks;
 		public bool WorldLight;
 		public bool CrtEffect;
+		public float ShaderTime;
 		public bool IsActivated;
 
 
@@ -73,6 +74,7 @@ namespace Emitters.NetProtocols {
 				out this.FrameRateTicks,
 				out this.WorldLight,
 				out this.CrtEffect,
+				out this.ShaderTime,
 				out this.IsActivated
 			) ;
 
@@ -101,6 +103,7 @@ namespace Emitters.NetProtocols {
 			frameRateTicks: this.FrameRateTicks,
 			worldLight: this.WorldLight,
 			crtEffect: this.CrtEffect,
+			shaderTime: this.ShaderTime,
 			isActivated: this.IsActivated
 		);
 

@@ -23,34 +23,43 @@ namespace Emitters.UI {
 			this.InitializeWidgetsForFrameEnd( container, ref yOffset );
 			this.InitializeWidgetsForFrameRateTicks( container, ref yOffset );
 			this.InitializeWidgetsForWorldLighting( container, ref yOffset );
-			this.InitializeWidgetsForCrtEffect( container, ref yOffset );
 
 			container.Height.Set( yOffset, 0f );
 		}
 
 		////////////////
+		/// 
+		private void InitializeWidgetsForMode( UIThemedPanel container, ref float yOffset ) 
+		{
 
-		private void InitializeWidgetsForMode( UIThemedPanel container, ref float yOffset ) {
 			this.InitializeComponentForTitle( container, "Mode:", false, ref yOffset );
 
-			this.ModeSliderElem = new UISlider(
-				theme: UITheme.Vanilla,
-				hoverText: "",
-				isInt: true,
-				ticks: 0,
-				minRange: 1f,
-				maxRange: 3f );
-			this.ModeSliderElem.Top.Set( yOffset, 0f );
-			this.ModeSliderElem.Left.Set( 64f, 0f );
-			this.ModeSliderElem.Width.Set( -64f, 1f );
-			this.ModeSliderElem.SetValue( 1f );
-			this.ModeSliderElem.PreOnChange += ( value ) => {
-				this.SetHologramMode( (int)value );
-				return value;
+			this.NpcModeCheckbox = new UICheckbox( UITheme.Vanilla, "NPC", "" );
+			this.NpcModeCheckbox.Top.Set( yOffset, 0f );
+			this.NpcModeCheckbox.Left.Set( 64f, 0f );
+			this.NpcModeCheckbox.Selected = true;
+			this.NpcModeCheckbox.OnSelectedChanged += () => {
+				this.UISetHologramMode( HologramUIMode.NPCMode );
+			};
+
+			this.ItemModeCheckbox = new UICheckbox( UITheme.Vanilla, "Item", "" );
+			this.ItemModeCheckbox.Top.Set( yOffset, 0f );
+			this.ItemModeCheckbox.Left.Set( 128f, 0f );
+			this.ItemModeCheckbox.OnSelectedChanged += () => {
+				this.UISetHologramMode( HologramUIMode.ItemMode );
+			};
+
+			this.ProjectileModeCheckbox = new UICheckbox( UITheme.Vanilla, "Projectile", "" );
+			this.ProjectileModeCheckbox.Top.Set( yOffset, 0f );
+			this.ProjectileModeCheckbox.Left.Set( 192f, 0f );
+			this.ProjectileModeCheckbox.OnSelectedChanged += () => {
+				this.UISetHologramMode( HologramUIMode.ProjectileMode );
 			};
 			yOffset += 28f;
 
-			container.Append( (UIElement)this.ModeSliderElem );
+			container.Append( (UIElement)this.NpcModeCheckbox );
+			container.Append( (UIElement)this.ItemModeCheckbox );
+			container.Append( (UIElement)this.ProjectileModeCheckbox );
 		}
 
 		private void InitializeWidgetsForType( UIThemedPanel container, ref float yOffset ) {
@@ -66,8 +75,9 @@ namespace Emitters.UI {
 			this.TypeSliderElem.Left.Set( 64f, 0f );
 			this.TypeSliderElem.Width.Set( -64f, 1f );
 			this.TypeSliderElem.SetValue( 1f );
-			this.TypeSliderElem.PreOnChange += ( value ) => {
-				var mode = (HologramMode)ModeSliderElem.RememberedInputValue;
+			this.TypeSliderElem.PreOnChange += ( value ) =>
+			{
+				var mode = (HologramMode) this.CurrentMode;
 				this.FrameStartSliderElem.SetRange( 0f, (float)( HologramDefinition.GetFrameCount(mode, (int)value) - 1 ) );
 				this.FrameEndSliderElem.SetRange( 0f, (float)( HologramDefinition.GetFrameCount(mode, (int)value) - 1 ) );
 				return value;
@@ -264,14 +274,5 @@ namespace Emitters.UI {
 			container.Append( (UIElement)this.WorldLightingCheckbox );
 		}
 
-		private void InitializeWidgetsForCrtEffect( UIThemedPanel container, ref float yOffset ) {
-			this.CRTEffectCheckbox = new UICheckbox( UITheme.Vanilla, "CRT Effect", "" );
-			this.CRTEffectCheckbox.Top.Set( yOffset, 0f );
-			this.CRTEffectCheckbox.Selected = false;
-			this.CRTEffectCheckbox.Hide();
-			//yOffset += 28f;
-
-			container.Append( this.CRTEffectCheckbox );
-		}
 	}
 }

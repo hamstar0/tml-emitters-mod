@@ -83,6 +83,7 @@ namespace Emitters.Items {
 					frameRateTicks: tag.GetInt( "HologramFrameRateTicks" ),
 					worldLight: tag.GetBool( "HologramWorldLighting" ),
 					crtEffect:tag.GetBool("HologramCRTEFfect"),
+					shaderTime:tag.GetFloat("HologramShaderTime"),
 					isActivated: tag.GetBool( "HologramIsActivated" )
 				);
 			} catch { }
@@ -123,6 +124,7 @@ namespace Emitters.Items {
 				{ "HologramFrameRateTicks", (int)this.Def.FrameRateTicks },
 				{ "HologramWorldLighting", (bool)this.Def.WorldLighting },
 				{ "HologramCRTEffect", (bool)this.Def.CrtEffect },
+				{"HologramShaderTime", (float)this.Def.ShaderTime},
 				{ "HologramIsActivated", (bool)this.Def.IsActivated },
 			};
 		}
@@ -150,6 +152,7 @@ namespace Emitters.Items {
 			var frameTip = new TooltipLine( this.mod, "HologramFrame", " Frame: " + this.Def?.RenderFrame() );
 			var worldLightingTip = new TooltipLine( this.mod, "HologramWorldLighting", " World Lighting: " + this.Def?.WorldLighting );
 			var CRTEffectTip = new TooltipLine(this.mod, "HologramCRTEffect", " CRT Effect: " + this.Def?.CrtEffect);
+			var shaderTimeTip = new TooltipLine(this.mod, "HologramShaderTime", " Shader Time: " + this.Def?.RenderShaderTime());
 
 			var color = Color.White * 0.75f;
 			modeTip.overrideColor = color;
@@ -163,6 +166,7 @@ namespace Emitters.Items {
 			frameTip.overrideColor = color;
 			worldLightingTip.overrideColor = color;
 			CRTEffectTip.overrideColor = color;
+			shaderTimeTip.overrideColor = color;
 
 			tooltips.Add(modeTip);
 			tooltips.Add(typeTip);
@@ -175,6 +179,7 @@ namespace Emitters.Items {
 			tooltips.Add( frameTip );
 			tooltips.Add( worldLightingTip );
 			tooltips.Add(CRTEffectTip);
+			tooltips.Add(shaderTimeTip);
 		}
 
 

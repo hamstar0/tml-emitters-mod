@@ -1,27 +1,34 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria;
+﻿using Emitters.Definitions;
+using Emitters.Items;
 using HamstarHelpers.Classes.Errors;
-using HamstarHelpers.Classes.UI.Theme;
 using HamstarHelpers.Classes.UI.Elements;
 using HamstarHelpers.Classes.UI.Elements.Slider;
-using Emitters.Items;
-using Emitters.Definitions;
+using HamstarHelpers.Classes.UI.Theme;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
+using Terraria;
+using Terraria.UI;
 
 
-namespace Emitters.UI {
+namespace Emitters.UI
+{
 	public enum HologramUITab {
 		MainSettings,
 		ColorSettings,
 		ShaderSettings
 	}
-
+	public enum HologramUIMode {
+		NPCMode,
+		ItemMode,
+		ProjectileMode
+	}
 
 
 
 	partial class UIHologramEditorDialog : UIDialog {
 		public HologramUITab CurrentTab { get; private set; } = HologramUITab.MainSettings;
-
+		public HologramUIMode CurrentMode { get; private set; } = HologramUIMode.NPCMode;
 
 		////////////////
 		
@@ -35,7 +42,10 @@ namespace Emitters.UI {
 
 		//
 
-		private UISlider ModeSliderElem;
+		//private UISlider ModeSliderElem;
+		private UICheckbox NpcModeCheckbox;
+		private UICheckbox ItemModeCheckbox;
+		private UICheckbox ProjectileModeCheckbox;
 		private UISlider TypeSliderElem;
 		private UISlider ScaleSliderElem;
 		private UISlider DirectionSliderElem;
@@ -46,7 +56,6 @@ namespace Emitters.UI {
 		private UISlider FrameEndSliderElem;
 		private UISlider FrameRateTicksSliderElem;
 		private UICheckbox WorldLightingCheckbox;
-		private UICheckbox CRTEffectCheckbox;
 
 		//
 
@@ -57,8 +66,12 @@ namespace Emitters.UI {
 
 		//
 
-		private UITextPanelButton ApplyButton;
+		private UISlider ShadertTimeSliderElem;
+		private UICheckbox CRTEffectCheckbox;
 
+		//
+		private UITextPanelButton ApplyButton;
+		private List<UIElement> HologramUIContainers = new List<UIElement>();
 		////
 
 		private Item HologramItem = null;
@@ -69,12 +82,11 @@ namespace Emitters.UI {
 
 		public UIHologramEditorDialog() : base( UITheme.Vanilla, 600, 500 ) { }
 
-
 		////////////////
-
+		
 		public HologramDefinition CreateHologramDefinition() {
 			return new HologramDefinition(
-				mode: (HologramMode)ModeSliderElem.RememberedInputValue,
+				mode: (HologramMode)this.CurrentMode,
 				type: (int)TypeSliderElem.RememberedInputValue,
 				scale: ScaleSliderElem.RememberedInputValue,
 				color: GetColor(),
@@ -88,6 +100,7 @@ namespace Emitters.UI {
 				frameRateTicks: (int)FrameRateTicksSliderElem.RememberedInputValue,
 				worldLight: WorldLightingCheckbox.Selected,
 				crtEffect: CRTEffectCheckbox.Selected,
+				shaderTime: ShadertTimeSliderElem.RememberedInputValue,
 				isActivated: true
 			);
 		}
@@ -103,9 +116,6 @@ namespace Emitters.UI {
 			return color;
 		}
 
-
-		////////////////
-
 		internal bool SetItem( Item hologramItem ) {
 			var myitem = hologramItem.modItem as HologramItem;
 			if( myitem.Def == null ) {
@@ -115,8 +125,8 @@ namespace Emitters.UI {
 			this.HologramItem = hologramItem;
 
 			Vector3 hsl = Main.rgbToHsl( myitem.Def.Color );
-
-			this.ModeSliderElem.SetValue( (float)myitem.Def.Mode );
+			myitem.Def.Mode = (HologramMode) CurrentMode;
+			this.TypeSliderElem.SetValue( myitem.Def.Type );
 			this.HueSliderElem.SetValue( hsl.X );
 			this.SaturationSliderElem.SetValue( hsl.Y );
 			this.LightnessSliderElem.SetValue( hsl.Z );
@@ -133,7 +143,7 @@ namespace Emitters.UI {
 				throw new ModHelpersException( "Missing item." );
 			}
 
-			var myitem = this.HologramItem.modItem as HologramItem;
+			HologramItem myitem = this.HologramItem.modItem as HologramItem;
 			if( myitem == null ) {
 				Main.NewText( "No hologram item selected. Changes not saved.", Color.Red );
 				return;
