@@ -18,6 +18,7 @@ namespace Emitters.Definitions {
 					out int frameRateTicks,
 					out bool worldLight,
 					out bool crtEffect,
+					out float shaderTime,
 					out bool isActivated ) {
 			type = this.Type;
 			mode = this.Mode;
@@ -33,6 +34,7 @@ namespace Emitters.Definitions {
 			frameRateTicks = this.FrameRateTicks;
 			worldLight = this.WorldLighting;
 			crtEffect = this.CrtEffect;
+			shaderTime = this.ShaderTime;
 			isActivated = this.IsActivated;
 		}
 
@@ -53,6 +55,7 @@ namespace Emitters.Definitions {
 					out int frameRateTicks,
 					out bool worldLight,
 					out bool crtEffect,
+					out float shaderTime,
 					out bool isActivated ) {
 			Color color;
 			this.Output(
@@ -70,6 +73,7 @@ namespace Emitters.Definitions {
 				out frameRateTicks,
 				out worldLight,
 				out crtEffect,
+				out shaderTime,
 				out isActivated
 			);
 			colorR = color.R;
@@ -124,6 +128,10 @@ namespace Emitters.Definitions {
 			return "#"+this.CurrentFrame+" between "+this.FrameStart+" and "+this.FrameEnd+" (rate: "+this.FrameRateTicks+")";
 		}
 
+		public string RenderShaderTime()
+		{
+			return this.ShaderTime.ToString();
+		}
 		////////////////
 
 		public override string ToString() {
@@ -139,6 +147,7 @@ namespace Emitters.Definitions {
 				+/*"\n"+*/" Frame: " + this.RenderFrame() + ", "
 				+/*"\n"+*/" WorldLight: " + this.WorldLighting + ", "
 				+/*"\n"+*/" CRTEffect: " + this.CrtEffect + ", "
+				+/*"\n"+*/" ShaderTime: " + this.ShaderTime + ", "
 				+/*"\n"+*/" IsActivated: " + this.IsActivated;
 		}
 	}

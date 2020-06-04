@@ -1,11 +1,8 @@
-﻿using Terraria;
-using Terraria.ModLoader;
-using HamstarHelpers.Classes.Errors;
-using HamstarHelpers.Classes.UI.Elements;
-using HamstarHelpers.Services.Timers;
+﻿using HamstarHelpers.Classes.UI.Elements;
 
 
-namespace Emitters.UI {
+namespace Emitters.UI
+{
 	partial class UIHologramEditorDialog : UIDialog {
 		private bool IsModeBeingSet = false;	// TODO Recheck if these need to exist?
 		private bool IsTabBeingSet = false; // TODO Recheck if these need to exist?
@@ -20,59 +17,62 @@ namespace Emitters.UI {
 
 			float tabHeight = 0f;
 
-			this.MainTabElem.Hide();
-			this.ColorTabElem.Hide();
-			this.ShaderTabElem.Hide();
-
+			this.InnerContainer.RemoveChild(MainTabElem);			
+			this.InnerContainer.RemoveChild(ColorTabElem);
+			this.InnerContainer.RemoveChild(ShaderTabElem);
+			this.InnerContainer.RemoveChild(ApplyButton);
 			switch( tab ) {
 			case HologramUITab.MainSettings:
 				tabHeight = this.MainTabElem.Height.Pixels;
-				this.MainTabElem.Show();
+				this.InnerContainer.Append(this.HologramUIContainers[0]);
 				break;
 			case HologramUITab.ColorSettings:
 				tabHeight = this.ColorTabElem.Height.Pixels;
-				this.ColorTabElem.Show();
+				this.InnerContainer.Append(this.HologramUIContainers[1]);
 				break;
 			case HologramUITab.ShaderSettings:
 				tabHeight = this.ShaderTabElem.Height.Pixels;
-				this.ShaderTabElem.Show();
+				this.InnerContainer.Append(this.HologramUIContainers[2]);
 				break;
 			}
-
-			this.OuterContainer.Height.Set( this.TabStartHeight + tabHeight, 0f );
+			this.InnerContainer.Append(this.HologramUIContainers[3]);
+			this.OuterContainer.Top.Set( this.TabStartHeight - 28f, 0f );
+			this.OuterContainer.Height.Set( this.TabStartHeight + tabHeight + 32f, 0f );
 			this.RecalculateMe();
-
-			// I'll look into why this doesn't recalc right away, later:
-			Timers.SetTimer( "HologramDialogTabs", 2, true, () => {
-				this.RecalculateMe();
-				return false;
-			} );
-
 			this.IsTabBeingSet = false;
 		}
 
 
 		////////////////
 
-		public void SetHologramMode( int hologramMode ) {
+		//////////////////
+
+		public void UISetHologramMode(HologramUIMode mode)
+		{
 			if( this.IsModeBeingSet ) { return; }
+
+			NpcModeCheckbox.Selected = false;
+			ItemModeCheckbox.Selected = false;
+			ProjectileModeCheckbox.Selected = false;
+
 			this.IsModeBeingSet = true;
-
-			switch( hologramMode ) {
-			case 1:
-				this.TypeSliderElem.SetRange( 0, NPCLoader.NPCCount );
-				break;
-			case 2:
-				this.TypeSliderElem.SetRange( 0, ItemLoader.ItemCount - 1 );
-				break;
-			case 3:
-				this.TypeSliderElem.SetRange( 0, ProjectileLoader.ProjectileCount - 1 );
-				break;
-			default:
-				break;
+			switch (mode)
+			{
+				case HologramUIMode.NPCMode:
+					NpcModeCheckbox.Selected = true;
+					break;
+				case HologramUIMode.ItemMode:
+					ItemModeCheckbox.Selected = true;
+					break;
+				case HologramUIMode.ProjectileMode:
+					ProjectileModeCheckbox.Selected = true;
+					break;
 			}
-
+			this.CurrentMode = mode;
 			this.IsModeBeingSet = false;
 		}
+
+		////////////////
+
 	}
 }

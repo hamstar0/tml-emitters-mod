@@ -8,6 +8,7 @@ using HamstarHelpers.Helpers.Items;
 using HamstarHelpers.Helpers.Players;
 using Emitters.NetProtocols;
 using Emitters.Definitions;
+using Emitters.UI;
 
 
 namespace Emitters.Items {
@@ -17,7 +18,7 @@ namespace Emitters.Items {
 			var mymod = EmittersMod.Instance;
 
 			mymod.HologramEditorDialog.Open();
-
+			mymod.HologramEditorDialog.SwitchTab( HologramUITab.MainSettings );
 			if( !mymod.HologramEditorDialog.SetItem(hologramItem) ) {
 				mymod.HologramEditorDialog.Close();
 			}
