@@ -101,7 +101,7 @@ namespace Emitters.Definitions {
 			fx.Parameters["TexWidth"].SetValue( (float)tex.Width * this.Scale );
 			fx.Parameters["TexHeight"].SetValue( (float)tex.Height * this.Scale );
 			fx.Parameters["RandValue"].SetValue( Main.rand.NextFloat() );
-			fx.Parameters["Time"].SetValue( Main.GlobalTime % 3600f );
+			fx.Parameters["Time"].SetValue( Main.GlobalTime % this.ShaderTime );
 
 			fx.Parameters["Frame"].SetValue( (float)this.CurrentFrame );
 			fx.Parameters["FrameMax"].SetValue( (float)Main.npcFrameCount[this.Type] );
@@ -117,8 +117,8 @@ namespace Emitters.Definitions {
 					: SamplerState.LinearClamp,
 				DepthStencilState.Default,
 				RasterizerState.CullNone,
-				fx
-				//Main.GameViewMatrix.ZoomMatrix
+				fx,
+				Main.GameViewMatrix.EffectMatrix
 			);
 		}
 

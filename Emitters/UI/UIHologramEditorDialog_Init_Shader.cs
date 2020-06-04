@@ -27,14 +27,14 @@ namespace Emitters.UI
 				hoverText: "",
 				isInt: false,
 				ticks: 0,
-				minRange: 0f,
-				maxRange: 1f,
+				minRange: 1f,
+				maxRange: 3600f,
 				hideTextInput: false
 			);
 			this.ShadertTimeSliderElem.Top.Set( yOffset, 0f );
 			this.ShadertTimeSliderElem.Left.Set( 96f, 0f );
 			this.ShadertTimeSliderElem.Width.Set( -96f, 1f );
-			this.ShadertTimeSliderElem.SetValue( .5f );
+			this.ShadertTimeSliderElem.SetValue( 3600f );
 			container.Append( this.ShadertTimeSliderElem );
 
 			yOffset += 28f;
