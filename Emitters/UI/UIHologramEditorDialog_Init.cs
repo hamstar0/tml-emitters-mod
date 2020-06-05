@@ -49,14 +49,11 @@ namespace Emitters.UI {
 			//
 
 			this.FullDialogHeight = yOffset + 24f;
-
+		
 			//
 
+			this.OuterContainer.Top.Set( this.TabStartInnerHeight - 28f, 0f );
 			this.SwitchTab( HologramUITab.Main );
-			Timers.SetTimer( 1, true, () => {
-				this.SwitchTab( HologramUITab.Main );
-				return false;
-			} );
 		}
 
 

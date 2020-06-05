@@ -83,8 +83,9 @@ namespace Emitters.Items {
 					frameEnd: tag.GetInt( "HologramFrameEnd" ),
 					frameRateTicks: tag.GetInt( "HologramFrameRateTicks" ),
 					worldLight: tag.GetBool( "HologramWorldLighting" ),
-					crtEffect: tag.GetBool("HologramCRTEFfect"),
-					shaderTime: tag.GetFloat("HologramShaderTime"),
+					shaderMode: (HologramShaderMode)tag.GetInt("HologramShaderMode"),
+					shaderTime:tag.GetFloat("HologramShaderTime"),
+					shaderType:tag.GetInt("HologramShaderType"),
 					isActivated: tag.GetBool( "HologramIsActivated" )
 				);
 			} catch { }
@@ -124,8 +125,9 @@ namespace Emitters.Items {
 				{ "HologramFrameEnd", (int)this.Def.FrameEnd },
 				{ "HologramFrameRateTicks", (int)this.Def.FrameRateTicks },
 				{ "HologramWorldLighting", (bool)this.Def.WorldLighting },
-				{ "HologramCRTEffect", (bool)this.Def.CrtEffect },
-				{"HologramShaderTime", (float)this.Def.ShaderTime},
+				{"HologramShaderMode",(int)this.Def.ShaderMode},
+				{ "HologramShaderTime", (float)this.Def.ShaderTime},
+				{ "HologramShaderType",(int) this.Def.ShaderType},
 				{ "HologramIsActivated", (bool)this.Def.IsActivated },
 			};
 		}
@@ -152,8 +154,9 @@ namespace Emitters.Items {
 			var offsetTip = new TooltipLine( this.mod, "HologramOffset", " Offset: " + this.Def?.RenderOffset() );
 			var frameTip = new TooltipLine( this.mod, "HologramFrame", " Frame: " + this.Def?.RenderFrame() );
 			var worldLightingTip = new TooltipLine( this.mod, "HologramWorldLighting", " World Lighting: " + this.Def?.WorldLighting );
-			var CRTEffectTip = new TooltipLine(this.mod, "HologramCRTEffect", " CRT Effect: " + this.Def?.CrtEffect);
+			var shaderModeTip = new TooltipLine(this.mod, "HologramCRTEffect", " Shader Mode: " + this.Def?.RenderShaderMode());
 			var shaderTimeTip = new TooltipLine(this.mod, "HologramShaderTime", " Shader Time: " + this.Def?.RenderShaderTime());
+			var shaderTypeTip = new TooltipLine(this.mod, "HologramShaderType"," Shader Type: " + this.Def?.RenderShaderType());
 
 			var color = Color.White * 0.75f;
 			modeTip.overrideColor = color;
@@ -166,8 +169,9 @@ namespace Emitters.Items {
 			offsetTip.overrideColor = color;
 			frameTip.overrideColor = color;
 			worldLightingTip.overrideColor = color;
-			CRTEffectTip.overrideColor = color;
+			shaderModeTip.overrideColor = color;
 			shaderTimeTip.overrideColor = color;
+			shaderTypeTip.overrideColor = color;
 
 			tooltips.Add(modeTip);
 			tooltips.Add(typeTip);
@@ -179,8 +183,9 @@ namespace Emitters.Items {
 			tooltips.Add( offsetTip );
 			tooltips.Add( frameTip );
 			tooltips.Add( worldLightingTip );
-			tooltips.Add(CRTEffectTip);
+			tooltips.Add(shaderModeTip);
 			tooltips.Add(shaderTimeTip);
+			tooltips.Add(shaderTypeTip);
 		}
 
 

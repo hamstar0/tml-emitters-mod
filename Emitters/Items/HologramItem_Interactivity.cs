@@ -16,9 +16,8 @@ namespace Emitters.Items {
 
 		public static void OpenUI( Item hologramItem ) {
 			var mymod = EmittersMod.Instance;
-
 			mymod.HologramEditorDialog.Open();
-			mymod.HologramEditorDialog.SwitchTab( HologramUITab.Main );
+			//mymod.HologramEditorDialog.SwitchTab( HologramUITab.Main );
 			if( !mymod.HologramEditorDialog.SetItem(hologramItem) ) {
 				mymod.HologramEditorDialog.Close();
 			}

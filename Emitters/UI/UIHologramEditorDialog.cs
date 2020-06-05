@@ -16,13 +16,18 @@ namespace Emitters.UI {
 		Shader
 	}
 
+	public enum HologramUIShaderMode
+	{
+		NoShader,
+		VanillaMode,
+		CustomMode
+	}
 
 
 	partial class UIHologramEditorDialog : UIDialog {
 		public HologramUITab CurrentTab { get; private set; } = HologramUITab.Main;
 		public HologramMode CurrentMode { get; private set; } = HologramMode.NPC;
-
-
+		public HologramUIShaderMode CurrentsShaderMode { get; private set; } = HologramUIShaderMode.VanillaMode;
 		////////////////
 		
 		private float TabStartInnerHeight = 86f;
@@ -40,7 +45,6 @@ namespace Emitters.UI {
 
 		//
 
-		//private UISlider ModeSliderElem;
 		private UICheckbox NpcModeChoice;
 		private UICheckbox ItemModeChoice;
 		private UICheckbox ProjectileModeChoice;
@@ -63,9 +67,11 @@ namespace Emitters.UI {
 		private UISlider AlphaSlider;
 
 		//
-
-		private UISlider ShadertTimeSlider;
-		private UICheckbox CRTEffectFlag;
+		private UISlider ShaderTypeSliderElem;
+		private UISlider ShadertTimeSliderElem;
+		private UICheckbox VanillaShadersCheckbox;
+		private UICheckbox CustomShadersCheckbox;
+		private UICheckbox NoShaderCheckbox;
 
 		//
 		private UITextPanelButton ApplyButton;
@@ -98,8 +104,9 @@ namespace Emitters.UI {
 				frameEnd: (int)FrameEndSlider.RememberedInputValue,
 				frameRateTicks: (int)FrameRateTicksSlider.RememberedInputValue,
 				worldLight: WorldLightingFlag.Selected,
-				crtEffect: CRTEffectFlag.Selected,
-				shaderTime: ShadertTimeSlider.RememberedInputValue,
+				shaderMode: (HologramShaderMode)this.CurrentsShaderMode,
+				shaderTime: ShadertTimeSliderElem.RememberedInputValue,
+				shaderType: (int)ShaderTypeSliderElem.RememberedInputValue,
 				isActivated: true
 			);
 		}
@@ -127,13 +134,13 @@ namespace Emitters.UI {
 			this.HologramItem = hologramItem;
 
 			Vector3 hsl = Main.rgbToHsl( myitem.Def.Color );
-			myitem.Def.Mode = (HologramMode)this.CurrentMode;
+			myitem.Def.Mode = (HologramMode) this.CurrentMode;
 			this.TypeSlider.SetValue( myitem.Def.Type );
 			this.HueSlider.SetValue( hsl.X );
 			this.SaturationSlider.SetValue( hsl.Y );
 			this.LightnessSlider.SetValue( hsl.Z );
 			this.WorldLightingFlag.Selected = myitem.Def.WorldLighting;
-			this.CRTEffectFlag.Selected = myitem.Def.CrtEffect;
+			myitem.Def.ShaderMode = (HologramShaderMode) CurrentsShaderMode;
 
 			return true;
 		}

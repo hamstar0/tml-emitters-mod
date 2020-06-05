@@ -17,8 +17,9 @@ namespace Emitters.Definitions {
 					out int frameEnd,
 					out int frameRateTicks,
 					out bool worldLight,
-					out bool crtEffect,
+					out HologramShaderMode shaderMode,
 					out float shaderTime,
+					out int shaderType,
 					out bool isActivated ) {
 			type = this.Type;
 			mode = this.Mode;
@@ -33,8 +34,9 @@ namespace Emitters.Definitions {
 			frameEnd = this.FrameEnd;
 			frameRateTicks = this.FrameRateTicks;
 			worldLight = this.WorldLighting;
-			crtEffect = this.CrtEffect;
+			shaderMode = this.ShaderMode;
 			shaderTime = this.ShaderTime;
+			shaderType = this.ShaderType;
 			isActivated = this.IsActivated;
 		}
 
@@ -54,8 +56,9 @@ namespace Emitters.Definitions {
 					out int frameEnd,
 					out int frameRateTicks,
 					out bool worldLight,
-					out bool crtEffect,
+					out HologramShaderMode shaderMode,
 					out float shaderTime,
+					out int shaderType,
 					out bool isActivated ) {
 			Color color;
 			this.Output(
@@ -72,8 +75,9 @@ namespace Emitters.Definitions {
 				out frameEnd,
 				out frameRateTicks,
 				out worldLight,
-				out crtEffect,
+				out shaderMode,
 				out shaderTime,
+				out shaderType,
 				out isActivated
 			);
 			colorR = color.R;
@@ -127,17 +131,24 @@ namespace Emitters.Definitions {
 		public string RenderFrame() {
 			return "#"+this.CurrentFrame+" between "+this.FrameStart+" and "+this.FrameEnd+" (rate: "+this.FrameRateTicks+")";
 		}
-
+		public string RenderShaderMode()
+		{
+			return this.ShaderMode.ToString();
+		}
 		public string RenderShaderTime()
 		{
 			return this.ShaderTime.ToString();
+		}
+		public string RenderShaderType()
+		{
+			return this.ShaderType.ToString();
 		}
 		////////////////
 
 		public override string ToString() {
 			return "Emitter Definition:"
 				+/*"\n"+*/" Type: " + this.RenderType() + ", "
-				+/*"\n"+*/" Mode: " + this.RenderType() + ", "
+				+/*"\n"+*/" Mode: " + this.RenderMode() + ", "
 				+/*"\n"+*/" Scale: " + this.RenderScale() + ", "
 				+/*"\n"+*/" Color: " + this.RenderColor() + ", "
 				+/*"\n"+*/" Alpha: " + this.RenderAlpha() + ", "
@@ -146,8 +157,9 @@ namespace Emitters.Definitions {
 				+/*"\n"+*/" Offset: " + this.RenderOffset() + ", "
 				+/*"\n"+*/" Frame: " + this.RenderFrame() + ", "
 				+/*"\n"+*/" WorldLight: " + this.WorldLighting + ", "
-				+/*"\n"+*/" CRTEffect: " + this.CrtEffect + ", "
+				+/*"\n"+*/" ShaderMode: " + this.RenderShaderMode() + ", "
 				+/*"\n"+*/" ShaderTime: " + this.ShaderTime + ", "
+				+/*"\n"+*/" ShaderTime: " + this.ShaderType + ", "
 				+/*"\n"+*/" IsActivated: " + this.IsActivated;
 		}
 	}
