@@ -29,7 +29,7 @@ namespace Emitters.UI {
 				isInt: true,
 				ticks: 0,
 				minRange: 0f,
-				maxRange:  EmittersMod.Instance.ShaderData.Count-1,
+				maxRange:  EmittersMod.Instance.Shaderdata.Count-1,
 				hideTextInput: false
 			);
 			this.ShaderTypeSliderElem.Top.Set( yOffset, 0f );
@@ -83,7 +83,7 @@ namespace Emitters.UI {
 			this.VanillaShadersCheckbox.OnSelectedChanged += () => {
 				this.UISetHologramShaderMode( HologramUIShaderMode.VanillaMode );
 				this.ShadertTimeSliderElem.SetRange(-8f,8f);
-				this.ShaderTypeSliderElem.SetRange(0f,EmittersMod.Instance.ShaderData.Count-1);
+				this.ShaderTypeSliderElem.SetRange(0f,EmittersMod.Instance.Shaderdata.Count-1);
 				this.ShadertTimeSliderElem.SetValue(1f);
 				this.ShaderTypeSliderElem.SetValue(0f);
 			};

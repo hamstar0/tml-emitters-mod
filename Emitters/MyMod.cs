@@ -29,7 +29,7 @@ namespace Emitters
 		internal UIEmitterEditorDialog EmitterEditorDialog;
 		internal UISoundEmitterEditorDialog SoundEmitterEditorDialog;
 		internal UIHologramEditorDialog HologramEditorDialog;
-		public List<ArmorShaderData> ShaderData;
+		public List<ArmorShaderData> Shaderdata;
 		internal List<ArmorShaderReflection> ArmorShaderReflections = new List<ArmorShaderReflection>();
 		public List<string> passNames = new List<string>();
 		////////////////
@@ -43,8 +43,8 @@ namespace Emitters
 			if (!Main.dedServ && Main.netMode != NetmodeID.Server)
 			{
 				{
-					ShaderData = new List<ArmorShaderData>(VanillaShaderReflection.GetShaderList());
-					foreach (var t in ShaderData)
+					Shaderdata = new List<ArmorShaderData>(VanillaShaderReflection.GetShaderList());
+					foreach (var t in Shaderdata)
 					{
 						if (t != null)
 						{
@@ -80,7 +80,7 @@ namespace Emitters
 
 		public override void Unload() {
 			EmittersMod.Instance = null;
-			ShaderData = null;
+			Shaderdata = null;
 			ArmorShaderReflections = null;
 			passNames = null;
 		}

@@ -107,7 +107,7 @@ namespace Emitters.Definitions
 		/// 
 		public void VanillaShaderBegin(Texture2D tex, int frameHeight)
 		{
-			Effect fx = EmittersMod.Instance.ShaderData[this.ShaderType].Shader;
+			Effect fx = EmittersMod.Instance.Shaderdata[this.ShaderType].Shader;
 			var effect = fx.CurrentTechnique.Passes[EmittersMod.Instance.passNames[this.ShaderType]];
 			var armor = EmittersMod.Instance.ArmorShaderReflections[this.ShaderType];
 			Vector4 frame = new Vector4(
