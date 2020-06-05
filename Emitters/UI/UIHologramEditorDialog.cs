@@ -1,78 +1,77 @@
-﻿using Emitters.Definitions;
-using Emitters.Items;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria;
 using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Classes.UI.Elements;
 using HamstarHelpers.Classes.UI.Elements.Slider;
 using HamstarHelpers.Classes.UI.Theme;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
-using Terraria;
-using Terraria.UI;
+using Emitters.Definitions;
+using Emitters.Items;
 
 
-namespace Emitters.UI
-{
+namespace Emitters.UI {
 	public enum HologramUITab {
-		MainSettings,
-		ColorSettings,
-		ShaderSettings
-	}
-	public enum HologramUIMode {
-		NPCMode,
-		ItemMode,
-		ProjectileMode
+		Main,
+		Color,
+		Shader
 	}
 
 
 
 	partial class UIHologramEditorDialog : UIDialog {
-		public HologramUITab CurrentTab { get; private set; } = HologramUITab.MainSettings;
-		public HologramUIMode CurrentMode { get; private set; } = HologramUIMode.NPCMode;
+		public HologramUITab CurrentTab { get; private set; } = HologramUITab.Main;
+		public HologramMode CurrentMode { get; private set; } = HologramMode.NPC;
+
 
 		////////////////
 		
-		private float TabStartHeight = 86f;
+		private float TabStartInnerHeight = 86f;
 
 		////
 
-		private UIThemedPanel MainTabElem;
-		private UIThemedPanel ColorTabElem;
-		private UIThemedPanel ShaderTabElem;
+		private UIThemedPanel MainTabContainer;
+		private UIThemedPanel ColorTabContainer;
+		private UIThemedPanel ShaderTabContainer;
+
+		private float FullDialogHeight;
+		private float MainTabHeight;
+		private float ColorTabHeight;
+		private float ShaderTabHeight;
 
 		//
 
 		//private UISlider ModeSliderElem;
-		private UICheckbox NpcModeCheckbox;
-		private UICheckbox ItemModeCheckbox;
-		private UICheckbox ProjectileModeCheckbox;
-		private UISlider TypeSliderElem;
-		private UISlider ScaleSliderElem;
-		private UISlider DirectionSliderElem;
-		private UISlider RotationSliderElem;
-		private UISlider OffsetXSliderElem;
-		private UISlider OffsetYSliderElem;
-		private UISlider FrameStartSliderElem;
-		private UISlider FrameEndSliderElem;
-		private UISlider FrameRateTicksSliderElem;
-		private UICheckbox WorldLightingCheckbox;
+		private UICheckbox NpcModeChoice;
+		private UICheckbox ItemModeChoice;
+		private UICheckbox ProjectileModeChoice;
+		private UISlider TypeSlider;
+		private UISlider ScaleSlider;
+		private UISlider DirectionSlider;
+		private UISlider RotationSlider;
+		private UISlider OffsetXSlider;
+		private UISlider OffsetYSlider;
+		private UISlider FrameStartSlider;
+		private UISlider FrameEndSlider;
+		private UISlider FrameRateTicksSlider;
+		private UICheckbox WorldLightingFlag;
 
 		//
 
-		private UISlider HueSliderElem;
-		private UISlider SaturationSliderElem;
-		private UISlider LightnessSliderElem;
-		private UISlider AlphaSliderElem;
+		private UISlider HueSlider;
+		private UISlider SaturationSlider;
+		private UISlider LightnessSlider;
+		private UISlider AlphaSlider;
 
 		//
 
-		private UISlider ShadertTimeSliderElem;
-		private UICheckbox CRTEffectCheckbox;
+		private UISlider ShadertTimeSlider;
+		private UICheckbox CRTEffectFlag;
 
 		//
 		private UITextPanelButton ApplyButton;
-		private List<UIElement> HologramUIContainers = new List<UIElement>();
-		////
+
+
+		////////////////
 
 		private Item HologramItem = null;
 
@@ -87,20 +86,20 @@ namespace Emitters.UI
 		public HologramDefinition CreateHologramDefinition() {
 			return new HologramDefinition(
 				mode: (HologramMode)this.CurrentMode,
-				type: (int)TypeSliderElem.RememberedInputValue,
-				scale: ScaleSliderElem.RememberedInputValue,
+				type: (int)TypeSlider.RememberedInputValue,
+				scale: ScaleSlider.RememberedInputValue,
 				color: GetColor(),
-				alpha: (byte)AlphaSliderElem.RememberedInputValue,
-				direction: (int)DirectionSliderElem.RememberedInputValue,
-				rotation: RotationSliderElem.RememberedInputValue,
-				offsetX: (int)OffsetXSliderElem.RememberedInputValue,
-				offsetY: (int)OffsetYSliderElem.RememberedInputValue,
-				frameStart: (int)FrameStartSliderElem.RememberedInputValue,
-				frameEnd: (int)FrameEndSliderElem.RememberedInputValue,
-				frameRateTicks: (int)FrameRateTicksSliderElem.RememberedInputValue,
-				worldLight: WorldLightingCheckbox.Selected,
-				crtEffect: CRTEffectCheckbox.Selected,
-				shaderTime: ShadertTimeSliderElem.RememberedInputValue,
+				alpha: (byte)AlphaSlider.RememberedInputValue,
+				direction: (int)DirectionSlider.RememberedInputValue,
+				rotation: RotationSlider.RememberedInputValue,
+				offsetX: (int)OffsetXSlider.RememberedInputValue,
+				offsetY: (int)OffsetYSlider.RememberedInputValue,
+				frameStart: (int)FrameStartSlider.RememberedInputValue,
+				frameEnd: (int)FrameEndSlider.RememberedInputValue,
+				frameRateTicks: (int)FrameRateTicksSlider.RememberedInputValue,
+				worldLight: WorldLightingFlag.Selected,
+				crtEffect: CRTEffectFlag.Selected,
+				shaderTime: ShadertTimeSlider.RememberedInputValue,
 				isActivated: true
 			);
 		}
@@ -109,12 +108,15 @@ namespace Emitters.UI
 		////////////////
 
 		public Color GetColor() {
-			float hue = HueSliderElem.RememberedInputValue;
-			float saturation = SaturationSliderElem.RememberedInputValue;
-			float lightness = LightnessSliderElem.RememberedInputValue;
+			float hue = HueSlider.RememberedInputValue;
+			float saturation = SaturationSlider.RememberedInputValue;
+			float lightness = LightnessSlider.RememberedInputValue;
 			Color color = Main.hslToRgb( hue, saturation, lightness );
 			return color;
 		}
+
+
+		////////////////
 
 		internal bool SetItem( Item hologramItem ) {
 			var myitem = hologramItem.modItem as HologramItem;
@@ -125,13 +127,13 @@ namespace Emitters.UI
 			this.HologramItem = hologramItem;
 
 			Vector3 hsl = Main.rgbToHsl( myitem.Def.Color );
-			myitem.Def.Mode = (HologramMode) CurrentMode;
-			this.TypeSliderElem.SetValue( myitem.Def.Type );
-			this.HueSliderElem.SetValue( hsl.X );
-			this.SaturationSliderElem.SetValue( hsl.Y );
-			this.LightnessSliderElem.SetValue( hsl.Z );
-			this.WorldLightingCheckbox.Selected = myitem.Def.WorldLighting;
-			this.CRTEffectCheckbox.Selected = myitem.Def.CrtEffect;
+			myitem.Def.Mode = (HologramMode)this.CurrentMode;
+			this.TypeSlider.SetValue( myitem.Def.Type );
+			this.HueSlider.SetValue( hsl.X );
+			this.SaturationSlider.SetValue( hsl.Y );
+			this.LightnessSlider.SetValue( hsl.Z );
+			this.WorldLightingFlag.Selected = myitem.Def.WorldLighting;
+			this.CRTEffectFlag.Selected = myitem.Def.CrtEffect;
 
 			return true;
 		}
@@ -143,13 +145,37 @@ namespace Emitters.UI
 				throw new ModHelpersException( "Missing item." );
 			}
 
-			HologramItem myitem = this.HologramItem.modItem as HologramItem;
+			var myitem = this.HologramItem.modItem as HologramItem;
 			if( myitem == null ) {
 				Main.NewText( "No hologram item selected. Changes not saved.", Color.Red );
 				return;
 			}
 
 			myitem?.SetHologramDefinition( this.CreateHologramDefinition() );
+		}
+
+
+		////////////////
+
+		public override void RecalculateMe() {
+			float tabHeight = 0;
+
+			switch( this.CurrentTab ) {
+			case HologramUITab.Main:
+				tabHeight = this.MainTabHeight;
+				break;
+			case HologramUITab.Color:
+				tabHeight = this.ColorTabHeight;
+				break;
+			case HologramUITab.Shader:
+				tabHeight = this.ShaderTabHeight;
+				break;
+			}
+
+			this.OuterContainer.Top.Set( this.FullDialogHeight * -0.5f, 0.5f );
+			this.OuterContainer.Height.Set( this.FullDialogHeight - this.MainTabHeight + tabHeight, 0f );
+
+			base.RecalculateMe();
 		}
 
 
@@ -174,7 +200,9 @@ namespace Emitters.UI
 
 			this.CachedHologramDef = def;
 
-			def.AnimateHologram( Main.MouseWorld, true );
+			if( def.AnimateHologram(Main.MouseWorld, true) ) {
+				def.DrawHologram( Main.MouseWorld, true );
+			}
 		}
 	}
 }

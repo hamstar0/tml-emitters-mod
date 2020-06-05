@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Emitters.Definitions;
@@ -50,7 +51,7 @@ namespace Emitters.Items {
 			this.item.autoReuse = true;
 			this.item.useAnimation = 15;
 			this.item.useTime = 10;
-			this.item.useStyle = 1;
+			this.item.useStyle = ItemUseStyleID.SwingThrow;
 			this.item.consumable = true;
 			//this.item.createTile = ModContent.TileType<EmitterTile>();
 		}

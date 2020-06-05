@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using HamstarHelpers.Helpers.Debug;
 using HamstarHelpers.Helpers.UI;
 using HamstarHelpers.Helpers.XNA;
 using Emitters.Items;
@@ -17,8 +18,11 @@ namespace Emitters.Definitions {
 		////////////////
 
 		public void Draw( int tileX, int tileY, bool isOnScreen ) {
-			var wldPos = new Vector2( (tileX << 4) + 8, (tileY << 4) + 8 );
-			this.AnimateHologram( wldPos, false );
+			var wldPos = new Vector2( (tileX<<4)+8, (tileY<<4)+8 );
+
+			if( this.AnimateHologram(wldPos, false) ) {
+				this.DrawHologram( wldPos, false );
+			}
 
 			if( isOnScreen && HologramItem.CanViewHolograms( Main.LocalPlayer ) ) {
 				this.DrawHologramTile( tileX, tileY );
@@ -43,30 +47,12 @@ namespace Emitters.Definitions {
 				effects: SpriteEffects.None,
 				layerDepth: 1f
 			);
-
 		}
 
-		////////////////
 
-		public void AnimateHologram( Vector2 worldPos, bool isUI ) {
-			if( !this.IsActivated ) {
-				return;
-			}
-			if( HologramDefinition.IsBadType(this.Mode, this.Type) ) {
-				return;
-			}
+		///////////
 
-			// Cycle animations at all distances
-			this.AnimateCurrentFrame();
-
-			int maxDistSqr = EmittersConfig.Instance.HologramMinimumRangeBeforeProject;
-			maxDistSqr *= maxDistSqr;
-
-			// Too far away?
-			if( (Main.LocalPlayer.Center - worldPos).LengthSquared() >= maxDistSqr ) {
-				return;
-			}
-
+		public void DrawHologram( Vector2 wldPos, bool isUI ) {
 			switch( this.Mode ) {
 			case HologramMode.NPC:
 				Main.instance.LoadNPC( this.Type );
@@ -81,7 +67,7 @@ namespace Emitters.Definitions {
 			}
 
 			try {
-				this.DrawHologramRaw( worldPos, isUI );
+				this.DrawHologramRaw( wldPos, isUI );
 			} finally {
 				if( this.CrtEffect ) {
 					this.CRTEffectEnd();
@@ -90,7 +76,7 @@ namespace Emitters.Definitions {
 		}
 
 
-		///////////
+		////
 
 		public void CRTEffectBegin() {
 			Texture2D tex = HologramDefinition.GetTexture( this.Mode, this.Type );
@@ -101,12 +87,13 @@ namespace Emitters.Definitions {
 			fx.Parameters["TexWidth"].SetValue( (float)tex.Width * this.Scale );
 			fx.Parameters["TexHeight"].SetValue( (float)tex.Height * this.Scale );
 			fx.Parameters["RandValue"].SetValue( Main.rand.NextFloat() );
-			fx.Parameters["Time"].SetValue( Main.GlobalTime % this.ShaderTime );
+			fx.Parameters["Time"].SetValue( (Main.GlobalTime % this.ShaderTime) / this.ShaderTime );
 
 			fx.Parameters["Frame"].SetValue( (float)this.CurrentFrame );
 			fx.Parameters["FrameMax"].SetValue( (float)Main.npcFrameCount[this.Type] );
 
 			fx.Parameters["UserColor"].SetValue( color.ToVector4() );
+			fx.Parameters["WaveScale"].SetValue( 0.5f );	//* ((float)color.A / 255f)
 
 			Main.spriteBatch.End();
 			Main.spriteBatch.Begin(

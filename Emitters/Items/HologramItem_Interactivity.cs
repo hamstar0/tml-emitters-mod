@@ -18,7 +18,7 @@ namespace Emitters.Items {
 			var mymod = EmittersMod.Instance;
 
 			mymod.HologramEditorDialog.Open();
-			mymod.HologramEditorDialog.SwitchTab( HologramUITab.MainSettings );
+			mymod.HologramEditorDialog.SwitchTab( HologramUITab.Main );
 			if( !mymod.HologramEditorDialog.SetItem(hologramItem) ) {
 				mymod.HologramEditorDialog.Close();
 			}
@@ -50,7 +50,7 @@ namespace Emitters.Items {
 
 			Main.PlaySound( SoundID.Item108, Main.MouseWorld );
 
-			if( Main.netMode == 1 ) {
+			if( Main.netMode == NetmodeID.MultiplayerClient ) {
 				HologramPlacementProtocol.BroadcastFromClient( def, tileX, tileY );
 			}
 
@@ -69,7 +69,7 @@ namespace Emitters.Items {
 
 			hologram.Activate( !hologram.IsActivated );
 
-			if( Main.netMode == 1 ) {
+			if( Main.netMode == NetmodeID.MultiplayerClient ) {
 				HologramActivateProtocol.BroadcastFromClient( hologram.IsActivated, tileX, tileY );
 			}
 
@@ -102,9 +102,9 @@ namespace Emitters.Items {
 				return false;
 			}
 
-			if( Main.netMode == 1 ) {
+			if( Main.netMode == NetmodeID.MultiplayerClient ) {
 				HologramRemoveProtocol.BroadcastFromClient( tileX, tileY );
-			} else if( Main.netMode == 2 ) {
+			} else if( Main.netMode == NetmodeID.Server ) {
 				HologramRemoveProtocol.BroadcastFromServer( tileX, tileY );
 			}
 
@@ -129,7 +129,7 @@ namespace Emitters.Items {
 		////////////////
 
 		public override bool UseItem( Player player ) {
-			if( Main.netMode == 2 || player.whoAmI != Main.myPlayer ) {
+			if( Main.netMode == NetmodeID.Server || player.whoAmI != Main.myPlayer ) {
 				return base.UseItem( player );
 			}
 

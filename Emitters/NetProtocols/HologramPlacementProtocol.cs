@@ -13,7 +13,7 @@ using Emitters.Definitions;
 namespace Emitters.NetProtocols {
 	class HologramPlacementProtocol : PacketProtocolBroadcast {
 		public static void BroadcastFromClient( HologramDefinition def, ushort tileX, ushort tileY ) {
-			if( Main.netMode != 1 ) { throw new ModHelpersException("Not client."); }
+			if( Main.netMode != NetmodeID.MultiplayerClient ) { throw new ModHelpersException("Not client."); }
 
 			var protocol = new HologramPlacementProtocol( Main.myPlayer, def, tileX, tileY );
 
@@ -111,10 +111,9 @@ namespace Emitters.NetProtocols {
 		////////////////
 
 		protected override void ReceiveOnClient() {
-			var myworld = ModContent.GetInstance<EmittersWorld>();
-
 			Main.PlaySound( SoundID.Item108, new Vector2(this.TileX<<4, this.TileY<<4) );
 
+			var myworld = ModContent.GetInstance<EmittersWorld>();
 			myworld.AddHologram( this.GetNewHologram(), this.TileX, this.TileY );
 
 			PlayerItemHelpers.RemoveInventoryItemQuantity( Main.player[this.FromWho], ModContent.ItemType<HologramItem>(), 1 );

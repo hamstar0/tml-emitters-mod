@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Emitters.UI;
 
@@ -35,7 +36,7 @@ namespace Emitters {
 		}
 
 		public override void Load() {
-			if( !Main.dedServ && Main.netMode != 2 ) {
+			if( !Main.dedServ && Main.netMode != NetmodeID.Server ) {
 				this.EmitterEditorDialog = new UIEmitterEditorDialog();
 				this.SoundEmitterEditorDialog = new UISoundEmitterEditorDialog();
 				this.HologramEditorDialog = new UIHologramEditorDialog();
@@ -56,7 +57,7 @@ namespace Emitters {
 		////
 
 		public override void PostSetupContent() {
-			if( !Main.dedServ && Main.netMode != 2 ) {
+			if( !Main.dedServ && Main.netMode != NetmodeID.Server ) {
 				this.EmitterTex = this.GetTexture( "Definitions/Emitter" );
 				this.SoundEmitterTex = this.GetTexture( "Definitions/SoundEmitter" );
 				this.HologramTex = this.GetTexture( "Definitions/Hologram" );

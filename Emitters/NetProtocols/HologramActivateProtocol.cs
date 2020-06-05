@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Classes.Protocols.Packet.Interfaces;
@@ -8,7 +9,7 @@ using Emitters.Definitions;
 namespace Emitters.NetProtocols {
 	class HologramActivateProtocol : PacketProtocolBroadcast {
 		public static void BroadcastFromClient( bool isActivated, ushort tileX, ushort tileY ) {
-			if( Main.netMode != 1 ) { throw new ModHelpersException("Not client."); }
+			if( Main.netMode != NetmodeID.MultiplayerClient ) { throw new ModHelpersException("Not client."); }
 
 			var protocol = new HologramActivateProtocol {
 				TileX = tileX,

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.ModLoader.Config;
@@ -53,7 +54,7 @@ namespace Emitters.Items {
 			this.item.autoReuse = true;
 			this.item.useAnimation = 15;
 			this.item.useTime = 10;
-			this.item.useStyle = 1;
+			this.item.useStyle = ItemUseStyleID.SwingThrow;
 			this.item.consumable = true;
 			//this.item.createTile = ModContent.TileType<HologramTile>();
 		}
@@ -82,8 +83,8 @@ namespace Emitters.Items {
 					frameEnd: tag.GetInt( "HologramFrameEnd" ),
 					frameRateTicks: tag.GetInt( "HologramFrameRateTicks" ),
 					worldLight: tag.GetBool( "HologramWorldLighting" ),
-					crtEffect:tag.GetBool("HologramCRTEFfect"),
-					shaderTime:tag.GetFloat("HologramShaderTime"),
+					crtEffect: tag.GetBool("HologramCRTEFfect"),
+					shaderTime: tag.GetFloat("HologramShaderTime"),
 					isActivated: tag.GetBool( "HologramIsActivated" )
 				);
 			} catch { }

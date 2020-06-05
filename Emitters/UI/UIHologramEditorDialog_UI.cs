@@ -1,8 +1,8 @@
-﻿using HamstarHelpers.Classes.UI.Elements;
+﻿using Emitters.Definitions;
+using HamstarHelpers.Classes.UI.Elements;
 
 
-namespace Emitters.UI
-{
+namespace Emitters.UI {
 	partial class UIHologramEditorDialog : UIDialog {
 		private bool IsModeBeingSet = false;	// TODO Recheck if these need to exist?
 		private bool IsTabBeingSet = false; // TODO Recheck if these need to exist?
@@ -15,64 +15,63 @@ namespace Emitters.UI
 			if( this.IsTabBeingSet ) { return; }
 			this.IsTabBeingSet = true;
 
-			float tabHeight = 0f;
+			this.MainTabContainer.Hide();
+			this.ColorTabContainer.Hide();
+			this.ShaderTabContainer.Hide();
+			this.MainTabContainer.Disable();
+			this.ColorTabContainer.Disable();
+			this.ShaderTabContainer.Disable();
+			this.MainTabContainer.Height.Set( 0f, 0f );
+			this.ColorTabContainer.Height.Set( 0f, 0f );
+			this.ShaderTabContainer.Height.Set( 0f, 0f );
 
-			this.InnerContainer.RemoveChild(MainTabElem);			
-			this.InnerContainer.RemoveChild(ColorTabElem);
-			this.InnerContainer.RemoveChild(ShaderTabElem);
-			this.InnerContainer.RemoveChild(ApplyButton);
 			switch( tab ) {
-			case HologramUITab.MainSettings:
-				tabHeight = this.MainTabElem.Height.Pixels;
-				this.InnerContainer.Append(this.HologramUIContainers[0]);
+			case HologramUITab.Main:
+				this.MainTabContainer.Height.Set( this.MainTabHeight, 0f );
+				this.MainTabContainer.Show();
+				this.MainTabContainer.Enable();
 				break;
-			case HologramUITab.ColorSettings:
-				tabHeight = this.ColorTabElem.Height.Pixels;
-				this.InnerContainer.Append(this.HologramUIContainers[1]);
+			case HologramUITab.Color:
+				this.ColorTabContainer.Height.Set( this.ColorTabHeight, 0f );
+				this.ColorTabContainer.Show();
+				this.ColorTabContainer.Enable();
 				break;
-			case HologramUITab.ShaderSettings:
-				tabHeight = this.ShaderTabElem.Height.Pixels;
-				this.InnerContainer.Append(this.HologramUIContainers[2]);
+			case HologramUITab.Shader:
+				this.ShaderTabContainer.Height.Set( this.ShaderTabHeight, 0f );
+				this.ShaderTabContainer.Show();
+				this.ShaderTabContainer.Enable();
 				break;
 			}
-			this.InnerContainer.Append(this.HologramUIContainers[3]);
-			this.OuterContainer.Top.Set( this.TabStartHeight - 28f, 0f );
-			this.OuterContainer.Height.Set( this.TabStartHeight + tabHeight + 32f, 0f );
+
+			this.CurrentTab = tab;
+
 			this.RecalculateMe();
+
 			this.IsTabBeingSet = false;
 		}
 
-
 		////////////////
 
-		//////////////////
-
-		public void UISetHologramMode(HologramUIMode mode)
-		{
+		public void UISetHologramMode( HologramMode mode ) {
 			if( this.IsModeBeingSet ) { return; }
-
-			NpcModeCheckbox.Selected = false;
-			ItemModeCheckbox.Selected = false;
-			ProjectileModeCheckbox.Selected = false;
-
 			this.IsModeBeingSet = true;
-			switch (mode)
-			{
-				case HologramUIMode.NPCMode:
-					NpcModeCheckbox.Selected = true;
-					break;
-				case HologramUIMode.ItemMode:
-					ItemModeCheckbox.Selected = true;
-					break;
-				case HologramUIMode.ProjectileMode:
-					ProjectileModeCheckbox.Selected = true;
-					break;
+
+			if( mode != HologramMode.NPC && this.NpcModeChoice.Selected ) {
+				this.NpcModeChoice.Selected = false;
+				this.NpcModeChoice.Recalculate();
 			}
+			if( mode != HologramMode.Item && this.ItemModeChoice.Selected ) {
+				this.ItemModeChoice.Selected = false;
+				this.ItemModeChoice.Recalculate();
+			}
+			if( mode != HologramMode.Projectile && this.ProjectileModeChoice.Selected ) {
+				this.ProjectileModeChoice.Selected = false;
+				this.ProjectileModeChoice.Recalculate();
+			}
+
 			this.CurrentMode = mode;
+
 			this.IsModeBeingSet = false;
 		}
-
-		////////////////
-
 	}
 }

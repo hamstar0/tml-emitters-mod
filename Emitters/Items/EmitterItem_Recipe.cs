@@ -5,6 +5,10 @@ using Terraria.ModLoader;
 namespace Emitters.Items {
 	public partial class EmitterItem : ModItem {
 		public override void AddRecipes() {
+			if( !EmittersConfig.Instance.EmitterRecipeEnabled ) {
+				return;
+			}
+
 			ModRecipe recipe = new ModRecipe( this.mod );
 			recipe.AddIngredient( ItemID.FireworkFountain, 1 );
 			recipe.AddIngredient( ItemID.Wire, 1 );

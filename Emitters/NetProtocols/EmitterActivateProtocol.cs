@@ -1,5 +1,6 @@
 ﻿using System;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Classes.Protocols.Packet.Interfaces;
@@ -9,7 +10,7 @@ using Emitters.Definitions;
 namespace Emitters.NetProtocols {
 	class EmitterActivateProtocol : PacketProtocolBroadcast {
 		public static void BroadcastFromClient( bool isActivated, ushort tileX, ushort tileY ) {
-			if( Main.netMode != 1 ) { throw new ModHelpersException("Not client."); }
+			if( Main.netMode != NetmodeID.MultiplayerClient ) { throw new ModHelpersException("Not client."); }
 
 			var protocol = new EmitterActivateProtocol {
 				TileX = tileX,

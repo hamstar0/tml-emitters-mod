@@ -24,110 +24,110 @@ namespace Emitters.UI {
 			this.InitializeWidgetsForFrameRateTicks( container, ref yOffset );
 			this.InitializeWidgetsForWorldLighting( container, ref yOffset );
 
+			yOffset += 16f;
+
 			container.Height.Set( yOffset, 0f );
 		}
 
+
 		////////////////
-		/// 
-		private void InitializeWidgetsForMode( UIThemedPanel container, ref float yOffset ) 
-		{
 
-			this.InitializeComponentForTitle( container, "Mode:", false, ref yOffset );
+		private void InitializeWidgetsForMode( UIThemedPanel container, ref float yOffset ) {
+			this.InitializeTitle( container, "Mode:", false, ref yOffset );
 
-			this.NpcModeCheckbox = new UICheckbox( UITheme.Vanilla, "NPC", "" );
-			this.NpcModeCheckbox.Top.Set( yOffset, 0f );
-			this.NpcModeCheckbox.Left.Set( 64f, 0f );
-			this.NpcModeCheckbox.Selected = true;
-			this.NpcModeCheckbox.OnSelectedChanged += () => {
-				this.UISetHologramMode( HologramUIMode.NPCMode );
+			this.NpcModeChoice = new UICheckbox( UITheme.Vanilla, "NPC", "" );
+			this.NpcModeChoice.Top.Set( yOffset, 0f );
+			this.NpcModeChoice.Left.Set( 64f, 0f );
+			this.NpcModeChoice.Selected = true;
+			this.NpcModeChoice.OnSelectedChanged += () => {
+				this.UISetHologramMode( HologramMode.NPC );
 			};
 
-			this.ItemModeCheckbox = new UICheckbox( UITheme.Vanilla, "Item", "" );
-			this.ItemModeCheckbox.Top.Set( yOffset, 0f );
-			this.ItemModeCheckbox.Left.Set( 128f, 0f );
-			this.ItemModeCheckbox.OnSelectedChanged += () => {
-				this.UISetHologramMode( HologramUIMode.ItemMode );
+			this.ItemModeChoice = new UICheckbox( UITheme.Vanilla, "Item", "" );
+			this.ItemModeChoice.Top.Set( yOffset, 0f );
+			this.ItemModeChoice.Left.Set( 128f, 0f );
+			this.ItemModeChoice.OnSelectedChanged += () => {
+				this.UISetHologramMode( HologramMode.Item );
 			};
 
-			this.ProjectileModeCheckbox = new UICheckbox( UITheme.Vanilla, "Projectile", "" );
-			this.ProjectileModeCheckbox.Top.Set( yOffset, 0f );
-			this.ProjectileModeCheckbox.Left.Set( 192f, 0f );
-			this.ProjectileModeCheckbox.OnSelectedChanged += () => {
-				this.UISetHologramMode( HologramUIMode.ProjectileMode );
+			this.ProjectileModeChoice = new UICheckbox( UITheme.Vanilla, "Projectile", "" );
+			this.ProjectileModeChoice.Top.Set( yOffset, 0f );
+			this.ProjectileModeChoice.Left.Set( 192f, 0f );
+			this.ProjectileModeChoice.OnSelectedChanged += () => {
+				this.UISetHologramMode( HologramMode.Projectile );
 			};
 			yOffset += 28f;
 
-			container.Append( (UIElement)this.NpcModeCheckbox );
-			container.Append( (UIElement)this.ItemModeCheckbox );
-			container.Append( (UIElement)this.ProjectileModeCheckbox );
+			container.Append( (UIElement)this.NpcModeChoice );
+			container.Append( (UIElement)this.ItemModeChoice );
+			container.Append( (UIElement)this.ProjectileModeChoice );
 		}
 
 		private void InitializeWidgetsForType( UIThemedPanel container, ref float yOffset ) {
-			this.InitializeComponentForTitle( container, "Type:", false, ref yOffset );
-			this.TypeSliderElem = new UISlider(
+			this.InitializeTitle( container, "Type:", false, ref yOffset );
+			this.TypeSlider = new UISlider(
 				theme: UITheme.Vanilla,
 				hoverText: "",
 				isInt: true,
 				ticks: 0,
 				minRange: 1f,
 				maxRange: Main.npcTexture.Length - 1 );
-			this.TypeSliderElem.Top.Set( yOffset, 0f );
-			this.TypeSliderElem.Left.Set( 64f, 0f );
-			this.TypeSliderElem.Width.Set( -64f, 1f );
-			this.TypeSliderElem.SetValue( 1f );
-			this.TypeSliderElem.PreOnChange += ( value ) =>
-			{
+			this.TypeSlider.Top.Set( yOffset, 0f );
+			this.TypeSlider.Left.Set( 64f, 0f );
+			this.TypeSlider.Width.Set( -64f, 1f );
+			this.TypeSlider.SetValue( 1f );
+			this.TypeSlider.PreOnChange += ( value ) => {
 				var mode = (HologramMode) this.CurrentMode;
-				this.FrameStartSliderElem.SetRange( 0f, (float)( HologramDefinition.GetFrameCount(mode, (int)value) - 1 ) );
-				this.FrameEndSliderElem.SetRange( 0f, (float)( HologramDefinition.GetFrameCount(mode, (int)value) - 1 ) );
+				this.FrameStartSlider.SetRange( 0f, (float)( HologramDefinition.GetFrameCount(mode, (int)value) - 1 ) );
+				this.FrameEndSlider.SetRange( 0f, (float)( HologramDefinition.GetFrameCount(mode, (int)value) - 1 ) );
 				return value;
 
 			};
 			yOffset += 28f;
-			container.Append( (UIElement)this.TypeSliderElem );
+			container.Append( (UIElement)this.TypeSlider );
 		}
 
 		private void InitializeWidgetsForScale( UIThemedPanel container, ref float yOffset ) {
-			this.InitializeComponentForTitle( container, "Scale:", false, ref yOffset );
+			this.InitializeTitle( container, "Scale:", false, ref yOffset );
 
-			this.ScaleSliderElem = new UISlider(
+			this.ScaleSlider = new UISlider(
 				theme: UITheme.Vanilla,
 				hoverText: "",
 				isInt: false,
 				ticks: 0,
 				minRange: 0.01f,
 				maxRange: 10f );
-			this.ScaleSliderElem.Top.Set( yOffset, 0f );
-			this.ScaleSliderElem.Left.Set( 64f, 0f );
-			this.ScaleSliderElem.Width.Set( -64f, 1f );
-			this.ScaleSliderElem.SetValue( 1f );
+			this.ScaleSlider.Top.Set( yOffset, 0f );
+			this.ScaleSlider.Left.Set( 64f, 0f );
+			this.ScaleSlider.Width.Set( -64f, 1f );
+			this.ScaleSlider.SetValue( 1f );
 			yOffset += 28f;
 
-			container.Append( (UIElement)this.ScaleSliderElem );
+			container.Append( (UIElement)this.ScaleSlider );
 		}
 
 		private void InitializeWidgetsForDirection( UIThemedPanel container, ref float yOffset ) {
-			this.InitializeComponentForTitle( container, "Direction:", false, ref yOffset );
+			this.InitializeTitle( container, "Direction:", false, ref yOffset );
 
-			this.DirectionSliderElem = new UISlider(
+			this.DirectionSlider = new UISlider(
 				theme: UITheme.Vanilla,
 				hoverText: "",
 				isInt: false,
 				ticks: 0,
 				minRange: -1f,
 				maxRange: 1f );
-			this.DirectionSliderElem.Top.Set( yOffset, 0f );
-			this.DirectionSliderElem.Left.Set( 96f, 0f );
-			this.DirectionSliderElem.Width.Set( -96f, 1f );
-			this.DirectionSliderElem.SetValue( 1f );
-			this.DirectionSliderElem.PreOnChange += ( value ) => {
+			this.DirectionSlider.Top.Set( yOffset, 0f );
+			this.DirectionSlider.Left.Set( 96f, 0f );
+			this.DirectionSlider.Width.Set( -96f, 1f );
+			this.DirectionSlider.SetValue( 1f );
+			this.DirectionSlider.PreOnChange += ( value ) => {
 				bool isRepeat = Timers.GetTimerTickDuration( "HologramDirectionRepeat" ) >= 1;
 				Timers.SetTimer( "HologramDirectionRepeat", 2, true, () => false );
 				if( isRepeat ) {
 					return null;
 				}
 
-				if( this.DirectionSliderElem.RememberedInputValue < 0f && this.DirectionSliderElem.RememberedInputValue != value ) {
+				if( this.DirectionSlider.RememberedInputValue < 0f && this.DirectionSlider.RememberedInputValue != value ) {
 					value = 1f;
 				} else {
 					value = -1f;
@@ -136,143 +136,142 @@ namespace Emitters.UI {
 			};
 			yOffset += 28f;
 
-			container.Append( (UIElement)this.DirectionSliderElem );
+			container.Append( (UIElement)this.DirectionSlider );
 		}
 
 		private void InitializeWidgetsForRotation( UIThemedPanel container, ref float yOffset ) {
-			this.InitializeComponentForTitle( container, "Rotation:", false, ref yOffset );
+			this.InitializeTitle( container, "Rotation:", false, ref yOffset );
 
-			this.RotationSliderElem = new UISlider(
+			this.RotationSlider = new UISlider(
 				theme: UITheme.Vanilla,
 				hoverText: "",
 				isInt: false,
 				ticks: 0,
 				minRange: 0f,
 				maxRange: 360f );
-			this.RotationSliderElem.Top.Set( yOffset, 0f );
-			this.RotationSliderElem.Left.Set( 96f, 0f );
-			this.RotationSliderElem.Width.Set( -96f, 1f );
-			this.RotationSliderElem.SetValue( 0f );
+			this.RotationSlider.Top.Set( yOffset, 0f );
+			this.RotationSlider.Left.Set( 96f, 0f );
+			this.RotationSlider.Width.Set( -96f, 1f );
+			this.RotationSlider.SetValue( 0f );
 			yOffset += 28f;
 
-			container.Append( (UIElement)this.RotationSliderElem );
+			container.Append( (UIElement)this.RotationSlider );
 		}
 
 		private void InitializeWidgetsForOffsetX( UIThemedPanel container, ref float yOffset ) {
-			this.InitializeComponentForTitle( container, "X Offset:", false, ref yOffset );
+			this.InitializeTitle( container, "X Offset:", false, ref yOffset );
 
-			this.OffsetXSliderElem = new UISlider(
+			this.OffsetXSlider = new UISlider(
 				theme: UITheme.Vanilla,
 				hoverText: "",
 				isInt: true,
 				ticks: 0,
 				minRange: -256f,    //0f
 				maxRange: 256f );    //15f
-			this.OffsetXSliderElem.Top.Set( yOffset, 0f );
-			this.OffsetXSliderElem.Left.Set( 96f, 0f );
-			this.OffsetXSliderElem.Width.Set( -96f, 1f );
-			this.OffsetXSliderElem.SetValue( 0f );
+			this.OffsetXSlider.Top.Set( yOffset, 0f );
+			this.OffsetXSlider.Left.Set( 96f, 0f );
+			this.OffsetXSlider.Width.Set( -96f, 1f );
+			this.OffsetXSlider.SetValue( 0f );
 			yOffset += 28f;
 
-			container.Append( (UIElement)this.OffsetXSliderElem );
+			container.Append( (UIElement)this.OffsetXSlider );
 		}
 
 		private void InitializeWidgetsForOffsetY( UIThemedPanel container, ref float yOffset ) {
-			this.InitializeComponentForTitle( container, "Y Offset:", false, ref yOffset );
+			this.InitializeTitle( container, "Y Offset:", false, ref yOffset );
 
-			this.OffsetYSliderElem = new UISlider(
+			this.OffsetYSlider = new UISlider(
 				theme: UITheme.Vanilla,
 				hoverText: "",
 				isInt: true,
 				ticks: 0,
 				minRange: -256f,    //0f
 				maxRange: 256f );    //15f
-			this.OffsetYSliderElem.Top.Set( yOffset, 0f );
-			this.OffsetYSliderElem.Left.Set( 96f, 0f );
-			this.OffsetYSliderElem.Width.Set( -96f, 1f );
-			this.OffsetYSliderElem.SetValue( 0f );
+			this.OffsetYSlider.Top.Set( yOffset, 0f );
+			this.OffsetYSlider.Left.Set( 96f, 0f );
+			this.OffsetYSlider.Width.Set( -96f, 1f );
+			this.OffsetYSlider.SetValue( 0f );
 			yOffset += 28f;
 
-			container.Append( (UIElement)this.OffsetYSliderElem );
+			container.Append( (UIElement)this.OffsetYSlider );
 		}
 
 		private void InitializeWidgetsForFrameStart( UIThemedPanel container, ref float yOffset ) {
-			this.InitializeComponentForTitle( container, "Frame Start:", false, ref yOffset );
+			this.InitializeTitle( container, "Frame Start:", false, ref yOffset );
 
-			this.FrameStartSliderElem = new UISlider(
+			this.FrameStartSlider = new UISlider(
 				theme: UITheme.Vanilla,
 				hoverText: "",
 				isInt: true,
 				ticks: 0,
 				minRange: 0f,
 				maxRange: (float)( Main.npcFrameCount[1] - 1 ) );
-			this.FrameStartSliderElem.Top.Set( yOffset, 0f );
-			this.FrameStartSliderElem.Left.Set( 96f, 0f );
-			this.FrameStartSliderElem.Width.Set( -96f, 1f );
-			this.FrameStartSliderElem.SetValue( 0f );
-			this.FrameStartSliderElem.PreOnChange += ( value ) => {
-				if( value > this.FrameEndSliderElem.RememberedInputValue ) {
-					value = this.FrameEndSliderElem.RememberedInputValue;
+			this.FrameStartSlider.Top.Set( yOffset, 0f );
+			this.FrameStartSlider.Left.Set( 96f, 0f );
+			this.FrameStartSlider.Width.Set( -96f, 1f );
+			this.FrameStartSlider.SetValue( 0f );
+			this.FrameStartSlider.PreOnChange += ( value ) => {
+				if( value > this.FrameEndSlider.RememberedInputValue ) {
+					value = this.FrameEndSlider.RememberedInputValue;
 				}
 				return value;
 			};
 			yOffset += 28f;
 
-			container.Append( (UIElement)this.FrameStartSliderElem );
+			container.Append( (UIElement)this.FrameStartSlider );
 		}
 
 		private void InitializeWidgetsForFrameEnd( UIThemedPanel container, ref float yOffset ) {
-			this.InitializeComponentForTitle( container, "Frame End:", false, ref yOffset );
+			this.InitializeTitle( container, "Frame End:", false, ref yOffset );
 
-			this.FrameEndSliderElem = new UISlider(
+			this.FrameEndSlider = new UISlider(
 				theme: UITheme.Vanilla,
 				hoverText: "",
 				isInt: true,
 				ticks: 0,
 				minRange: 0f,
 				maxRange: (float)( Main.npcFrameCount[1] - 1 ) );
-			this.FrameEndSliderElem.Top.Set( yOffset, 0f );
-			this.FrameEndSliderElem.Left.Set( 96f, 0f );
-			this.FrameEndSliderElem.Width.Set( -96f, 1f );
-			this.FrameEndSliderElem.SetValue( 0f );
-			this.FrameEndSliderElem.PreOnChange += ( value ) => {
-				if( value < this.FrameStartSliderElem.RememberedInputValue ) {
-					value = this.FrameStartSliderElem.RememberedInputValue;
+			this.FrameEndSlider.Top.Set( yOffset, 0f );
+			this.FrameEndSlider.Left.Set( 96f, 0f );
+			this.FrameEndSlider.Width.Set( -96f, 1f );
+			this.FrameEndSlider.SetValue( 0f );
+			this.FrameEndSlider.PreOnChange += ( value ) => {
+				if( value < this.FrameStartSlider.RememberedInputValue ) {
+					value = this.FrameStartSlider.RememberedInputValue;
 				}
 				return value;
 			};
 			yOffset += 28f;
 
-			container.Append( (UIElement)this.FrameEndSliderElem );
+			container.Append( (UIElement)this.FrameEndSlider );
 		}
 
 		private void InitializeWidgetsForFrameRateTicks( UIThemedPanel container, ref float yOffset ) {
-			this.InitializeComponentForTitle( container, "Frame Rate:", false, ref yOffset );
+			this.InitializeTitle( container, "Frame Rate:", false, ref yOffset );
 
-			this.FrameRateTicksSliderElem = new UISlider(
+			this.FrameRateTicksSlider = new UISlider(
 				theme: UITheme.Vanilla,
 				hoverText: "",
 				isInt: true,
 				ticks: 0,
 				minRange: 1f,
 				maxRange: 60f * 5f );
-			this.FrameRateTicksSliderElem.Top.Set( yOffset, 0f );
-			this.FrameRateTicksSliderElem.Left.Set( 96f, 0f );
-			this.FrameRateTicksSliderElem.Width.Set( -96f, 1f );
-			this.FrameRateTicksSliderElem.SetValue( 8f );
+			this.FrameRateTicksSlider.Top.Set( yOffset, 0f );
+			this.FrameRateTicksSlider.Left.Set( 96f, 0f );
+			this.FrameRateTicksSlider.Width.Set( -96f, 1f );
+			this.FrameRateTicksSlider.SetValue( 8f );
 			yOffset += 28f;
 
-			container.Append( (UIElement)this.FrameRateTicksSliderElem );
+			container.Append( (UIElement)this.FrameRateTicksSlider );
 		}
 
 		private void InitializeWidgetsForWorldLighting( UIThemedPanel container, ref float yOffset ) {
-			this.WorldLightingCheckbox = new UICheckbox( UITheme.Vanilla, "World Lighting", "" );
-			this.WorldLightingCheckbox.Top.Set( yOffset, 0f );
-			this.WorldLightingCheckbox.Selected = true;
+			this.WorldLightingFlag = new UICheckbox( UITheme.Vanilla, "World Lighting", "" );
+			this.WorldLightingFlag.Top.Set( yOffset, 0f );
+			this.WorldLightingFlag.Selected = true;
 			yOffset += 28f;
 
-			container.Append( (UIElement)this.WorldLightingCheckbox );
+			container.Append( (UIElement)this.WorldLightingFlag );
 		}
-
 	}
 }
