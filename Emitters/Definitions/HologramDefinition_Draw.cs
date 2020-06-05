@@ -84,7 +84,7 @@ namespace Emitters.Definitions
 			}
 			finally
 			{
-				BatcEnd();
+				BatchEnd();
 			}
 		}
 
@@ -142,7 +142,7 @@ namespace Emitters.Definitions
 				return fx;
 			}
 
-			public void BatcEnd()
+			public void BatchEnd()
 			{
 				Main.spriteBatch.End();
 				Main.spriteBatch.Begin();
