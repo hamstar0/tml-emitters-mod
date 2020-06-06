@@ -30,10 +30,8 @@ namespace Emitters {
 		internal UIHologramEditorDialog HologramEditorDialog;
 
 		internal Effect HologramFX;
-		public List<ArmorShaderData> ShaderData;
-		internal List<VanillaArmorShaderData> ArmorShaderReflections = new List<VanillaArmorShaderData>();
-
-		public List<string> ShaderPassNames = new List<string>();
+		public List<ArmorShaderData> ArmorShaders;
+		internal List<EmitterArmorShaderData> MyArmorShaders = new List<EmitterArmorShaderData>();
 
 
 
@@ -45,7 +43,7 @@ namespace Emitters {
 
 		public override void Load() {
 			if( !Main.dedServ && Main.netMode != NetmodeID.Server ) {
-				this.LoadShaders();
+				this.LoadArmorShaders();
 
 				this.EmitterEditorDialog = new UIEmitterEditorDialog();
 				this.SoundEmitterEditorDialog = new UISoundEmitterEditorDialog();
@@ -59,26 +57,18 @@ namespace Emitters {
 			}
 		}
 
-		private void LoadShaders() {
-			this.ShaderData = VanillaArmorShaderData.GetShaderList();
+		private void LoadArmorShaders() {
+			this.ArmorShaders = EmitterArmorShaderData.GetVanillaArmorShaders();
 
-			foreach( ArmorShaderData shader in this.ShaderData ) {
-				if( shader == null ) {
+			foreach( ArmorShaderData baseShaderData in this.ArmorShaders ) {
+				if( baseShaderData == null ) {
 					continue;
 				}
 
-				var passName = VanillaArmorShaderData.GetPassName( shader );
-				this.ShaderPassNames.Add( passName );
-				System.Diagnostics.Debug.WriteLine( "PassName: " + passName );
+				var passName = EmitterArmorShaderData.GetPassName( baseShaderData );
+				var shaderData = new EmitterArmorShaderData( Main.PixelShaderRef, baseShaderData, passName );
 
-				var armorShader = new VanillaArmorShaderData( Main.PixelShaderRef, passName ) {
-					UColor = VanillaArmorShaderData.GetPrimaryColor( shader ),
-					USecondaryColor = VanillaArmorShaderData.GetSecondaryColor( shader ),
-					UOpacity = VanillaArmorShaderData.GetOpacity( shader ),
-					USaturation = VanillaArmorShaderData.GetSaturation( shader )
-				};
-
-				this.ArmorShaderReflections.Add( armorShader );
+				this.MyArmorShaders.Add( shaderData );
 			}
 		}
 

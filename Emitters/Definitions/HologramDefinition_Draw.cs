@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.Graphics.Shaders;
 using HamstarHelpers.Helpers.UI;
 using HamstarHelpers.Helpers.XNA;
 using Emitters.Items;
+using Emitters.Effects;
 
 
 namespace Emitters.Definitions {
@@ -111,9 +113,6 @@ namespace Emitters.Definitions {
 		////
 
 		public void VanillaShaderBegin( Texture2D tex, int frameHeight ) {
-			Effect fx = EmittersMod.Instance.ShaderData[this.ShaderType].Shader;
-			var effect = fx.CurrentTechnique.Passes[EmittersMod.Instance.ShaderPassNames[this.ShaderType]];
-			var armor = EmittersMod.Instance.ArmorShaderReflections[this.ShaderType];
 			Vector4 frame = new Vector4(
 				x: 0,
 				y: frameHeight * this.CurrentFrame,
@@ -121,12 +120,19 @@ namespace Emitters.Definitions {
 				w: frameHeight
 			);
 
-			fx.Parameters["uColor"].SetValue( armor.UColor );
-			fx.Parameters["uSaturation"].SetValue( armor.USaturation );
-			fx.Parameters["uSecondaryColor"].SetValue( armor.USecondaryColor );
+			var mymod = EmittersMod.Instance;
+			ArmorShaderData baseShaderData = mymod.ArmorShaders[ this.ShaderType ];
+			EmitterArmorShaderData shaderData = mymod.MyArmorShaders[this.ShaderType];
+			Effect fx = baseShaderData.Shader;
+
+			EffectPass effect = fx.CurrentTechnique.Passes[ shaderData.PassName ];
+
+			fx.Parameters["uColor"].SetValue( shaderData.UColor );
+			fx.Parameters["uSaturation"].SetValue( shaderData.USaturation );
+			fx.Parameters["uSecondaryColor"].SetValue( shaderData.USecondaryColor );
 			fx.Parameters["uTime"].SetValue( (Main.GlobalTime % this.ShaderTime) / this.ShaderTime );
-			fx.Parameters["uOpacity"].SetValue( armor.UOpacity );
-			fx.Parameters["uImageSize0"].SetValue( new Vector2( (float)tex.Width, (float)tex.Height ) );
+			fx.Parameters["uOpacity"].SetValue( shaderData.UOpacity );
+			fx.Parameters["uImageSize0"].SetValue( new Vector2((float)tex.Width, (float)tex.Height) );
 			fx.Parameters["uSourceRect"].SetValue( frame );
 
 			effect.Apply();
@@ -137,6 +143,7 @@ namespace Emitters.Definitions {
 			Effect fx = EmittersMod.Instance.HologramFX;
 			Color color = this.Color;
 			color.A = this.Alpha;
+
 			fx.Parameters["TexWidth"].SetValue( (float)tex.Width * this.Scale );
 			fx.Parameters["TexHeight"].SetValue( (float)tex.Height * this.Scale );
 			fx.Parameters["RandValue"].SetValue( Main.rand.NextFloat() );
@@ -144,6 +151,7 @@ namespace Emitters.Definitions {
 			fx.Parameters["Frame"].SetValue( (float)this.CurrentFrame );
 			fx.Parameters["FrameMax"].SetValue( (float)Main.npcFrameCount[this.Type] );
 			fx.Parameters["UserColor"].SetValue( color.ToVector4() );
+
 			return fx;
 		}
 
@@ -161,9 +169,8 @@ namespace Emitters.Definitions {
 				width: tex.Width,
 				height: frameHeight
 			);
+
 			if( this.WorldLighting ) {
-				color = Lighting.GetColor( (int)( worldPos.X / 16f ), (int)( worldPos.Y / 16f ) );
-				color = XNAColorHelpers.Mul( color, this.Color );
 				color = Lighting.GetColor( (int)( worldPos.X / 16f ), (int)( worldPos.Y / 16f ) );
 				color = XNAColorHelpers.Mul( color, this.Color );
 			}
@@ -192,7 +199,7 @@ namespace Emitters.Definitions {
 				sourceRectangle: frame,
 				color: color,
 				rotation: MathHelper.ToRadians( this.Rotation ),
-				origin: isUI ? default( Vector2 ) : origin,
+				origin: isUI ? default(Vector2) : origin,
 				scale: this.Scale * Main.GameZoomTarget,
 				effects: effects,
 				layerDepth: 1f

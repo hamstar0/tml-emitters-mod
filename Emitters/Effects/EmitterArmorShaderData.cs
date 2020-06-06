@@ -7,8 +7,8 @@ using HamstarHelpers.Helpers.DotNET.Reflection;
 
 
 namespace Emitters.Effects {
-	internal class VanillaArmorShaderData : ShaderData {
-		public static List<ArmorShaderData> GetShaderList() {
+	internal class EmitterArmorShaderData : ShaderData {
+		public static List<ArmorShaderData> GetVanillaArmorShaders() {
 			return !ReflectionHelpers.Get( GameShaders.Armor, "_shaderData", out List<ArmorShaderData> list )
 				? new List<ArmorShaderData>()
 				: list;
@@ -48,6 +48,11 @@ namespace Emitters.Effects {
 
 		////////////////
 
+		public string PassName => this._passName;
+
+
+		////////////////
+
 		public Vector3 UColor = Vector3.One;
 
 		public Vector3 USecondaryColor = Vector3.One;
@@ -60,6 +65,12 @@ namespace Emitters.Effects {
 
 		////////////////
 
-		public VanillaArmorShaderData( Ref<Effect> shader, string passName ) : base( shader, passName ) { }
+		public EmitterArmorShaderData( Ref<Effect> mainShader, ArmorShaderData shaderData, string passName )
+					: base( mainShader, passName ) {
+			this.UColor = EmitterArmorShaderData.GetPrimaryColor( shaderData );
+			this.USecondaryColor = EmitterArmorShaderData.GetSecondaryColor( shaderData );
+			this.UOpacity = EmitterArmorShaderData.GetOpacity( shaderData );
+			this.USaturation = EmitterArmorShaderData.GetSaturation( shaderData );
+		}
 	}
 }

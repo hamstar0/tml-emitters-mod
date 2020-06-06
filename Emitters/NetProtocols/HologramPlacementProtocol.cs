@@ -60,25 +60,25 @@ namespace Emitters.NetProtocols {
 			HologramShaderMode shaderMode;
 
 			def.Output(
-				out this.Type,
-				out mode,
-				out this.Scale,
-				out this.ColorR,
-				out this.ColorG,
-				out this.ColorB,
-				out this.Alpha,
-				out this.Direction,
-				out this.Rotation,
-				out this.OffsetX,
-				out this.OffsetY,
-				out this.FrameStart,
-				out this.FrameEnd,
-				out this.FrameRateTicks,
-				out this.WorldLight,
-				out shaderMode,
-				out this.ShaderTime,
-				out this.ShaderType,
-				out this.IsActivated
+				type: out this.Type,
+				mode: out mode,
+				scale: out this.Scale,
+				colorR: out this.ColorR,
+				colorG: out this.ColorG,
+				colorB: out this.ColorB,
+				alpha: out this.Alpha,
+				direction: out this.Direction,
+				rotation: out this.Rotation,
+				offsetX: out this.OffsetX,
+				offsetY: out this.OffsetY,
+				frameStart: out this.FrameStart,
+				frameEnd: out this.FrameEnd,
+				frameRateTicks: out this.FrameRateTicks,
+				worldLight: out this.WorldLight,
+				shaderMode: out shaderMode,
+				shaderTime: out this.ShaderTime,
+				shaderType: out this.ShaderType,
+				isActivated: out this.IsActivated
 			) ;
 
 			this.Mode = (int)mode;

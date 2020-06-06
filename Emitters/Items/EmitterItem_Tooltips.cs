@@ -22,7 +22,7 @@ namespace Emitters.Items {
 			var speedxTip = new TooltipLine( this.mod, "EmitterSpeedX", " SpeedX: "+this.Def?.RenderSpeedX() );
 			var speedyTip = new TooltipLine( this.mod, "EmitterSpeedY", " SpeedY: "+this.Def?.RenderSpeedY() );
 			var colorTip = new TooltipLine( this.mod, "EmitterColor", " Color: "+this.Def?.RenderColor() );
-			var alphaTip = new TooltipLine( this.mod, "EmitterAlpha", " Alpha: "+this.Def?.RenderAlpha() );
+			//var alphaTip = new TooltipLine( this.mod, "EmitterAlpha", " Alpha: "+this.Def?.RenderAlpha() );
 			var scatterTip = new TooltipLine( this.mod, "EmitterScatter", " Scatter: "+this.Def?.RenderScatter() );
 			var hasGravTip = new TooltipLine( this.mod, "EmitterHasGrav", " Has Gravity: "+this.Def?.RenderHasGravity() );
 			var hasLightTip = new TooltipLine( this.mod, "EmitterHasLight", " Has Light: "+this.Def?.RenderHasLight() );
@@ -35,7 +35,7 @@ namespace Emitters.Items {
 			speedxTip.overrideColor = color;
 			speedyTip.overrideColor = color;
 			colorTip.overrideColor = color;
-			alphaTip.overrideColor = color;
+			//alphaTip.overrideColor = color;
 			scatterTip.overrideColor = color;
 			hasGravTip.overrideColor = color;
 			hasLightTip.overrideColor = color;
@@ -47,7 +47,7 @@ namespace Emitters.Items {
 			tooltips.Add( speedxTip );
 			tooltips.Add( speedyTip );
 			tooltips.Add( colorTip );
-			tooltips.Add( alphaTip );
+			//tooltips.Add( alphaTip );
 			tooltips.Add( scatterTip );
 			tooltips.Add( hasGravTip );
 			tooltips.Add( hasLightTip );
