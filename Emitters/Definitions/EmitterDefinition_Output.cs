@@ -90,7 +90,9 @@ namespace Emitters.Definitions {
 			return this.SpeedY.ToString();
 		}
 		public string RenderColor() {
-			return this.Color.ToString();
+			Color color = this.Color;
+			color.A = this.Alpha;
+			return color.ToString();
 		}
 		public string RenderAlpha() {
 			return this.Alpha.ToString();

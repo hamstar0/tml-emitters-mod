@@ -57,7 +57,7 @@ namespace Emitters.Items {
 
 			Main.PlaySound( SoundID.Item108, Main.MouseWorld );
 
-			if( Main.netMode == 1 ) {
+			if( Main.netMode == NetmodeID.MultiplayerClient ) {
 				SoundEmitterPlacementProtocol.BroadcastFromClient( def, tileX, tileY );
 			}
 
@@ -76,7 +76,7 @@ namespace Emitters.Items {
 
 			sndEmitter.Activate( !sndEmitter.IsActivated );
 
-			if( Main.netMode == 1 ) {
+			if( Main.netMode == NetmodeID.MultiplayerClient ) {
 				SoundEmitterPlacementProtocol.BroadcastFromClient( sndEmitter, tileX, tileY );
 			}
 
@@ -109,9 +109,9 @@ namespace Emitters.Items {
 				return false;
 			}
 
-			if( Main.netMode == 1 ) {
+			if( Main.netMode == NetmodeID.MultiplayerClient ) {
 				SoundEmitterRemoveProtocol.BroadcastFromClient( tileX, tileY );
-			} else if( Main.netMode == 2 ) {
+			} else if( Main.netMode == NetmodeID.Server ) {
 				SoundEmitterRemoveProtocol.BroadcastFromServer( tileX, tileY );
 			}
 
@@ -136,7 +136,7 @@ namespace Emitters.Items {
 		////////////////
 
 		public override bool UseItem( Player player ) {
-			if( Main.netMode == 2 || player.whoAmI != Main.myPlayer ) {
+			if( Main.netMode == NetmodeID.Server || player.whoAmI != Main.myPlayer ) {
 				return base.UseItem( player );
 			}
 

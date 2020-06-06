@@ -13,7 +13,7 @@ using Emitters.Definitions;
 namespace Emitters.NetProtocols {
 	class HologramPlacementProtocol : PacketProtocolBroadcast {
 		public static void BroadcastFromClient( HologramDefinition def, ushort tileX, ushort tileY ) {
-			if( Main.netMode != 1 ) { throw new ModHelpersException("Not client."); }
+			if( Main.netMode != NetmodeID.MultiplayerClient ) { throw new ModHelpersException("Not client."); }
 
 			var protocol = new HologramPlacementProtocol( Main.myPlayer, def, tileX, tileY );
 
@@ -44,8 +44,9 @@ namespace Emitters.NetProtocols {
 		public int FrameEnd;
 		public int FrameRateTicks;
 		public bool WorldLight;
-		public bool CrtEffect;
+		public int ShaderMode;
 		public float ShaderTime;
+		public int ShaderType;
 		public bool IsActivated;
 
 
@@ -56,29 +57,32 @@ namespace Emitters.NetProtocols {
 
 		private HologramPlacementProtocol( int fromWho, HologramDefinition def, ushort tileX, ushort tileY ) {
 			HologramMode mode;
+			HologramShaderMode shaderMode;
 
 			def.Output(
-				out this.Type,
-				out mode,
-				out this.Scale,
-				out this.ColorR,
-				out this.ColorG,
-				out this.ColorB,
-				out this.Alpha,
-				out this.Direction,
-				out this.Rotation,
-				out this.OffsetX,
-				out this.OffsetY,
-				out this.FrameStart,
-				out this.FrameEnd,
-				out this.FrameRateTicks,
-				out this.WorldLight,
-				out this.CrtEffect,
-				out this.ShaderTime,
-				out this.IsActivated
+				type: out this.Type,
+				mode: out mode,
+				scale: out this.Scale,
+				colorR: out this.ColorR,
+				colorG: out this.ColorG,
+				colorB: out this.ColorB,
+				alpha: out this.Alpha,
+				direction: out this.Direction,
+				rotation: out this.Rotation,
+				offsetX: out this.OffsetX,
+				offsetY: out this.OffsetY,
+				frameStart: out this.FrameStart,
+				frameEnd: out this.FrameEnd,
+				frameRateTicks: out this.FrameRateTicks,
+				worldLight: out this.WorldLight,
+				shaderMode: out shaderMode,
+				shaderTime: out this.ShaderTime,
+				shaderType: out this.ShaderType,
+				isActivated: out this.IsActivated
 			) ;
 
 			this.Mode = (int)mode;
+			this.ShaderMode = (int)shaderMode;
 
 			this.FromWho = fromWho;
 			this.TileX = tileX;
@@ -92,7 +96,7 @@ namespace Emitters.NetProtocols {
 			mode: (HologramMode)this.Mode,
 			type: this.Type,
 			scale: this.Scale,
-			color: new Color(this.ColorR, this.ColorG, this.ColorB),
+			color: new Color( this.ColorR, this.ColorG, this.ColorB ),
 			alpha: this.Alpha,
 			direction: this.Direction,
 			rotation: this.Rotation,
@@ -102,8 +106,9 @@ namespace Emitters.NetProtocols {
 			frameEnd: this.FrameEnd,
 			frameRateTicks: this.FrameRateTicks,
 			worldLight: this.WorldLight,
-			crtEffect: this.CrtEffect,
+			shaderMode: (HologramShaderMode)this.ShaderMode,
 			shaderTime: this.ShaderTime,
+			shaderType: this.ShaderType,
 			isActivated: this.IsActivated
 		);
 
@@ -111,10 +116,9 @@ namespace Emitters.NetProtocols {
 		////////////////
 
 		protected override void ReceiveOnClient() {
-			var myworld = ModContent.GetInstance<EmittersWorld>();
-
 			Main.PlaySound( SoundID.Item108, new Vector2(this.TileX<<4, this.TileY<<4) );
 
+			var myworld = ModContent.GetInstance<EmittersWorld>();
 			myworld.AddHologram( this.GetNewHologram(), this.TileX, this.TileY );
 
 			PlayerItemHelpers.RemoveInventoryItemQuantity( Main.player[this.FromWho], ModContent.ItemType<HologramItem>(), 1 );

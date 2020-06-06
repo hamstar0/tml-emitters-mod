@@ -1,14 +1,14 @@
-﻿using HamstarHelpers.Classes.UI.Elements;
+﻿using Terraria.UI;
+using HamstarHelpers.Classes.UI.Elements;
 using HamstarHelpers.Classes.UI.Theme;
-using Terraria.UI;
+using HamstarHelpers.Helpers.Debug;
+using HamstarHelpers.Services.Timers;
 
 
-namespace Emitters.UI
-{
+namespace Emitters.UI {
 	partial class UIHologramEditorDialog : UIDialog {
 		public override void InitializeComponents() {
 			float yOffset = 0f;
-
 
 			// UI Header
 			var textElem = new UIThemedText( UITheme.Vanilla, false, "Adjust Hologram", 1f, true );
@@ -18,34 +18,47 @@ namespace Emitters.UI
 
 			this.InitializeTabButtons( ref yOffset );
 
-			this.TabStartHeight = yOffset;
-			this.InitializeTabContainers( yOffset, out this.MainTabElem, out this.ColorTabElem, out this.ShaderTabElem );
+			this.TabStartInnerHeight = yOffset;
 
-			this.InitializeMainTab( this.MainTabElem );
-			this.InitializeColorTab( this.ColorTabElem );
-			this.InitializeShadersTab( this.ShaderTabElem );
+			//
 
-			this.HologramUIContainers.Add(MainTabElem);
-			this.HologramUIContainers.Add(ColorTabElem);
-			this.HologramUIContainers.Add(ShaderTabElem);
+			this.InitializeTabContainers( yOffset, out this.MainTabContainer, out this.ColorTabContainer, out this.ShaderTabContainer );
 
+			this.InitializeMainTab( this.MainTabContainer );
+			this.InitializeColorTab( this.ColorTabContainer );
+			this.InitializeShadersTab( this.ShaderTabContainer );
 
-			yOffset += this.MainTabElem.Height.Pixels;
+			this.MainTabHeight = this.MainTabContainer.Height.Pixels;
+			this.ColorTabHeight = this.ColorTabContainer.Height.Pixels;
+			this.ShaderTabHeight = this.ShaderTabContainer.Height.Pixels;
+
+			yOffset += this.MainTabHeight;
 
 			// Apply button
 			this.ApplyButton = new UITextPanelButton( UITheme.Vanilla, "Apply" );
-			this.ApplyButton.Top.Set( -14f, 1f );
-			this.ApplyButton.Left.Set( -64f, 1f );
-			this.ApplyButton.Height.Set( this.ApplyButton.GetOuterDimensions().Height + 4f, 0f );
+			this.ApplyButton.Top.Set( -22f, 1f );
+			this.ApplyButton.Left.Set( -52f, 1f );
 			this.ApplyButton.OnClick += ( _, __ ) => {
 				this.Close();
 				this.ApplySettingsToCurrentItem();
 			};
 			this.InnerContainer.Append( (UIElement)this.ApplyButton );
-			this.HologramUIContainers.Add(ApplyButton);
-			yOffset += 28;
-			this.OuterContainer.Top.Set( this.TabStartHeight - 28f, 0f );
-			this.SwitchTab( HologramUITab.MainSettings );
+
+			yOffset += this.ApplyButton.GetOuterDimensions().Height;
+
+			//
+
+			this.FullDialogHeight = yOffset + 24f;
+
+			//
+
+			//this.OuterContainer.Top.Set( this.TabStartInnerHeight - 28f, 0f );
+			//this.SwitchTab( HologramUITab.Main );
+			this.SwitchTab( HologramUITab.Main );
+			Timers.SetTimer( 1, true, () => {
+				this.SwitchTab( HologramUITab.Main );
+				return false;
+			} );
 		}
 
 
@@ -55,10 +68,10 @@ namespace Emitters.UI
 			// Main tab button
 			var mainTabBut = new UITextPanelButton( UITheme.Vanilla, "Main Tab" );
 			mainTabBut.Top.Set( yOffset, 0f );
-			//mainTab.Left.Set(-235f, 1f);
+			//mainTabBut.Left.Set(-235f, 1f);
 			mainTabBut.Height.Set( mainTabBut.GetOuterDimensions().Height + 4f, 0f );
 			mainTabBut.OnClick += ( _, __ ) => {
-				this.SwitchTab( HologramUITab.MainSettings );
+				this.SwitchTab( HologramUITab.Main );
 			};
 			this.InnerContainer.Append( (UIElement)mainTabBut );
 
@@ -68,7 +81,7 @@ namespace Emitters.UI
 			colorTabBut.Left.Set( -472f, 1f );
 			colorTabBut.Height.Set( colorTabBut.GetOuterDimensions().Height - 4f, 0f );
 			colorTabBut.OnClick += ( _, __ ) => {
-				this.SwitchTab( HologramUITab.ColorSettings );
+				this.SwitchTab( HologramUITab.Color );
 			};
 			this.InnerContainer.Append( (UIElement)colorTabBut );
 
@@ -78,7 +91,7 @@ namespace Emitters.UI
 			shaderTabBut.Left.Set( -372f, 1f );
 			shaderTabBut.Height.Set( shaderTabBut.GetOuterDimensions().Height - 4f, 0f );
 			shaderTabBut.OnClick += ( _, __ ) => {
-				this.SwitchTab( HologramUITab.ShaderSettings );
+				this.SwitchTab( HologramUITab.Shader );
 			};
 			this.InnerContainer.Append( (UIElement)shaderTabBut );
 
@@ -114,7 +127,7 @@ namespace Emitters.UI
 
 		////////////////
 
-		private void InitializeComponentForTitle( UIElement container, string title, bool isNewLine, ref float yOffset ) {
+		private void InitializeTitle( UIElement container, string title, bool isNewLine, ref float yOffset ) {
 			var textElem = new UIThemedText( UITheme.Vanilla, false, title );
 			textElem.Top.Set( yOffset, 0f );
 

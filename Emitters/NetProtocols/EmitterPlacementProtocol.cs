@@ -12,7 +12,7 @@ using Emitters.Definitions;
 namespace Emitters.NetProtocols {
 	class EmitterPlacementProtocol : PacketProtocolBroadcast {
 		public static void BroadcastFromClient( EmitterDefinition def, ushort tileX, ushort tileY ) {
-			if( Main.netMode != 1 ) { throw new ModHelpersException("Not client."); }
+			if( Main.netMode != NetmodeID.MultiplayerClient ) { throw new ModHelpersException("Not client."); }
 
 			var protocol = new EmitterPlacementProtocol( Main.myPlayer, def, tileX, tileY );
 

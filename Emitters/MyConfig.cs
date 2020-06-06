@@ -26,6 +26,18 @@ namespace Emitters {
 
 		public bool DebugModeInfo { get; set; } = false;
 
+		//
+
+		[DefaultValue( true )]
+		public bool EmitterRecipeEnabled { get; set; } = true;
+
+		[DefaultValue( true )]
+		public bool SoundEmitterRecipeEnabled { get; set; } = true;
+
+		[DefaultValue( true )]
+		public bool HologramRecipeEnabled { get; set; } = true;
+
+		//
 		
 		[Range( 16 * 16, 16 * 1000 )]
 		[DefaultValue( 16 * 96 )]

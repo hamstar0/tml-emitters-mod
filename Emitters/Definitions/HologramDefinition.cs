@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
@@ -15,6 +13,13 @@ namespace Emitters.Definitions {
 		Item,
 		Projectile
 	}
+
+	public enum HologramShaderMode {
+		None,
+		Vanilla,
+		Custom
+	}
+
 
 
 
@@ -79,23 +84,11 @@ namespace Emitters.Definitions {
 		public int FrameEnd { get; set; }
 		public int FrameRateTicks { get; set; }
 		public bool WorldLighting { get; set; }
-		public bool CrtEffect { get; set; }
+		public HologramShaderMode ShaderMode { get; set; }
 		public float ShaderTime { get; set; }
+		public int ShaderType { get; set; }
 
-		////////////////
 
-		public EntityDefinition SetHologramType() {
-			switch( this.Mode ) {
-			case HologramMode.NPC:
-				return new NPCDefinition( this.Type );
-			case HologramMode.Item:
-				return new ItemDefinition( this.Type );
-			case HologramMode.Projectile:
-				return new ProjectileDefinition( this.Type );
-			default:
-				throw new ModHelpersException( "Invalid hologram type" );
-			}
-		}
 
 		////////////////
 
@@ -115,10 +108,10 @@ namespace Emitters.Definitions {
 			this.FrameEnd = copy.FrameEnd;
 			this.FrameRateTicks = copy.FrameRateTicks;
 			this.WorldLighting = copy.WorldLighting;
-			this.CrtEffect = copy.CrtEffect;
+			this.ShaderMode = copy.ShaderMode;
 			this.ShaderTime = copy.ShaderTime;
+			this.ShaderType = copy.ShaderType;
 			this.IsActivated = copy.IsActivated;
-
 			this.CurrentFrame = this.FrameStart;
 		}
 
@@ -136,8 +129,9 @@ namespace Emitters.Definitions {
 					int frameEnd,
 					int frameRateTicks,
 					bool worldLight,
-					bool crtEffect,
+					HologramShaderMode shaderMode,
 					float shaderTime,
+					int shaderType,
 					bool isActivated ) {
 			this.Mode = mode;
 			this.Type = type;
@@ -152,59 +146,28 @@ namespace Emitters.Definitions {
 			this.FrameEnd = frameEnd;
 			this.FrameRateTicks = frameRateTicks;
 			this.WorldLighting = worldLight;
-			this.CrtEffect = crtEffect;
+			this.ShaderMode = shaderMode;
 			this.ShaderTime = shaderTime;
+			this.ShaderType = shaderType;
 			this.IsActivated = isActivated;
 
 			this.CurrentFrame = frameStart;
 		}
 
+
 		////////////////
 
-		public override BaseEmitterDefinition Read( BinaryReader reader ) {
-			return new HologramDefinition(
-				mode: (HologramMode)reader.ReadInt16(),
-				type: (int)reader.ReadUInt16(),
-				scale: (float)reader.ReadSingle(),
-				color: new Color(
-					(byte)reader.ReadByte(),
-					(byte)reader.ReadByte(),
-					(byte)reader.ReadByte()
-				),
-				alpha: (byte)reader.ReadByte(),
-				direction: (int)reader.ReadUInt16(),
-				rotation: (float)reader.ReadSingle(),
-				offsetX: (int)reader.ReadUInt16(),
-				offsetY: (int)reader.ReadUInt16(),
-				frameStart: (int)reader.ReadUInt16(),
-				frameEnd: (int)reader.ReadUInt16(),
-				frameRateTicks: (int)reader.ReadUInt16(),
-				worldLight: (bool)reader.ReadBoolean(),
-				crtEffect: (bool)reader.ReadBoolean(),
-				shaderTime: (float)reader.ReadSingle(),
-				isActivated: (bool)reader.ReadBoolean()
-			);
-		}
-
-		public override void Write( BinaryWriter writer ) {
-			writer.Write( (ushort)this.Mode );
-			writer.Write( (ushort)this.Type );
-			writer.Write( (float)this.Scale );
-			writer.Write( (byte)this.Color.R );
-			writer.Write( (byte)this.Color.G );
-			writer.Write( (byte)this.Color.B );
-			writer.Write( (byte)this.Alpha );
-			writer.Write( (ushort)this.Direction );
-			writer.Write( (float)this.Rotation );
-			writer.Write( (ushort)this.OffsetX );
-			writer.Write( (ushort)this.OffsetY );
-			writer.Write( (ushort)this.FrameStart );
-			writer.Write( (ushort)this.FrameEnd );
-			writer.Write( (ushort)this.FrameRateTicks );
-			writer.Write( (bool)this.WorldLighting );
-			writer.Write( (bool)this.CrtEffect );
-			writer.Write((float)this.ShaderTime);
-			writer.Write( (bool)this.IsActivated );
+		public EntityDefinition SetHologramType() {
+			switch( this.Mode ) {
+			case HologramMode.NPC:
+				return new NPCDefinition( this.Type );
+			case HologramMode.Item:
+				return new ItemDefinition( this.Type );
+			case HologramMode.Projectile:
+				return new ProjectileDefinition( this.Type );
+			default:
+				throw new ModHelpersException( "Invalid hologram type" );
+			}
 		}
 
 

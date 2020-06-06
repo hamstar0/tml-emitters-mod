@@ -1,26 +1,23 @@
-﻿using HamstarHelpers.Classes.Protocols.Packet.Interfaces;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using HamstarHelpers.Classes.Errors;
+using HamstarHelpers.Classes.Protocols.Packet.Interfaces;
 
-namespace Emitters.NetProtocols
-{
-	class HologramRemoveProtocol : PacketProtocolBroadcast
-	{
-		public static void BroadcastFromClient(ushort tileX, ushort tileY)
-		{
-			if (Main.netMode != 1) { throw new ModHelpersException("Not client."); }
 
-			var protocol = new HologramRemoveProtocol(tileX, tileY);
+namespace Emitters.NetProtocols {
+	class HologramRemoveProtocol : PacketProtocolBroadcast {
+		public static void BroadcastFromClient( ushort tileX, ushort tileY ) {
+			if( Main.netMode != NetmodeID.MultiplayerClient ) { throw new ModHelpersException( "Not client." ); }
+
+			var protocol = new HologramRemoveProtocol( tileX, tileY );
 
 			protocol.SendToServer(true);
 		}
 
-		public static void BroadcastFromServer(ushort tileX, ushort tileY)
-		{
-			if (Main.netMode != 2) { throw new ModHelpersException("Not server."); }
+		public static void BroadcastFromServer( ushort tileX, ushort tileY ) {
+			if( Main.netMode != NetmodeID.Server ) { throw new ModHelpersException( "Not server." ); }
 
 			var protocol = new HologramRemoveProtocol(tileX, tileY);
 
@@ -34,24 +31,21 @@ namespace Emitters.NetProtocols
 		public ushort TileX;
 		public ushort TileY;
 
-		internal static void DespawnHologram(int npc)
-		{
-			Main.npc[npc] = new NPC
-			{
+		/*internal static void DespawnHologram( int npc ) {	// <- ?
+			Main.npc[npc] = new NPC {
 				whoAmI = npc
 			};
-			if (Main.netMode == 2)
-			{
-				NetMessage.SendData(23, -1, -1, null, npc, 0f, 0f, 0f, 0, 0, 0);
+
+			if( Main.netMode == NetmodeID.Server ) {
+				NetMessage.SendData( MessageID.SyncNPC, -1, -1, null, npc, 0f, 0f, 0f, 0, 0, 0 );
 			}
-		}
+		}*/
 
 		////////////////
 
 		private HologramRemoveProtocol() { }
 
-		private HologramRemoveProtocol(ushort tileX, ushort tileY)
-		{
+		private HologramRemoveProtocol( ushort tileX, ushort tileY ) {
 			this.TileX = tileX;
 			this.TileY = tileY;
 		}
@@ -59,8 +53,7 @@ namespace Emitters.NetProtocols
 
 		////////////////
 
-		protected override void ReceiveOnClient()
-		{
+		protected override void ReceiveOnClient() {
 			var myworld = ModContent.GetInstance<EmittersWorld>();
 
 			Main.PlaySound(SoundID.Item108, new Vector2(this.TileX << 4, this.TileY << 4));
@@ -68,8 +61,7 @@ namespace Emitters.NetProtocols
 			myworld.RemoveHologram(this.TileX, this.TileY);
 		}
 
-		protected override void ReceiveOnServer(int fromWho)
-		{
+		protected override void ReceiveOnServer( int fromWho ) {
 			var myworld = ModContent.GetInstance<EmittersWorld>();
 
 			myworld.RemoveHologram(this.TileX, this.TileY);

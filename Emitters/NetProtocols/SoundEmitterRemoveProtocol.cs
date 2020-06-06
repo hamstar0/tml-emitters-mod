@@ -9,7 +9,7 @@ using HamstarHelpers.Classes.Protocols.Packet.Interfaces;
 namespace Emitters.NetProtocols {
 	class SoundEmitterRemoveProtocol : PacketProtocolBroadcast {
 		public static void BroadcastFromClient( ushort tileX, ushort tileY ) {
-			if( Main.netMode != 1 ) { throw new ModHelpersException("Not client."); }
+			if( Main.netMode != NetmodeID.MultiplayerClient ) { throw new ModHelpersException("Not client."); }
 
 			var protocol = new SoundEmitterRemoveProtocol( tileX, tileY );
 
@@ -17,7 +17,7 @@ namespace Emitters.NetProtocols {
 		}
 		
 		public static void BroadcastFromServer( ushort tileX, ushort tileY ) {
-			if( Main.netMode != 2 ) { throw new ModHelpersException("Not server."); }
+			if( Main.netMode != NetmodeID.Server ) { throw new ModHelpersException("Not server."); }
 
 			var protocol = new SoundEmitterRemoveProtocol( tileX, tileY );
 

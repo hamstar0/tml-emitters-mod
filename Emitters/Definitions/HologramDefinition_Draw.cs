@@ -1,9 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.Graphics.Shaders;
 using HamstarHelpers.Helpers.UI;
 using HamstarHelpers.Helpers.XNA;
 using Emitters.Items;
+using Emitters.Effects;
 
 
 namespace Emitters.Definitions {
@@ -17,8 +19,11 @@ namespace Emitters.Definitions {
 		////////////////
 
 		public void Draw( int tileX, int tileY, bool isOnScreen ) {
-			var wldPos = new Vector2( (tileX << 4) + 8, (tileY << 4) + 8 );
-			this.AnimateHologram( wldPos, false );
+			var wldPos = new Vector2( ( tileX << 4 ) + 8, ( tileY << 4 ) + 8 );
+
+			if( this.AnimateHologram( wldPos, false ) ) {
+				this.DrawHologram( wldPos, false );
+			}
 
 			if( isOnScreen && HologramItem.CanViewHolograms( Main.LocalPlayer ) ) {
 				this.DrawHologramTile( tileX, tileY );
@@ -43,30 +48,12 @@ namespace Emitters.Definitions {
 				effects: SpriteEffects.None,
 				layerDepth: 1f
 			);
-
 		}
 
-		////////////////
 
-		public void AnimateHologram( Vector2 worldPos, bool isUI ) {
-			if( !this.IsActivated ) {
-				return;
-			}
-			if( HologramDefinition.IsBadType(this.Mode, this.Type) ) {
-				return;
-			}
+		///////////
 
-			// Cycle animations at all distances
-			this.AnimateCurrentFrame();
-
-			int maxDistSqr = EmittersConfig.Instance.HologramMinimumRangeBeforeProject;
-			maxDistSqr *= maxDistSqr;
-
-			// Too far away?
-			if( (Main.LocalPlayer.Center - worldPos).LengthSquared() >= maxDistSqr ) {
-				return;
-			}
-
+		public void DrawHologram( Vector2 wldPos, bool isUI ) {
 			switch( this.Mode ) {
 			case HologramMode.NPC:
 				Main.instance.LoadNPC( this.Type );
@@ -76,53 +63,48 @@ namespace Emitters.Definitions {
 				break;
 			}
 
-			if( this.CrtEffect ) {
-				this.CRTEffectBegin();
-			}
+			Texture2D tex = HologramDefinition.GetTexture( this.Mode, this.Type );
+			var frameCount = HologramDefinition.GetFrameCount( this.Mode, this.Type );
+			var frameHeight = tex.Height / frameCount;
 
+			
 			try {
-				this.DrawHologramRaw( worldPos, isUI );
+				switch( this.ShaderMode ) {
+				case HologramShaderMode.Vanilla:
+					this.BeginBatch( null );
+					this.VanillaShaderBegin( tex, frameHeight );
+					break;
+				case HologramShaderMode.Custom:
+					this.BeginBatch( this.CustomEffectsBegin(tex) );
+					this.CustomEffectsBegin( tex );
+					break;
+				}
+
+				this.DrawHologramRaw( wldPos, isUI, tex, frameHeight );
 			} finally {
-				if( this.CrtEffect ) {
-					this.CRTEffectEnd();
+				if( this.ShaderMode != HologramShaderMode.None ) {
+					this.BatchEnd();
 				}
 			}
 		}
 
 
-		///////////
+		////
 
-		public void CRTEffectBegin() {
-			Texture2D tex = HologramDefinition.GetTexture( this.Mode, this.Type );
-			Effect fx = EmittersMod.Instance.HologramFX;
-			Color color = this.Color;
-			color.A = this.Alpha;
-
-			fx.Parameters["TexWidth"].SetValue( (float)tex.Width * this.Scale );
-			fx.Parameters["TexHeight"].SetValue( (float)tex.Height * this.Scale );
-			fx.Parameters["RandValue"].SetValue( Main.rand.NextFloat() );
-			fx.Parameters["Time"].SetValue( Main.GlobalTime % this.ShaderTime );
-
-			fx.Parameters["Frame"].SetValue( (float)this.CurrentFrame );
-			fx.Parameters["FrameMax"].SetValue( (float)Main.npcFrameCount[this.Type] );
-
-			fx.Parameters["UserColor"].SetValue( color.ToVector4() );
-
+		public void BeginBatch( Effect shader ) {
 			Main.spriteBatch.End();
 			Main.spriteBatch.Begin(
 				SpriteSortMode.Immediate,
 				BlendState.AlphaBlend,
-				this.Mode == HologramMode.Item || this.Mode == HologramMode.Projectile
-					? SamplerState.PointClamp
-					: SamplerState.LinearClamp,
+				SamplerState.PointClamp,
 				DepthStencilState.Default,
 				RasterizerState.CullNone,
-				fx,
+				shader,
 				Main.GameViewMatrix.EffectMatrix
 			);
 		}
 
-		public void CRTEffectEnd() {
+		public void BatchEnd() {
 			Main.spriteBatch.End();
 			Main.spriteBatch.Begin();
 		}
@@ -130,26 +112,69 @@ namespace Emitters.Definitions {
 
 		////
 
-		public void DrawHologramRaw( Vector2 worldPos, bool isUI ) {
-			Texture2D tex = HologramDefinition.GetTexture( this.Mode, this.Type );
-			int frameCount = HologramDefinition.GetFrameCount( this.Mode, this.Type );
+		public void VanillaShaderBegin( Texture2D tex, int frameHeight ) {
+			Vector4 frame = new Vector4(
+				x: 0,
+				y: frameHeight * this.CurrentFrame,
+				z: tex.Width,
+				w: frameHeight
+			);
 
-			int frameHeight = tex.Height / frameCount;
+			var mymod = EmittersMod.Instance;
+			ArmorShaderData baseShaderData = mymod.ArmorShaders[ this.ShaderType ];
+			EmitterArmorShaderData shaderData = mymod.MyArmorShaders[this.ShaderType];
+			Effect fx = baseShaderData.Shader;
+
+			EffectPass effect = fx.CurrentTechnique.Passes[ shaderData.PassName ];
+
+			fx.Parameters["uColor"].SetValue( shaderData.UColor );
+			fx.Parameters["uSaturation"].SetValue( shaderData.USaturation );
+			fx.Parameters["uSecondaryColor"].SetValue( shaderData.USecondaryColor );
+			fx.Parameters["uTime"].SetValue( (Main.GlobalTime % this.ShaderTime) / this.ShaderTime );
+			fx.Parameters["uOpacity"].SetValue( shaderData.UOpacity );
+			fx.Parameters["uImageSize0"].SetValue( new Vector2((float)tex.Width, (float)tex.Height) );
+			fx.Parameters["uSourceRect"].SetValue( frame );
+
+			effect.Apply();
+		}
+
+
+		public Effect CustomEffectsBegin( Texture2D tex ) {
+			Effect fx = EmittersMod.Instance.HologramFX;
+			Color color = this.Color;
+			color.A = this.Alpha;
+
+			fx.Parameters["TexWidth"].SetValue( (float)tex.Width * this.Scale );
+			fx.Parameters["TexHeight"].SetValue( (float)tex.Height * this.Scale );
+			fx.Parameters["RandValue"].SetValue( Main.rand.NextFloat() );
+			fx.Parameters["Time"].SetValue( (Main.GlobalTime % this.ShaderTime) / this.ShaderTime );
+			fx.Parameters["Frame"].SetValue( (float)this.CurrentFrame );
+			fx.Parameters["FrameMax"].SetValue( (float)Main.npcFrameCount[this.Type] );
+			fx.Parameters["UserColor"].SetValue( color.ToVector4() );
+
+			return fx;
+		}
+
+
+		////
+
+		public void DrawHologramRaw( Vector2 worldPos, bool isUI, Texture2D tex, int frameHeight ) {
 			Color color = this.Color;
 			SpriteEffects effects = SpriteEffects.None;
+			Vector2 origin = new Vector2( tex.Width, frameHeight ) * 0.5f;
+			Vector2 scrPos;
 			Rectangle frame = new Rectangle(
 				x: 0,
 				y: frameHeight * this.CurrentFrame,
 				width: tex.Width,
 				height: frameHeight
 			);
-			Vector2 origin = new Vector2( tex.Width, frameHeight ) * 0.5f;
-			Vector2 scrPos;
 
 			if( this.WorldLighting ) {
 				color = Lighting.GetColor( (int)( worldPos.X / 16f ), (int)( worldPos.Y / 16f ) );
 				color = XNAColorHelpers.Mul( color, this.Color );
 			}
+
 			color *= (float)this.Alpha / 255f;
 
 			if( isUI ) {
@@ -182,3 +207,4 @@ namespace Emitters.Definitions {
 		}
 	}
 }
+

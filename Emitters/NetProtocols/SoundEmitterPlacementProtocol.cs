@@ -12,7 +12,7 @@ using Emitters.Definitions;
 namespace Emitters.NetProtocols {
 	class SoundEmitterPlacementProtocol : PacketProtocolBroadcast {
 		public static void BroadcastFromClient( SoundEmitterDefinition def, ushort tileX, ushort tileY ) {
-			if( Main.netMode != 1 ) { throw new ModHelpersException("Not client."); }
+			if( Main.netMode != NetmodeID.MultiplayerClient ) { throw new ModHelpersException("Not client."); }
 
 			var protocol = new SoundEmitterPlacementProtocol( Main.myPlayer, def, tileX, tileY );
 

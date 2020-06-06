@@ -18,6 +18,7 @@ float Time;
 float Frame;
 float FrameMax;
 float4 UserColor;
+float WaveScale;
 
 
 
@@ -36,17 +37,21 @@ PixelShaderOutput ScanlinesCRT( PixelShaderInput coords ) {
 	PixelShaderOutput output;
 	float4 color = tex2D( SpriteTextureSampler, coords.texPos );
 
-	float frameHeightPerc = 1.0 / FrameMax;
-	float frameYPosPerc = min( (coords.texPos.y - (frameHeightPerc * Frame)) / frameHeightPerc, 1.0 );
+	float frameStartPerc = Frame / FrameMax;
+	float frameHeight = TexHeight / FrameMax;
+	float outFrameYPosStart = TexHeight * frameStartPerc;
+	float outFrameYPosCurr = TexHeight * coords.texPos.y;
+	float inFrameYPosCurr = outFrameYPosCurr - outFrameYPosStart;
+	float inFrameYPosPerc = inFrameYPosCurr / frameHeight;
 
-    float texY = frameYPosPerc * TexHeight;
-    float rowDark = 1 - floor( texY % 2.0 );
+    float rowBlinds = floor( inFrameYPosCurr % 2.0 );
 
-	float timeWave = max( frac(Time), 0.001 );
-	float wave = frac( frameYPosPerc / timeWave );
-	wave = 0.5 + (wave * 0.5);
+	float cyclePerc = max( frac(Time), 0.001 );
+	float wave = frac( inFrameYPosPerc / cyclePerc );
+	float scaledWave = (1.0 - WaveScale) + (wave * WaveScale);
     
-	output.color = UserColor * color * rowDark * wave;
+	output.color = UserColor * color * rowBlinds * scaledWave;
+	output.color = output.color * UserColor.W;	//?
     
 	return output;
 }

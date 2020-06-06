@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
@@ -12,18 +13,21 @@ namespace Emitters {
 			int topTile = (int)Main.screenPosition.Y >> 4;
 			int tileWidth = Main.screenWidth >> 4;
 			int tileHeight = Main.screenHeight >> 4;
+
+			int minX = Math.Max( leftTile, 0 );
+			int minY = Math.Max( topTile, 0 );
 			int maxX = leftTile + tileWidth + 1;
 			int maxY = topTile + tileHeight + 1;
 
 			var scrTiles = new Rectangle( leftTile, topTile, maxX, maxY );
-			maxX += 8;
-			maxY += 8;
+			maxX = Math.Min( maxX + 8, Main.maxTilesX );
+			maxY = Math.Min( maxY + 8, Main.maxTilesY );
 
 			Main.spriteBatch.Begin();
 
 			try {
-				for( ushort x = (ushort)( leftTile - 8 ); x < maxX; x++ ) {
-					for( ushort y = (ushort)( topTile - 8 ); y < maxY; y++ ) {
+				for( ushort x = (ushort)minX; x < maxX; x++ ) {
+					for( ushort y = (ushort)minY; y < maxY; y++ ) {
 						bool isOnScr = scrTiles.Contains( x, y );
 
 						if( this.Emitters.TryGetValue2D( x, y, out EmitterDefinition def) ) {
