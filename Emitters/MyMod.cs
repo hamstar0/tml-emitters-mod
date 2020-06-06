@@ -5,6 +5,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Graphics.Shaders;
 using Emitters.UI;
+using Emitters.Effects;
 
 
 namespace Emitters {

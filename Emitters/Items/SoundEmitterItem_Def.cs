@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
 using Emitters.Definitions;
 
 
@@ -54,67 +51,6 @@ namespace Emitters.Items {
 			this.item.useStyle = ItemUseStyleID.SwingThrow;
 			this.item.consumable = true;
 			//this.item.createTile = ModContent.TileType<EmitterTile>();
-		}
-
-
-		////////////////
-
-		public override void Load( TagCompound tag ) {
-			if( !tag.ContainsKey( "SndEmitterType" ) ) {
-				return;
-			}
-
-			try {
-				this.Def = new SoundEmitterDefinition(
-					type: tag.GetInt( "SndEmitterType" ),
-					style: tag.GetInt( "SndEmitterStyle" ),
-					volume: tag.GetFloat( "SndEmitterVolume" ),
-					pitch: tag.GetFloat( "SndEmitterPitch" ),
-					delay: tag.GetInt( "SndEmitterDelay" ),
-					isActivated: tag.GetBool( "SndEmitterIsActivated" )
-				);
-			} catch { }
-		}
-
-		public override TagCompound Save() {
-			if( this.Def == null ) {
-				return new TagCompound();
-			}
-
-			return new TagCompound {
-				{ "SndEmitterType", (int)this.Def.Type },
-				{ "SndEmitterStyle", (int)this.Def.Style },
-				{ "SndEmitterVolume", (float)this.Def.Volume },
-				{ "SndEmitterPitch", (float)this.Def.Pitch },
-				{ "SndEmitterDelay", (int)this.Def.Delay },
-				{ "SndEmitterIsActivated", (bool)this.Def.IsActivated },
-			};
-		}
-
-
-		////////////////
-
-		public override void ModifyTooltips( List<TooltipLine> tooltips ) {
-			tooltips.Insert( 1, new TooltipLine( this.mod, "SndEmitterUI", "[c/00FF00:Right-click in inventory to adjust settings]" ) );
-			tooltips.Insert( 2, new TooltipLine( this.mod, "SndEmitterToggle", "[c/00FF00:Left-click in world to toggle activation]" ) );
-			tooltips.Insert( 3, new TooltipLine( this.mod, "SndEmitterRemove", "[c/00FF00:Right-click in world to remove]" ) );
-
-			if( this.Def == null ) {
-				return;
-			}
-
-			var typeTip = new TooltipLine( this.mod, "SndEmitterType", " Type: " + this.Def?.RenderType() );
-			var volumeTip = new TooltipLine( this.mod, "SndEmitterVolume", " Volume: " + this.Def?.RenderVolume() );
-			var delayTip = new TooltipLine( this.mod, "SndEmitterDelay", " Delay: " + this.Def?.RenderDelay() );
-
-			var color = Color.White * 0.75f;
-			typeTip.overrideColor = color;
-			volumeTip.overrideColor = color;
-			delayTip.overrideColor = color;
-
-			tooltips.Add( typeTip );
-			tooltips.Add( volumeTip );
-			tooltips.Add( delayTip );
 		}
 
 

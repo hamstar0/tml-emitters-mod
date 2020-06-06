@@ -6,7 +6,7 @@ using Terraria.Graphics.Shaders;
 using HamstarHelpers.Helpers.DotNET.Reflection;
 
 
-namespace Emitters {
+namespace Emitters.Effects {
 	internal class VanillaArmorShaderData : ShaderData {
 		public static List<ArmorShaderData> GetShaderList() {
 			return !ReflectionHelpers.Get( GameShaders.Armor, "_shaderData", out List<ArmorShaderData> list )

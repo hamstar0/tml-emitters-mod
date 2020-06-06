@@ -206,7 +206,7 @@ namespace Emitters.UI {
 
 			this.CachedHologramDef = def;
 
-			if( def.AnimateHologram( Main.MouseWorld, true ) ) {
+			if( def.AnimateHologram(Main.MouseWorld, true) ) {
 				def.DrawHologram( Main.MouseWorld, true );
 			}
 		}
