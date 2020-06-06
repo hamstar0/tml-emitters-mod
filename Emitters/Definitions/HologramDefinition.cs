@@ -1,22 +1,27 @@
-﻿using System;
-using System.IO;
+﻿using HamstarHelpers.Classes.Errors;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
-using HamstarHelpers.Classes.Errors;
 
 
-namespace Emitters.Definitions {
+namespace Emitters.Definitions
+{
 	public enum HologramMode {
 		NPC,
 		Item,
 		Projectile
 	}
 
-
+	public enum HologramShaderMode
+	{
+		NoShader,
+		VanillaShader,
+		CustomShader
+	}
 
 	public partial class HologramDefinition : BaseEmitterDefinition {
 		public static bool IsBadType( HologramMode mode, int type ) {
@@ -79,9 +84,9 @@ namespace Emitters.Definitions {
 		public int FrameEnd { get; set; }
 		public int FrameRateTicks { get; set; }
 		public bool WorldLighting { get; set; }
-		public bool CrtEffect { get; set; }
+		public HologramShaderMode ShaderMode { get; set; }
 		public float ShaderTime { get; set; }
-
+		public int ShaderType { get; set; }
 		////////////////
 
 		public EntityDefinition SetHologramType() {
@@ -115,10 +120,10 @@ namespace Emitters.Definitions {
 			this.FrameEnd = copy.FrameEnd;
 			this.FrameRateTicks = copy.FrameRateTicks;
 			this.WorldLighting = copy.WorldLighting;
-			this.CrtEffect = copy.CrtEffect;
+			this.ShaderMode = copy.ShaderMode;
 			this.ShaderTime = copy.ShaderTime;
+			this.ShaderType = copy.ShaderType;
 			this.IsActivated = copy.IsActivated;
-
 			this.CurrentFrame = this.FrameStart;
 		}
 
@@ -136,8 +141,9 @@ namespace Emitters.Definitions {
 					int frameEnd,
 					int frameRateTicks,
 					bool worldLight,
-					bool crtEffect,
+					HologramShaderMode shaderMode,
 					float shaderTime,
+					int shaderType,
 					bool isActivated ) {
 			this.Mode = mode;
 			this.Type = type;
@@ -152,8 +158,9 @@ namespace Emitters.Definitions {
 			this.FrameEnd = frameEnd;
 			this.FrameRateTicks = frameRateTicks;
 			this.WorldLighting = worldLight;
-			this.CrtEffect = crtEffect;
+			this.ShaderMode = shaderMode;
 			this.ShaderTime = shaderTime;
+			this.ShaderType = shaderType;
 			this.IsActivated = isActivated;
 
 			this.CurrentFrame = frameStart;
@@ -161,27 +168,29 @@ namespace Emitters.Definitions {
 
 		////////////////
 
-		public override BaseEmitterDefinition Read( BinaryReader reader ) {
+		public override BaseEmitterDefinition Read( BinaryReader reader )
+		{
 			return new HologramDefinition(
-				mode: (HologramMode)reader.ReadInt16(),
-				type: (int)reader.ReadUInt16(),
-				scale: (float)reader.ReadSingle(),
+				mode: (HologramMode) reader.ReadInt16(),
+				type: (int) reader.ReadUInt16(),
+				scale: (float) reader.ReadSingle(),
 				color: new Color(
-					(byte)reader.ReadByte(),
-					(byte)reader.ReadByte(),
-					(byte)reader.ReadByte()
+					(byte) reader.ReadByte(),
+					(byte) reader.ReadByte(),
+					(byte) reader.ReadByte()
 				),
-				alpha: (byte)reader.ReadByte(),
-				direction: (int)reader.ReadUInt16(),
-				rotation: (float)reader.ReadSingle(),
-				offsetX: (int)reader.ReadUInt16(),
-				offsetY: (int)reader.ReadUInt16(),
-				frameStart: (int)reader.ReadUInt16(),
-				frameEnd: (int)reader.ReadUInt16(),
-				frameRateTicks: (int)reader.ReadUInt16(),
-				worldLight: (bool)reader.ReadBoolean(),
-				crtEffect: (bool)reader.ReadBoolean(),
+				alpha: (byte) reader.ReadByte(),
+				direction: (int) reader.ReadUInt16(),
+				rotation: (float) reader.ReadSingle(),
+				offsetX: (int) reader.ReadUInt16(),
+				offsetY: (int) reader.ReadUInt16(),
+				frameStart: (int) reader.ReadUInt16(),
+				frameEnd: (int) reader.ReadUInt16(),
+				frameRateTicks: (int) reader.ReadUInt16(),
+				worldLight: (bool) reader.ReadBoolean(),
+				shaderMode: (HologramShaderMode) reader.ReadInt16(),
 				shaderTime: (float)reader.ReadSingle(),
+				shaderType: (int)reader.ReadInt16(),
 				isActivated: (bool)reader.ReadBoolean()
 			);
 		}
@@ -202,8 +211,9 @@ namespace Emitters.Definitions {
 			writer.Write( (ushort)this.FrameEnd );
 			writer.Write( (ushort)this.FrameRateTicks );
 			writer.Write( (bool)this.WorldLighting );
-			writer.Write( (bool)this.CrtEffect );
+			writer.Write( (ushort)this.ShaderMode);
 			writer.Write((float)this.ShaderTime);
+			writer.Write((int)this.ShaderType);
 			writer.Write( (bool)this.IsActivated );
 		}
 

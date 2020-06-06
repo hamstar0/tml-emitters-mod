@@ -12,6 +12,7 @@ namespace Emitters.UI {
 		////////////////
 
 		public void SwitchTab( HologramUITab tab ) {
+
 			if( this.IsTabBeingSet ) { return; }
 			this.IsTabBeingSet = true;
 
@@ -73,5 +74,27 @@ namespace Emitters.UI {
 
 			this.IsModeBeingSet = false;
 		}
+		public void UISetHologramShaderMode(HologramUIShaderMode mode)
+		{
+			if( this.IsModeBeingSet ) { return; }
+			this.IsModeBeingSet = true;
+
+			if( mode != HologramUIShaderMode.VanillaMode && this.VanillaShadersCheckbox.Selected ) {
+				this.VanillaShadersCheckbox.Selected = false;
+				this.VanillaShadersCheckbox.Recalculate();
+			}
+			if( mode != HologramUIShaderMode.CustomMode && this.CustomShadersCheckbox.Selected ) {
+				this.CustomShadersCheckbox.Selected = false;
+				this.CustomShadersCheckbox.Recalculate();
+			}
+			if( mode != HologramUIShaderMode.NoShader && this.NoShaderCheckbox.Selected ) {
+				this.NoShaderCheckbox.Selected = false;
+				this.NoShaderCheckbox.Recalculate();
+			}
+			this.CurrentsShaderMode = mode;
+			this.IsModeBeingSet = false;
+		}
+		////////////////
+
 	}
 }

@@ -44,8 +44,9 @@ namespace Emitters.NetProtocols {
 		public int FrameEnd;
 		public int FrameRateTicks;
 		public bool WorldLight;
-		public bool CrtEffect;
+		public int ShaderMode;
 		public float ShaderTime;
+		public int ShaderType;
 		public bool IsActivated;
 
 
@@ -56,7 +57,7 @@ namespace Emitters.NetProtocols {
 
 		private HologramPlacementProtocol( int fromWho, HologramDefinition def, ushort tileX, ushort tileY ) {
 			HologramMode mode;
-
+			HologramShaderMode shaderMode;
 			def.Output(
 				out this.Type,
 				out mode,
@@ -73,8 +74,9 @@ namespace Emitters.NetProtocols {
 				out this.FrameEnd,
 				out this.FrameRateTicks,
 				out this.WorldLight,
-				out this.CrtEffect,
+				out shaderMode,
 				out this.ShaderTime,
+				out this.ShaderType,
 				out this.IsActivated
 			) ;
 
@@ -102,8 +104,9 @@ namespace Emitters.NetProtocols {
 			frameEnd: this.FrameEnd,
 			frameRateTicks: this.FrameRateTicks,
 			worldLight: this.WorldLight,
-			crtEffect: this.CrtEffect,
+			shaderMode: (HologramShaderMode)this.ShaderMode,
 			shaderTime: this.ShaderTime,
+			shaderType: this.ShaderType,
 			isActivated: this.IsActivated
 		);
 
