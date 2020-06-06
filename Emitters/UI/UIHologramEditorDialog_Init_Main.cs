@@ -35,32 +35,32 @@ namespace Emitters.UI {
 		private void InitializeWidgetsForMode( UIThemedPanel container, ref float yOffset ) {
 			this.InitializeTitle( container, "Mode:", false, ref yOffset );
 
-			this.NpcModeChoice = new UICheckbox( UITheme.Vanilla, "NPC", "" );
-			this.NpcModeChoice.Top.Set( yOffset, 0f );
-			this.NpcModeChoice.Left.Set( 64f, 0f );
-			this.NpcModeChoice.Selected = true;
-			this.NpcModeChoice.OnSelectedChanged += () => {
+			this.ModeNpcChoice = new UICheckbox( UITheme.Vanilla, "NPC", "" );
+			this.ModeNpcChoice.Top.Set( yOffset, 0f );
+			this.ModeNpcChoice.Left.Set( 64f, 0f );
+			this.ModeNpcChoice.Selected = true;
+			this.ModeNpcChoice.OnSelectedChanged += () => {
 				this.SetHologramMode( HologramMode.NPC );
 			};
 
-			this.ItemModeChoice = new UICheckbox( UITheme.Vanilla, "Item", "" );
-			this.ItemModeChoice.Top.Set( yOffset, 0f );
-			this.ItemModeChoice.Left.Set( 128f, 0f );
-			this.ItemModeChoice.OnSelectedChanged += () => {
+			this.ModeItemChoice = new UICheckbox( UITheme.Vanilla, "Item", "" );
+			this.ModeItemChoice.Top.Set( yOffset, 0f );
+			this.ModeItemChoice.Left.Set( 128f, 0f );
+			this.ModeItemChoice.OnSelectedChanged += () => {
 				this.SetHologramMode( HologramMode.Item );
 			};
 
-			this.ProjectileModeChoice = new UICheckbox( UITheme.Vanilla, "Projectile", "" );
-			this.ProjectileModeChoice.Top.Set( yOffset, 0f );
-			this.ProjectileModeChoice.Left.Set( 192f, 0f );
-			this.ProjectileModeChoice.OnSelectedChanged += () => {
+			this.ModeProjectileChoice = new UICheckbox( UITheme.Vanilla, "Projectile", "" );
+			this.ModeProjectileChoice.Top.Set( yOffset, 0f );
+			this.ModeProjectileChoice.Left.Set( 192f, 0f );
+			this.ModeProjectileChoice.OnSelectedChanged += () => {
 				this.SetHologramMode( HologramMode.Projectile );
 			};
 			yOffset += 28f;
 
-			container.Append( (UIElement)this.NpcModeChoice );
-			container.Append( (UIElement)this.ItemModeChoice );
-			container.Append( (UIElement)this.ProjectileModeChoice );
+			container.Append( (UIElement)this.ModeNpcChoice );
+			container.Append( (UIElement)this.ModeItemChoice );
+			container.Append( (UIElement)this.ModeProjectileChoice );
 		}
 
 		private void InitializeWidgetsForType( UIThemedPanel container, ref float yOffset ) {

@@ -42,9 +42,9 @@ namespace Emitters.UI {
 
 		//
 
-		private UICheckbox NpcModeChoice;
-		private UICheckbox ItemModeChoice;
-		private UICheckbox ProjectileModeChoice;
+		private UICheckbox ModeNpcChoice;
+		private UICheckbox ModeItemChoice;
+		private UICheckbox ModeProjectileChoice;
 		private UISlider TypeSlider;
 		private UISlider ScaleSlider;
 		private UISlider DirectionSlider;
@@ -64,11 +64,12 @@ namespace Emitters.UI {
 		private UISlider AlphaSlider;
 
 		//
-		private UISlider ShaderTypeSliderElem;
-		private UISlider ShadertTimeSliderElem;
-		private UICheckbox VanillaShadersCheckbox;
-		private UICheckbox CustomShadersCheckbox;
-		private UICheckbox NoShaderCheckbox;
+
+		private UISlider ShaderTypeSlider;
+		private UISlider ShadertTimeSlider;
+		private UICheckbox ShaderVanillaChoice;
+		private UICheckbox ShaderCustomChoice;
+		private UICheckbox ShaderNoneChoice;
 
 		//
 		private UITextPanelButton ApplyButton;
@@ -83,30 +84,6 @@ namespace Emitters.UI {
 		////////////////
 
 		public UIHologramEditorDialog() : base( UITheme.Vanilla, 600, 500 ) { }
-
-		////////////////
-
-		public HologramDefinition CreateHologramDefinition() {
-			return new HologramDefinition(
-				mode: (HologramMode)this.CurrentMode,
-				type: (int)this.TypeSlider.RememberedInputValue,
-				scale: this.ScaleSlider.RememberedInputValue,
-				color: this.GetColor(),
-				alpha: (byte)this.AlphaSlider.RememberedInputValue,
-				direction: (int)this.DirectionSlider.RememberedInputValue,
-				rotation: this.RotationSlider.RememberedInputValue,
-				offsetX: (int)this.OffsetXSlider.RememberedInputValue,
-				offsetY: (int)this.OffsetYSlider.RememberedInputValue,
-				frameStart: (int)this.FrameStartSlider.RememberedInputValue,
-				frameEnd: (int)this.FrameEndSlider.RememberedInputValue,
-				frameRateTicks: (int)this.FrameRateTicksSlider.RememberedInputValue,
-				worldLight: this.WorldLightingFlag.Selected,
-				shaderMode: (HologramShaderMode)this.CurrentsShaderMode,
-				shaderTime: this.ShadertTimeSliderElem.RememberedInputValue,
-				shaderType: (int)this.ShaderTypeSliderElem.RememberedInputValue,
-				isActivated: true
-			);
-		}
 
 
 		////////////////
@@ -163,7 +140,7 @@ namespace Emitters.UI {
 
 		////////////////
 
-		public override void RecalculateMe() {
+		public override void Recalculate() {
 			float tabHeight = 0;
 
 			switch( this.CurrentTab ) {
@@ -178,10 +155,10 @@ namespace Emitters.UI {
 				break;
 			}
 
-			this.OuterContainer.Top.Set( this.FullDialogHeight * -0.5f, 0.5f );
-			this.OuterContainer.Height.Set( this.FullDialogHeight - this.MainTabHeight + tabHeight, 0f );
+			this.SetTopPosition( this.FullDialogHeight * -0.5f, 0.5f, 0f );
+			this.OuterContainer?.Height.Set( (this.FullDialogHeight - this.MainTabHeight) + tabHeight, 0f );
 
-			base.RecalculateMe();
+			base.Recalculate();
 		}
 
 
@@ -209,6 +186,31 @@ namespace Emitters.UI {
 			if( def.AnimateHologram(Main.MouseWorld, true) ) {
 				def.DrawHologram( Main.MouseWorld, true );
 			}
+		}
+
+
+		////////////////
+
+		public HologramDefinition CreateHologramDefinition() {
+			return new HologramDefinition(
+				mode: (HologramMode)this.CurrentMode,
+				type: (int)this.TypeSlider.RememberedInputValue,
+				scale: this.ScaleSlider.RememberedInputValue,
+				color: this.GetColor(),
+				alpha: (byte)this.AlphaSlider.RememberedInputValue,
+				direction: (int)this.DirectionSlider.RememberedInputValue,
+				rotation: this.RotationSlider.RememberedInputValue,
+				offsetX: (int)this.OffsetXSlider.RememberedInputValue,
+				offsetY: (int)this.OffsetYSlider.RememberedInputValue,
+				frameStart: (int)this.FrameStartSlider.RememberedInputValue,
+				frameEnd: (int)this.FrameEndSlider.RememberedInputValue,
+				frameRateTicks: (int)this.FrameRateTicksSlider.RememberedInputValue,
+				worldLight: this.WorldLightingFlag.Selected,
+				shaderMode: (HologramShaderMode)this.CurrentsShaderMode,
+				shaderTime: this.ShadertTimeSlider.RememberedInputValue,
+				shaderType: (int)this.ShaderTypeSlider.RememberedInputValue,
+				isActivated: true
+			);
 		}
 	}
 }

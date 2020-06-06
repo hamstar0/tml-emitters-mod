@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Graphics.Shaders;
+using HamstarHelpers.Helpers.Debug;
 using HamstarHelpers.Helpers.UI;
 using HamstarHelpers.Helpers.XNA;
 using Emitters.Items;
@@ -119,6 +120,7 @@ namespace Emitters.Definitions {
 				z: tex.Width,
 				w: frameHeight
 			);
+			float cyclePerc = (Main.GlobalTime % this.ShaderTime) / this.ShaderTime;
 
 			var mymod = EmittersMod.Instance;
 			ArmorShaderData baseShaderData = mymod.ArmorShaders[ this.ShaderType ];
@@ -130,9 +132,9 @@ namespace Emitters.Definitions {
 			fx.Parameters["uColor"].SetValue( shaderData.UColor );
 			fx.Parameters["uSaturation"].SetValue( shaderData.USaturation );
 			fx.Parameters["uSecondaryColor"].SetValue( shaderData.USecondaryColor );
-			fx.Parameters["uTime"].SetValue( (Main.GlobalTime % this.ShaderTime) / this.ShaderTime );
+			fx.Parameters["uTime"].SetValue( cyclePerc );
 			fx.Parameters["uOpacity"].SetValue( shaderData.UOpacity );
-			fx.Parameters["uImageSize0"].SetValue( new Vector2((float)tex.Width, (float)tex.Height) );
+			fx.Parameters["uImageSize0"].SetValue( new Vector2(tex.Width, tex.Height) );
 			fx.Parameters["uSourceRect"].SetValue( frame );
 
 			effect.Apply();
@@ -143,11 +145,12 @@ namespace Emitters.Definitions {
 			Effect fx = EmittersMod.Instance.HologramFX;
 			Color color = this.Color;
 			color.A = this.Alpha;
+			float cyclePerc = (Main.GlobalTime % this.ShaderTime) / this.ShaderTime;
 
 			fx.Parameters["TexWidth"].SetValue( (float)tex.Width * this.Scale );
 			fx.Parameters["TexHeight"].SetValue( (float)tex.Height * this.Scale );
 			fx.Parameters["RandValue"].SetValue( Main.rand.NextFloat() );
-			fx.Parameters["Time"].SetValue( (Main.GlobalTime % this.ShaderTime) / this.ShaderTime );
+			fx.Parameters["CyclePercent"].SetValue( cyclePerc );
 			fx.Parameters["Frame"].SetValue( (float)this.CurrentFrame );
 			fx.Parameters["FrameMax"].SetValue( (float)Main.npcFrameCount[this.Type] );
 			fx.Parameters["UserColor"].SetValue( color.ToVector4() );

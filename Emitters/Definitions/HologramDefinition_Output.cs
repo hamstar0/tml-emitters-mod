@@ -99,7 +99,9 @@ namespace Emitters.Definitions {
 			return (this.Scale * 100f).ToString( "N0" );
 		}
 		public string RenderColor() {
-			return this.Color.ToString();
+			Color color = this.Color;
+			color.A = this.Alpha;
+			return color.ToString();
 		}
 		public string RenderAlpha() {
 			return this.Alpha.ToString();
