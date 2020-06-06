@@ -40,21 +40,21 @@ namespace Emitters.UI {
 			this.NpcModeChoice.Left.Set( 64f, 0f );
 			this.NpcModeChoice.Selected = true;
 			this.NpcModeChoice.OnSelectedChanged += () => {
-				this.UISetHologramMode( HologramMode.NPC );
+				this.SetHologramMode( HologramMode.NPC );
 			};
 
 			this.ItemModeChoice = new UICheckbox( UITheme.Vanilla, "Item", "" );
 			this.ItemModeChoice.Top.Set( yOffset, 0f );
 			this.ItemModeChoice.Left.Set( 128f, 0f );
 			this.ItemModeChoice.OnSelectedChanged += () => {
-				this.UISetHologramMode( HologramMode.Item );
+				this.SetHologramMode( HologramMode.Item );
 			};
 
 			this.ProjectileModeChoice = new UICheckbox( UITheme.Vanilla, "Projectile", "" );
 			this.ProjectileModeChoice.Top.Set( yOffset, 0f );
 			this.ProjectileModeChoice.Left.Set( 192f, 0f );
 			this.ProjectileModeChoice.OnSelectedChanged += () => {
-				this.UISetHologramMode( HologramMode.Projectile );
+				this.SetHologramMode( HologramMode.Projectile );
 			};
 			yOffset += 28f;
 

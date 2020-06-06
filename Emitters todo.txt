@@ -6,6 +6,7 @@ Future considerations
 -	Allow arrow keys + mouse hover to adjust sliders
 -	Add player holograms
 -	Add tile holograms
+-	Add projectile emitters
 
 
 
@@ -16,13 +17,15 @@ v2
 v1.4
 -	Add search function
 -	Add rotation animation dialog field
-v1.3
 -	Hide inapplicable fields for gores
 -	Render emitters on top of dusts and gores when in add/remove mode
+-	Add glowmasks for NPCs, items, and projectiles
+v1.3
+-	Use another input key to access emitter/hologram dialogs
+
 -	Add hologram modes (NPC, item, projectile)
 -	Add shader modes
 -	Add tabs
-
 v1.2
 -	Show all emitter/holograms while in wire mode
 -	Re-implement color and alpha for CRT fx

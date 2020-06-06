@@ -16,20 +16,17 @@ namespace Emitters.UI {
 		Shader
 	}
 
-	public enum HologramUIShaderMode
-	{
-		NoShader,
-		VanillaMode,
-		CustomMode
-	}
+
 
 
 	partial class UIHologramEditorDialog : UIDialog {
 		public HologramUITab CurrentTab { get; private set; } = HologramUITab.Main;
 		public HologramMode CurrentMode { get; private set; } = HologramMode.NPC;
-		public HologramUIShaderMode CurrentsShaderMode { get; private set; } = HologramUIShaderMode.VanillaMode;
+		public HologramShaderMode CurrentsShaderMode { get; private set; } = HologramShaderMode.Vanilla;
+
+
 		////////////////
-		
+
 		private float TabStartInnerHeight = 86f;
 
 		////
@@ -88,25 +85,25 @@ namespace Emitters.UI {
 		public UIHologramEditorDialog() : base( UITheme.Vanilla, 600, 500 ) { }
 
 		////////////////
-		
+
 		public HologramDefinition CreateHologramDefinition() {
 			return new HologramDefinition(
 				mode: (HologramMode)this.CurrentMode,
-				type: (int)TypeSlider.RememberedInputValue,
-				scale: ScaleSlider.RememberedInputValue,
-				color: GetColor(),
-				alpha: (byte)AlphaSlider.RememberedInputValue,
-				direction: (int)DirectionSlider.RememberedInputValue,
-				rotation: RotationSlider.RememberedInputValue,
-				offsetX: (int)OffsetXSlider.RememberedInputValue,
-				offsetY: (int)OffsetYSlider.RememberedInputValue,
-				frameStart: (int)FrameStartSlider.RememberedInputValue,
-				frameEnd: (int)FrameEndSlider.RememberedInputValue,
-				frameRateTicks: (int)FrameRateTicksSlider.RememberedInputValue,
-				worldLight: WorldLightingFlag.Selected,
+				type: (int)this.TypeSlider.RememberedInputValue,
+				scale: this.ScaleSlider.RememberedInputValue,
+				color: this.GetColor(),
+				alpha: (byte)this.AlphaSlider.RememberedInputValue,
+				direction: (int)this.DirectionSlider.RememberedInputValue,
+				rotation: this.RotationSlider.RememberedInputValue,
+				offsetX: (int)this.OffsetXSlider.RememberedInputValue,
+				offsetY: (int)this.OffsetYSlider.RememberedInputValue,
+				frameStart: (int)this.FrameStartSlider.RememberedInputValue,
+				frameEnd: (int)this.FrameEndSlider.RememberedInputValue,
+				frameRateTicks: (int)this.FrameRateTicksSlider.RememberedInputValue,
+				worldLight: this.WorldLightingFlag.Selected,
 				shaderMode: (HologramShaderMode)this.CurrentsShaderMode,
-				shaderTime: ShadertTimeSliderElem.RememberedInputValue,
-				shaderType: (int)ShaderTypeSliderElem.RememberedInputValue,
+				shaderTime: this.ShadertTimeSliderElem.RememberedInputValue,
+				shaderType: (int)this.ShaderTypeSliderElem.RememberedInputValue,
 				isActivated: true
 			);
 		}
@@ -115,9 +112,9 @@ namespace Emitters.UI {
 		////////////////
 
 		public Color GetColor() {
-			float hue = HueSlider.RememberedInputValue;
-			float saturation = SaturationSlider.RememberedInputValue;
-			float lightness = LightnessSlider.RememberedInputValue;
+			float hue = this.HueSlider.RememberedInputValue;
+			float saturation = this.SaturationSlider.RememberedInputValue;
+			float lightness = this.LightnessSlider.RememberedInputValue;
 			Color color = Main.hslToRgb( hue, saturation, lightness );
 			return color;
 		}
@@ -134,13 +131,15 @@ namespace Emitters.UI {
 			this.HologramItem = hologramItem;
 
 			Vector3 hsl = Main.rgbToHsl( myitem.Def.Color );
-			myitem.Def.Mode = (HologramMode) this.CurrentMode;
+
+			this.SetHologramMode( myitem.Def.Mode );
+			this.SetHologramShaderMode( myitem.Def.ShaderMode );
+
 			this.TypeSlider.SetValue( myitem.Def.Type );
 			this.HueSlider.SetValue( hsl.X );
 			this.SaturationSlider.SetValue( hsl.Y );
 			this.LightnessSlider.SetValue( hsl.Z );
 			this.WorldLightingFlag.Selected = myitem.Def.WorldLighting;
-			myitem.Def.ShaderMode = (HologramShaderMode) CurrentsShaderMode;
 
 			return true;
 		}
@@ -201,13 +200,13 @@ namespace Emitters.UI {
 		public override void Draw( SpriteBatch sb ) {
 			base.Draw( sb );
 
-			HologramDefinition def = CreateHologramDefinition();
-			def.CurrentFrame = CachedHologramDef?.CurrentFrame ?? 0;
-			def.CurrentFrameElapsedTicks = CachedHologramDef?.CurrentFrameElapsedTicks ?? 0;
+			HologramDefinition def = this.CreateHologramDefinition();
+			def.CurrentFrame = this.CachedHologramDef?.CurrentFrame ?? 0;
+			def.CurrentFrameElapsedTicks = this.CachedHologramDef?.CurrentFrameElapsedTicks ?? 0;
 
 			this.CachedHologramDef = def;
 
-			if( def.AnimateHologram(Main.MouseWorld, true) ) {
+			if( def.AnimateHologram( Main.MouseWorld, true ) ) {
 				def.DrawHologram( Main.MouseWorld, true );
 			}
 		}

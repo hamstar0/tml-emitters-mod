@@ -37,9 +37,9 @@ PixelShaderOutput ScanlinesCRT( PixelShaderInput coords ) {
 	PixelShaderOutput output;
 	float4 color = tex2D( SpriteTextureSampler, coords.texPos );
 
-	float framePercStart = Frame / FrameMax;
+	float frameStartPerc = Frame / FrameMax;
 	float frameHeight = TexHeight / FrameMax;
-	float outFrameYPosStart = TexHeight * framePercStart;
+	float outFrameYPosStart = TexHeight * frameStartPerc;
 	float outFrameYPosCurr = TexHeight * coords.texPos.y;
 	float inFrameYPosCurr = outFrameYPosCurr - outFrameYPosStart;
 	float inFrameYPosPerc = inFrameYPosCurr / frameHeight;
@@ -51,6 +51,7 @@ PixelShaderOutput ScanlinesCRT( PixelShaderInput coords ) {
 	float scaledWave = (1.0 - WaveScale) + (wave * WaveScale);
     
 	output.color = UserColor * color * rowBlinds * scaledWave;
+	output.color = output.color * UserColor.W;	//?
     
 	return output;
 }

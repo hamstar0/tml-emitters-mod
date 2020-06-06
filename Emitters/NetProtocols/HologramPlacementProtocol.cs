@@ -58,6 +58,7 @@ namespace Emitters.NetProtocols {
 		private HologramPlacementProtocol( int fromWho, HologramDefinition def, ushort tileX, ushort tileY ) {
 			HologramMode mode;
 			HologramShaderMode shaderMode;
+
 			def.Output(
 				out this.Type,
 				out mode,
@@ -81,6 +82,7 @@ namespace Emitters.NetProtocols {
 			) ;
 
 			this.Mode = (int)mode;
+			this.ShaderMode = (int)shaderMode;
 
 			this.FromWho = fromWho;
 			this.TileX = tileX;
@@ -94,7 +96,7 @@ namespace Emitters.NetProtocols {
 			mode: (HologramMode)this.Mode,
 			type: this.Type,
 			scale: this.Scale,
-			color: new Color(this.ColorR, this.ColorG, this.ColorB),
+			color: new Color( this.ColorR, this.ColorG, this.ColorB ),
 			alpha: this.Alpha,
 			direction: this.Direction,
 			rotation: this.Rotation,

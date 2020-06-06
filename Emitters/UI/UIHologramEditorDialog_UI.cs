@@ -4,7 +4,7 @@ using HamstarHelpers.Classes.UI.Elements;
 
 namespace Emitters.UI {
 	partial class UIHologramEditorDialog : UIDialog {
-		private bool IsModeBeingSet = false;	// TODO Recheck if these need to exist?
+		private bool IsModeBeingSet = false;    // TODO Recheck if these need to exist?
 		private bool IsTabBeingSet = false; // TODO Recheck if these need to exist?
 
 
@@ -51,9 +51,10 @@ namespace Emitters.UI {
 			this.IsTabBeingSet = false;
 		}
 
+
 		////////////////
 
-		public void UISetHologramMode( HologramMode mode ) {
+		public void SetHologramMode( HologramMode mode ) {
 			if( this.IsModeBeingSet ) { return; }
 			this.IsModeBeingSet = true;
 
@@ -74,27 +75,27 @@ namespace Emitters.UI {
 
 			this.IsModeBeingSet = false;
 		}
-		public void UISetHologramShaderMode(HologramUIShaderMode mode)
-		{
+
+		public void SetHologramShaderMode( HologramShaderMode mode ) {
 			if( this.IsModeBeingSet ) { return; }
 			this.IsModeBeingSet = true;
 
-			if( mode != HologramUIShaderMode.VanillaMode && this.VanillaShadersCheckbox.Selected ) {
+			if( mode != HologramShaderMode.Vanilla && this.VanillaShadersCheckbox.Selected ) {
 				this.VanillaShadersCheckbox.Selected = false;
 				this.VanillaShadersCheckbox.Recalculate();
 			}
-			if( mode != HologramUIShaderMode.CustomMode && this.CustomShadersCheckbox.Selected ) {
+			if( mode != HologramShaderMode.Custom && this.CustomShadersCheckbox.Selected ) {
 				this.CustomShadersCheckbox.Selected = false;
 				this.CustomShadersCheckbox.Recalculate();
 			}
-			if( mode != HologramUIShaderMode.NoShader && this.NoShaderCheckbox.Selected ) {
+			if( mode != HologramShaderMode.None && this.NoShaderCheckbox.Selected ) {
 				this.NoShaderCheckbox.Selected = false;
 				this.NoShaderCheckbox.Recalculate();
 			}
+
 			this.CurrentsShaderMode = mode;
+
 			this.IsModeBeingSet = false;
 		}
-		////////////////
-
 	}
 }

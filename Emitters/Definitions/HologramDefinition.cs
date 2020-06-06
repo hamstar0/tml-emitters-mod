@@ -1,27 +1,28 @@
-﻿using HamstarHelpers.Classes.Errors;
+﻿using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
+using HamstarHelpers.Classes.Errors;
 
 
-namespace Emitters.Definitions
-{
+namespace Emitters.Definitions {
 	public enum HologramMode {
 		NPC,
 		Item,
 		Projectile
 	}
 
-	public enum HologramShaderMode
-	{
-		NoShader,
-		VanillaShader,
-		CustomShader
+	public enum HologramShaderMode {
+		None,
+		Vanilla,
+		Custom
 	}
+
+
+
 
 	public partial class HologramDefinition : BaseEmitterDefinition {
 		public static bool IsBadType( HologramMode mode, int type ) {
@@ -87,20 +88,8 @@ namespace Emitters.Definitions
 		public HologramShaderMode ShaderMode { get; set; }
 		public float ShaderTime { get; set; }
 		public int ShaderType { get; set; }
-		////////////////
 
-		public EntityDefinition SetHologramType() {
-			switch( this.Mode ) {
-			case HologramMode.NPC:
-				return new NPCDefinition( this.Type );
-			case HologramMode.Item:
-				return new ItemDefinition( this.Type );
-			case HologramMode.Projectile:
-				return new ProjectileDefinition( this.Type );
-			default:
-				throw new ModHelpersException( "Invalid hologram type" );
-			}
-		}
+
 
 		////////////////
 
@@ -168,29 +157,28 @@ namespace Emitters.Definitions
 
 		////////////////
 
-		public override BaseEmitterDefinition Read( BinaryReader reader )
-		{
+		public override BaseEmitterDefinition Read( BinaryReader reader ) {
 			return new HologramDefinition(
-				mode: (HologramMode) reader.ReadInt16(),
-				type: (int) reader.ReadUInt16(),
-				scale: (float) reader.ReadSingle(),
+				mode: (HologramMode)reader.ReadInt16(),
+				type: (int)reader.ReadUInt16(),
+				scale: (float)reader.ReadSingle(),
 				color: new Color(
-					(byte) reader.ReadByte(),
-					(byte) reader.ReadByte(),
-					(byte) reader.ReadByte()
+					(byte)reader.ReadByte(),
+					(byte)reader.ReadByte(),
+					(byte)reader.ReadByte()
 				),
-				alpha: (byte) reader.ReadByte(),
-				direction: (int) reader.ReadUInt16(),
-				rotation: (float) reader.ReadSingle(),
-				offsetX: (int) reader.ReadUInt16(),
-				offsetY: (int) reader.ReadUInt16(),
-				frameStart: (int) reader.ReadUInt16(),
-				frameEnd: (int) reader.ReadUInt16(),
-				frameRateTicks: (int) reader.ReadUInt16(),
-				worldLight: (bool) reader.ReadBoolean(),
-				shaderMode: (HologramShaderMode) reader.ReadInt16(),
+				alpha: (byte)reader.ReadByte(),
+				direction: (int)reader.ReadUInt16(),
+				rotation: (float)reader.ReadSingle(),
+				offsetX: (int)reader.ReadUInt16(),
+				offsetY: (int)reader.ReadUInt16(),
+				frameStart: (int)reader.ReadUInt16(),
+				frameEnd: (int)reader.ReadUInt16(),
+				frameRateTicks: (int)reader.ReadUInt16(),
+				worldLight: (bool)reader.ReadBoolean(),
+				shaderMode: (HologramShaderMode)reader.ReadUInt16(),
 				shaderTime: (float)reader.ReadSingle(),
-				shaderType: (int)reader.ReadInt16(),
+				shaderType: (int)reader.ReadUInt16(),
 				isActivated: (bool)reader.ReadBoolean()
 			);
 		}
@@ -211,10 +199,26 @@ namespace Emitters.Definitions
 			writer.Write( (ushort)this.FrameEnd );
 			writer.Write( (ushort)this.FrameRateTicks );
 			writer.Write( (bool)this.WorldLighting );
-			writer.Write( (ushort)this.ShaderMode);
-			writer.Write((float)this.ShaderTime);
-			writer.Write((int)this.ShaderType);
+			writer.Write( (ushort)this.ShaderMode );
+			writer.Write( (float)this.ShaderTime );
+			writer.Write( (ushort)this.ShaderType );
 			writer.Write( (bool)this.IsActivated );
+		}
+
+
+		////////////////
+
+		public EntityDefinition SetHologramType() {
+			switch( this.Mode ) {
+			case HologramMode.NPC:
+				return new NPCDefinition( this.Type );
+			case HologramMode.Item:
+				return new ItemDefinition( this.Type );
+			case HologramMode.Projectile:
+				return new ProjectileDefinition( this.Type );
+			default:
+				throw new ModHelpersException( "Invalid hologram type" );
+			}
 		}
 
 
