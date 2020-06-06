@@ -154,6 +154,7 @@ namespace Emitters.Definitions {
 			fx.Parameters["Frame"].SetValue( (float)this.CurrentFrame );
 			fx.Parameters["FrameMax"].SetValue( (float)Main.npcFrameCount[this.Type] );
 			fx.Parameters["UserColor"].SetValue( color.ToVector4() );
+			fx.Parameters["WaveScale"].SetValue( (float)color.A / 255f );	// TODO ?
 
 			return fx;
 		}

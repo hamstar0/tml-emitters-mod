@@ -51,7 +51,6 @@ PixelShaderOutput ScanlinesCRT( PixelShaderInput coords ) {
 	float scaledWave = (1.0 - WaveScale) + (wave * WaveScale);
     
 	output.color = UserColor * color * rowBlinds * scaledWave;
-	//output.color = output.color * UserColor.W;	//?
     
 	return output;
 }
