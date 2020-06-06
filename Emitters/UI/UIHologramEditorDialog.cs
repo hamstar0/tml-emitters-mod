@@ -6,7 +6,6 @@ using HamstarHelpers.Classes.UI.Elements;
 using HamstarHelpers.Classes.UI.Elements.Slider;
 using HamstarHelpers.Classes.UI.Theme;
 using Emitters.Definitions;
-using Emitters.Items;
 
 
 namespace Emitters.UI {
@@ -42,9 +41,9 @@ namespace Emitters.UI {
 
 		//
 
-		private UICheckbox NpcModeChoice;
-		private UICheckbox ItemModeChoice;
-		private UICheckbox ProjectileModeChoice;
+		private UICheckbox ModeNpcChoice;
+		private UICheckbox ModeItemChoice;
+		private UICheckbox ModeProjectileChoice;
 		private UISlider TypeSlider;
 		private UISlider ScaleSlider;
 		private UISlider DirectionSlider;
@@ -64,11 +63,12 @@ namespace Emitters.UI {
 		private UISlider AlphaSlider;
 
 		//
-		private UISlider ShaderTypeSliderElem;
-		private UISlider ShadertTimeSliderElem;
-		private UICheckbox VanillaShadersCheckbox;
-		private UICheckbox CustomShadersCheckbox;
-		private UICheckbox NoShaderCheckbox;
+
+		private UISlider ShaderTypeSlider;
+		private UISlider ShadertTimeSlider;
+		private UICheckbox ShaderVanillaChoice;
+		private UICheckbox ShaderCustomChoice;
+		private UICheckbox ShaderNoneChoice;
 
 		//
 		private UITextPanelButton ApplyButton;
@@ -84,30 +84,6 @@ namespace Emitters.UI {
 
 		public UIHologramEditorDialog() : base( UITheme.Vanilla, 600, 500 ) { }
 
-		////////////////
-
-		public HologramDefinition CreateHologramDefinition() {
-			return new HologramDefinition(
-				mode: (HologramMode)this.CurrentMode,
-				type: (int)this.TypeSlider.RememberedInputValue,
-				scale: this.ScaleSlider.RememberedInputValue,
-				color: this.GetColor(),
-				alpha: (byte)this.AlphaSlider.RememberedInputValue,
-				direction: (int)this.DirectionSlider.RememberedInputValue,
-				rotation: this.RotationSlider.RememberedInputValue,
-				offsetX: (int)this.OffsetXSlider.RememberedInputValue,
-				offsetY: (int)this.OffsetYSlider.RememberedInputValue,
-				frameStart: (int)this.FrameStartSlider.RememberedInputValue,
-				frameEnd: (int)this.FrameEndSlider.RememberedInputValue,
-				frameRateTicks: (int)this.FrameRateTicksSlider.RememberedInputValue,
-				worldLight: this.WorldLightingFlag.Selected,
-				shaderMode: (HologramShaderMode)this.CurrentsShaderMode,
-				shaderTime: this.ShadertTimeSliderElem.RememberedInputValue,
-				shaderType: (int)this.ShaderTypeSliderElem.RememberedInputValue,
-				isActivated: true
-			);
-		}
-
 
 		////////////////
 
@@ -122,48 +98,7 @@ namespace Emitters.UI {
 
 		////////////////
 
-		internal bool SetItem( Item hologramItem ) {
-			var myitem = hologramItem.modItem as HologramItem;
-			if( myitem.Def == null ) {
-				return false;
-			}
-
-			this.HologramItem = hologramItem;
-
-			Vector3 hsl = Main.rgbToHsl( myitem.Def.Color );
-
-			this.SetHologramMode( myitem.Def.Mode );
-			this.SetHologramShaderMode( myitem.Def.ShaderMode );
-
-			this.TypeSlider.SetValue( myitem.Def.Type );
-			this.HueSlider.SetValue( hsl.X );
-			this.SaturationSlider.SetValue( hsl.Y );
-			this.LightnessSlider.SetValue( hsl.Z );
-			this.WorldLightingFlag.Selected = myitem.Def.WorldLighting;
-
-			return true;
-		}
-
-		////////////////
-
-		public void ApplySettingsToCurrentItem() {
-			if( this.HologramItem == null ) {
-				throw new ModHelpersException( "Missing item." );
-			}
-
-			var myitem = this.HologramItem.modItem as HologramItem;
-			if( myitem == null ) {
-				Main.NewText( "No hologram item selected. Changes not saved.", Color.Red );
-				return;
-			}
-
-			myitem?.SetHologramDefinition( this.CreateHologramDefinition() );
-		}
-
-
-		////////////////
-
-		public override void RecalculateMe() {
+		public override void Recalculate() {
 			float tabHeight = 0;
 
 			switch( this.CurrentTab ) {
@@ -178,10 +113,10 @@ namespace Emitters.UI {
 				break;
 			}
 
-			this.OuterContainer.Top.Set( this.FullDialogHeight * -0.5f, 0.5f );
-			this.OuterContainer.Height.Set( this.FullDialogHeight - this.MainTabHeight + tabHeight, 0f );
+			this.SetTopPosition( this.FullDialogHeight * -0.5f, 0.5f, 0f );
+			this.OuterContainer?.Height.Set( (this.FullDialogHeight - this.MainTabHeight) + tabHeight, 0f );
 
-			base.RecalculateMe();
+			base.Recalculate();
 		}
 
 

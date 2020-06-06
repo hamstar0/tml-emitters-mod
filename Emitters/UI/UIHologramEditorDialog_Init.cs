@@ -52,13 +52,7 @@ namespace Emitters.UI {
 
 			//
 
-			//this.OuterContainer.Top.Set( this.TabStartInnerHeight - 28f, 0f );
-			//this.SwitchTab( HologramUITab.Main );
 			this.SwitchTab( HologramUITab.Main );
-			Timers.SetTimer( 1, true, () => {
-				this.SwitchTab( HologramUITab.Main );
-				return false;
-			} );
 		}
 
 
@@ -96,7 +90,6 @@ namespace Emitters.UI {
 			this.InnerContainer.Append( (UIElement)shaderTabBut );
 
 			yOffset += 36;
-
 		}
 
 

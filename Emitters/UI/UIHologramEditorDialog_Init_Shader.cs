@@ -24,20 +24,20 @@ namespace Emitters.UI {
 		private void InitializeWidgetsforShaderType( UIThemedPanel container, ref float yOffset ) {
 			this.InitializeTitle( container, "Shader Type:", false, ref yOffset );
 
-			this.ShaderTypeSliderElem = new UISlider(
+			this.ShaderTypeSlider = new UISlider(
 				theme: UITheme.Vanilla,
 				hoverText: "",
 				isInt: true,
 				ticks: 0,
 				minRange: 0f,
-				maxRange: EmittersMod.Instance.ArmorShaders.Count - 1,
+				maxRange: EmittersMod.Instance.MyArmorShaders.Count - 1,
 				hideTextInput: false
 			);
-			this.ShaderTypeSliderElem.Top.Set( yOffset, 0f );
-			this.ShaderTypeSliderElem.Left.Set( 128f, 0f );
-			this.ShaderTypeSliderElem.Width.Set( -96f, 1f );
-			this.ShaderTypeSliderElem.SetValue( 0f );
-			container.Append( this.ShaderTypeSliderElem );
+			this.ShaderTypeSlider.Top.Set( yOffset, 0f );
+			this.ShaderTypeSlider.Left.Set( 128f, 0f );
+			this.ShaderTypeSlider.Width.Set( -128f, 1f );
+			this.ShaderTypeSlider.SetValue( 0f );
+			container.Append( this.ShaderTypeSlider );
 
 			yOffset += 28f;
 		}
@@ -45,7 +45,7 @@ namespace Emitters.UI {
 		private void InitializeWidgetsforShaderTime( UIThemedPanel container, ref float yOffset ) {
 			this.InitializeTitle( container, "Cycle Seconds:", false, ref yOffset );
 
-			this.ShadertTimeSliderElem = new UISlider(
+			this.ShadertTimeSlider = new UISlider(
 				theme: UITheme.Vanilla,
 				hoverText: "",
 				isInt: false,
@@ -54,11 +54,11 @@ namespace Emitters.UI {
 				maxRange: 60f,
 				hideTextInput: false
 			);
-			this.ShadertTimeSliderElem.Top.Set( yOffset, 0f );
-			this.ShadertTimeSliderElem.Left.Set( 96f, 0f );
-			this.ShadertTimeSliderElem.Width.Set( -96f, 1f );
-			this.ShadertTimeSliderElem.SetValue( 1f );
-			container.Append( this.ShadertTimeSliderElem );
+			this.ShadertTimeSlider.Top.Set( yOffset, 0f );
+			this.ShadertTimeSlider.Left.Set( 128f, 0f );
+			this.ShadertTimeSlider.Width.Set( -128f, 1f );
+			this.ShadertTimeSlider.SetValue( 1f );
+			container.Append( this.ShadertTimeSlider );
 
 			yOffset += 28f;
 		}
@@ -67,39 +67,38 @@ namespace Emitters.UI {
 		private void InitializeWidgetsForShaderMode( UIThemedPanel container, ref float yOffset ) {
 			this.InitializeTitle( container, "Shader Mode:", false, ref yOffset );
 
-			this.NoShaderCheckbox = new UICheckbox( UITheme.Vanilla, "None", "" );
-			this.NoShaderCheckbox.Top.Set( yOffset, 0f );
-			this.NoShaderCheckbox.Left.Set( 128f, 0f );
-			this.NoShaderCheckbox.OnSelectedChanged += () => {
+			this.ShaderNoneChoice = new UICheckbox( UITheme.Vanilla, "None", "" );
+			this.ShaderNoneChoice.Top.Set( yOffset, 0f );
+			this.ShaderNoneChoice.Left.Set( 128f, 0f );
+			this.ShaderNoneChoice.Selected = true;
+			this.ShaderNoneChoice.OnSelectedChanged += () => {
 				this.SetHologramShaderMode( HologramShaderMode.None );
+				this.ShaderTypeSlider.SetRange( 0f, 0f );
+				this.ShaderTypeSlider.SetValue( 0f );
 			};
 
-			this.VanillaShadersCheckbox = new UICheckbox( UITheme.Vanilla, "Vanilla", "" );
-			this.VanillaShadersCheckbox.Top.Set( yOffset, 0f );
-			this.VanillaShadersCheckbox.Left.Set( 228f, 0f );
-			this.VanillaShadersCheckbox.Selected = true;
-			this.VanillaShadersCheckbox.OnSelectedChanged += () => {
+			this.ShaderVanillaChoice = new UICheckbox( UITheme.Vanilla, "Vanilla", "" );
+			this.ShaderVanillaChoice.Top.Set( yOffset, 0f );
+			this.ShaderVanillaChoice.Left.Set( 228f, 0f );
+			this.ShaderVanillaChoice.Selected = true;
+			this.ShaderVanillaChoice.OnSelectedChanged += () => {
 				this.SetHologramShaderMode( HologramShaderMode.Vanilla );
-				this.ShadertTimeSliderElem.SetRange( -8f, 8f );
-				this.ShaderTypeSliderElem.SetRange( 0f, EmittersMod.Instance.MyArmorShaders.Count - 1 );    //ArmorShaders.Count?
-				this.ShadertTimeSliderElem.SetValue( 1f );
-				this.ShaderTypeSliderElem.SetValue( 0f );
+				this.ShaderTypeSlider.SetRange( 0f, EmittersMod.Instance.MyArmorShaders.Count - 1 );    //ArmorShaders.Count?
+				this.ShaderTypeSlider.SetValue( 0f );
 			};
 
-			this.CustomShadersCheckbox = new UICheckbox( UITheme.Vanilla, "Custom", "" );
-			this.CustomShadersCheckbox.Top.Set( yOffset, 0f );
-			this.CustomShadersCheckbox.Left.Set( 328f, 0f );
-			this.CustomShadersCheckbox.OnSelectedChanged += () => {
+			this.ShaderCustomChoice = new UICheckbox( UITheme.Vanilla, "Custom", "" );
+			this.ShaderCustomChoice.Top.Set( yOffset, 0f );
+			this.ShaderCustomChoice.Left.Set( 328f, 0f );
+			this.ShaderCustomChoice.OnSelectedChanged += () => {
 				this.SetHologramShaderMode( HologramShaderMode.Custom );
-				this.ShadertTimeSliderElem.SetRange( -0.01f, 60f );
-				this.ShaderTypeSliderElem.SetRange( 0f, 0f );
-				this.ShadertTimeSliderElem.SetValue( 1f );
-				this.ShaderTypeSliderElem.SetValue( 0f );
+				this.ShaderTypeSlider.SetRange( 0f, 0f );
+				this.ShaderTypeSlider.SetValue( 0f );
 			};
 
-			container.Append( (UIElement)this.NoShaderCheckbox );
-			container.Append( (UIElement)this.VanillaShadersCheckbox );
-			container.Append( (UIElement)this.CustomShadersCheckbox );
+			container.Append( (UIElement)this.ShaderNoneChoice );
+			container.Append( (UIElement)this.ShaderVanillaChoice );
+			container.Append( (UIElement)this.ShaderCustomChoice );
 
 			yOffset += 28f;
 		}

@@ -17,7 +17,7 @@ namespace Emitters.Items {
 			var mymod = EmittersMod.Instance;
 			mymod.HologramEditorDialog.Open();
 
-			if( mymod.HologramEditorDialog.SetItem(hologramItem) ) {
+			if( !mymod.HologramEditorDialog.SetItem(hologramItem) ) {
 				mymod.HologramEditorDialog.Close();
 			}
 		}

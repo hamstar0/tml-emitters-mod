@@ -4,6 +4,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Graphics.Shaders;
+using HamstarHelpers.Helpers.Debug;
 using Emitters.UI;
 using Emitters.Effects;
 
@@ -78,7 +79,7 @@ namespace Emitters {
 		}
 
 		////
-
+		
 		public override void PostSetupContent() {
 			if( !Main.dedServ && Main.netMode != NetmodeID.Server ) {
 				this.EmitterTex = this.GetTexture( "Definitions/Emitter" );

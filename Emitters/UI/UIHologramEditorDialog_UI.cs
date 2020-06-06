@@ -46,7 +46,7 @@ namespace Emitters.UI {
 
 			this.CurrentTab = tab;
 
-			this.RecalculateMe();
+			this.Recalculate();
 
 			this.IsTabBeingSet = false;
 		}
@@ -58,17 +58,17 @@ namespace Emitters.UI {
 			if( this.IsModeBeingSet ) { return; }
 			this.IsModeBeingSet = true;
 
-			if( mode != HologramMode.NPC && this.NpcModeChoice.Selected ) {
-				this.NpcModeChoice.Selected = false;
-				this.NpcModeChoice.Recalculate();
+			if( mode != HologramMode.NPC && this.ModeNpcChoice.Selected ) {
+				this.ModeNpcChoice.Selected = false;
+				this.ModeNpcChoice.Recalculate();
 			}
-			if( mode != HologramMode.Item && this.ItemModeChoice.Selected ) {
-				this.ItemModeChoice.Selected = false;
-				this.ItemModeChoice.Recalculate();
+			if( mode != HologramMode.Item && this.ModeItemChoice.Selected ) {
+				this.ModeItemChoice.Selected = false;
+				this.ModeItemChoice.Recalculate();
 			}
-			if( mode != HologramMode.Projectile && this.ProjectileModeChoice.Selected ) {
-				this.ProjectileModeChoice.Selected = false;
-				this.ProjectileModeChoice.Recalculate();
+			if( mode != HologramMode.Projectile && this.ModeProjectileChoice.Selected ) {
+				this.ModeProjectileChoice.Selected = false;
+				this.ModeProjectileChoice.Recalculate();
 			}
 
 			this.CurrentMode = mode;
@@ -80,17 +80,17 @@ namespace Emitters.UI {
 			if( this.IsModeBeingSet ) { return; }
 			this.IsModeBeingSet = true;
 
-			if( mode != HologramShaderMode.Vanilla && this.VanillaShadersCheckbox.Selected ) {
-				this.VanillaShadersCheckbox.Selected = false;
-				this.VanillaShadersCheckbox.Recalculate();
+			if( mode != HologramShaderMode.Vanilla && this.ShaderVanillaChoice.Selected ) {
+				this.ShaderVanillaChoice.Selected = false;
+				this.ShaderVanillaChoice.Recalculate();
 			}
-			if( mode != HologramShaderMode.Custom && this.CustomShadersCheckbox.Selected ) {
-				this.CustomShadersCheckbox.Selected = false;
-				this.CustomShadersCheckbox.Recalculate();
+			if( mode != HologramShaderMode.Custom && this.ShaderCustomChoice.Selected ) {
+				this.ShaderCustomChoice.Selected = false;
+				this.ShaderCustomChoice.Recalculate();
 			}
-			if( mode != HologramShaderMode.None && this.NoShaderCheckbox.Selected ) {
-				this.NoShaderCheckbox.Selected = false;
-				this.NoShaderCheckbox.Recalculate();
+			if( mode != HologramShaderMode.None && this.ShaderNoneChoice.Selected ) {
+				this.ShaderNoneChoice.Selected = false;
+				this.ShaderNoneChoice.Recalculate();
 			}
 
 			this.CurrentsShaderMode = mode;

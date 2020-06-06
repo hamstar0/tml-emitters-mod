@@ -13,7 +13,7 @@ float TexWidth;
 float TexHeight;
 float RandValue;
 
-float Time;
+float CyclePercent;
 
 float Frame;
 float FrameMax;
@@ -46,12 +46,11 @@ PixelShaderOutput ScanlinesCRT( PixelShaderInput coords ) {
 
     float rowBlinds = floor( inFrameYPosCurr % 2.0 );
 
-	float cyclePerc = max( frac(Time), 0.001 );
+	float cyclePerc = max( frac(CyclePercent), 0.001 );
 	float wave = frac( inFrameYPosPerc / cyclePerc );
 	float scaledWave = (1.0 - WaveScale) + (wave * WaveScale);
     
 	output.color = UserColor * color * rowBlinds * scaledWave;
-	output.color = output.color * UserColor.W;	//?
     
 	return output;
 }
