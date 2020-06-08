@@ -145,7 +145,7 @@ namespace Emitters.Items {
 			if( HologramItem.AttemptHologramPlacementForCurrentPlayer( this.Def ) ) {
 				PlayerItemHelpers.RemoveInventoryItemQuantity( player, this.item.type, 1 );
 			} else {
-				HologramItem.AttemptHologramToggle( Main.MouseWorld );
+				//HologramItem.AttemptHologramToggle( Main.MouseWorld );
 			}
 
 			return base.UseItem( player );

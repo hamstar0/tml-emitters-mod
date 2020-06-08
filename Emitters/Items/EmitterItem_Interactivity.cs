@@ -142,7 +142,7 @@ namespace Emitters.Items {
 			if( EmitterItem.AttemptEmitterPlacementForCurrentPlayer(this.Def) ) {
 				PlayerItemHelpers.RemoveInventoryItemQuantity( player, this.item.type, 1 );
 			} else {
-				EmitterItem.AttemptEmitterToggle( Main.MouseWorld );
+				//EmitterItem.AttemptEmitterToggle( Main.MouseWorld );
 			}
 
 			return base.UseItem( player );

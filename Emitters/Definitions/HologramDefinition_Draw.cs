@@ -9,14 +9,6 @@ using Emitters.Effects;
 
 namespace Emitters.Definitions {
 	public partial class HologramDefinition : BaseEmitterDefinition {
-		public int CurrentFrame { get; internal set; }
-
-		internal int CurrentFrameElapsedTicks = 0;
-
-
-
-		////////////////
-
 		public void Draw( SpriteBatch sb, int tileX, int tileY, bool isOnScreen ) {
 			var wldPos = new Vector2( ( tileX << 4 ) + 8, ( tileY << 4 ) + 8 );
 

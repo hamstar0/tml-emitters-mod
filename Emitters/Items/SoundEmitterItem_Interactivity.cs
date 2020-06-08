@@ -154,7 +154,7 @@ namespace Emitters.Items {
 			if( SoundEmitterItem.AttemptSoundEmitterPlacementForCurrentPlayer( this.Def ) ) {
 				PlayerItemHelpers.RemoveInventoryItemQuantity( player, this.item.type, 1 );
 			} else {
-				SoundEmitterItem.AttemptSoundEmitterToggle( Main.MouseWorld );
+				//SoundEmitterItem.AttemptSoundEmitterToggle( Main.MouseWorld );
 			}
 
 			return base.UseItem( player );

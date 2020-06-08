@@ -62,23 +62,23 @@ namespace Emitters.Definitions {
 					out bool isActivated ) {
 			Color color;
 			this.Output(
-				out type,
-				out mode,
-				out scale,
-				out color,
-				out alpha,
-				out direction,
-				out rotation,
-				out offsetX,
-				out offsetY,
-				out frameStart,
-				out frameEnd,
-				out frameRateTicks,
-				out worldLight,
-				out shaderMode,
-				out shaderTime,
-				out shaderType,
-				out isActivated
+				type: out type,
+				mode: out mode,
+				scale: out scale,
+				color: out color,
+				alpha: out alpha,
+				direction: out direction,
+				rotation: out rotation,
+				offsetX: out offsetX,
+				offsetY: out offsetY,
+				frameStart: out frameStart,
+				frameEnd: out frameEnd,
+				frameRateTicks: out frameRateTicks,
+				worldLight: out worldLight,
+				shaderMode: out shaderMode,
+				shaderTime: out shaderTime,
+				shaderType: out shaderType,
+				isActivated: out isActivated
 			);
 			colorR = color.R;
 			colorG = color.G;
@@ -95,7 +95,7 @@ namespace Emitters.Definitions {
 			return this.Mode.ToString();
 		}
 		public string RenderScale() {
-			return ( this.Scale * 100f ).ToString( "N0" );
+			return (this.Scale * 100f).ToString( "N0" );
 		}
 		public string RenderColor() {
 			Color color = this.Color;
