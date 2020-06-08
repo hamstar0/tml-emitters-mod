@@ -22,6 +22,8 @@ namespace Emitters.Definitions {
 				return;
 			}
 
+			Vector2 pos = worldPos - new Vector2( this.Scatter * 0.5f );
+
 			if( this.IsGoreMode ) {
 				var scatter = new Vector2(
 					Main.rand.NextFloat() * this.Scatter,
@@ -29,22 +31,22 @@ namespace Emitters.Definitions {
 				);
 
 				int goreIdx = Gore.NewGore(
-					Position: worldPos + scatter - new Vector2(this.Scatter * 0.5f),
+					Position: pos + scatter,
 					Velocity: new Vector2(this.SpeedX, this.SpeedY),
 					Type: (int)this.Type,
 					Scale: this.Scale
 				);
 
-				Main.gore[goreIdx].alpha = this.Alpha;
+				Main.gore[goreIdx].alpha = this.Transparency;
 			} else {
 				int dustIdx = Dust.NewDust(
-					Position: worldPos - new Vector2(this.Scatter * 0.5f),
+					Position: pos,
 					Width: (int)this.Scatter,
 					Height: (int)this.Scatter,
 					Type: (int)this.Type,
 					SpeedX: this.SpeedX,
 					SpeedY: this.SpeedY,
-					Alpha: (int)this.Alpha,
+					Alpha: (int)this.Transparency,
 					newColor: this.Color,
 					Scale: this.Scale
 				);

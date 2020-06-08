@@ -17,7 +17,7 @@ namespace Emitters.Definitions {
 					(byte)reader.ReadByte(),
 					(byte)reader.ReadByte()
 				),
-				alpha: (byte)reader.ReadByte(),
+				transparency: (byte)reader.ReadByte(),
 				scatter: (float)reader.ReadSingle(),
 				hasGravity: (bool)reader.ReadBoolean(),
 				hasLight: (bool)reader.ReadBoolean(),
@@ -35,7 +35,7 @@ namespace Emitters.Definitions {
 			writer.Write( (byte)this.Color.R );
 			writer.Write( (byte)this.Color.G );
 			writer.Write( (byte)this.Color.B );
-			writer.Write( (byte)this.Alpha );
+			writer.Write( (byte)this.Transparency );
 			writer.Write( (float)this.Scatter );
 			writer.Write( (bool)this.HasGravity );
 			writer.Write( (bool)this.HasLight );

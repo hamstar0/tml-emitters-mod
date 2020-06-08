@@ -24,7 +24,7 @@ namespace Emitters.Definitions {
 			speedX = this.SpeedX;
 			speedY = this.SpeedY;
 			color = this.Color;
-			alpha = this.Alpha;
+			alpha = this.Transparency;
 			scatter = this.Scatter;
 			hasGravity = this.HasGravity;
 			hasLight = this.HasLight;
@@ -78,7 +78,7 @@ namespace Emitters.Definitions {
 			return this.Type.ToString();
 		}
 		public string RenderScale() {
-			return ( this.Scale * 100f ).ToString( "N0" );
+			return (this.Scale * 100f).ToString( "N0" ) + "%";
 		}
 		public string RenderDelay() {
 			return this.Delay.ToString();
@@ -91,11 +91,11 @@ namespace Emitters.Definitions {
 		}
 		public string RenderColor() {
 			Color color = this.Color;
-			color.A = this.Alpha;
+			color.A = this.Transparency;
 			return color.ToString();
 		}
 		public string RenderAlpha() {
-			return this.Alpha.ToString();
+			return this.Transparency.ToString();
 		}
 		public string RenderScatter() {
 			return this.Scatter.ToString( "N2" );

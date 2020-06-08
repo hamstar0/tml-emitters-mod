@@ -48,7 +48,13 @@ namespace Emitters.UI {
 			def.Timer = this.CachedSoundEmitterDef?.Timer ?? 0;
 			this.CachedSoundEmitterDef = def;
 
-			def.AnimateSoundEmitter( Main.MouseWorld );
+			Vector2 scrCenter = Main.screenPosition + ( new Vector2( Main.screenWidth, Main.screenHeight ) * 0.5f );
+			Vector2 pos = Main.screenPosition
+				+ ( new Vector2( Main.mouseX, Main.mouseY ) * Main.UIScale );
+			pos = ( pos - scrCenter ) / Main.GameZoomTarget;
+			pos += scrCenter;
+
+			def.AnimateSoundEmitter( pos );
 		}
 	}
 }

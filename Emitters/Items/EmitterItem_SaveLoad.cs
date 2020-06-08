@@ -25,7 +25,7 @@ namespace Emitters.Items {
 						tag.GetByte( "EmitterColorG" ),
 						tag.GetByte( "EmitterColorB" )
 					),
-					alpha: tag.GetByte( "EmitterAlpha" ),
+					transparency: tag.GetByte( "EmitterAlpha" ),
 					scatter: tag.GetFloat( "EmitterScatter" ),
 					hasGravity: tag.GetBool( "EmitterHasGrav" ),
 					hasLight: tag.GetBool( "EmitterHasLight" ),
@@ -49,7 +49,7 @@ namespace Emitters.Items {
 				{ "EmitterColorR", (byte)this.Def.Color.R },
 				{ "EmitterColorG", (byte)this.Def.Color.G },
 				{ "EmitterColorB", (byte)this.Def.Color.B },
-				{ "EmitterAlpha", (byte)this.Def.Alpha },
+				{ "EmitterAlpha", (byte)this.Def.Transparency },
 				{ "EmitterScatter", (float)this.Def.Scatter },
 				{ "EmitterHasGrav", (bool)this.Def.HasGravity },
 				{ "EmitterHasLight", (bool)this.Def.HasLight },
