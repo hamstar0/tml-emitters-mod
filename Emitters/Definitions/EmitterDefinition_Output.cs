@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.Xna.Framework;
 
 
@@ -110,19 +111,34 @@ namespace Emitters.Definitions {
 		////////////////
 
 		public override string ToString() {
-			return "Emitter Definition:"
-				+/*"\n"+*/" IsActivated: " + this.IsActivated + ", "
-				+/*"\n"+*/" Mode: " + this.RenderMode() + ", "
-				+/*"\n"+*/" Type: " + this.RenderType() + ", "
-				+/*"\n"+*/" Scale: " + this.RenderScale() + ", "
-				+/*"\n"+*/" Delay: " + this.RenderDelay() + ", "
-				+/*"\n"+*/" SpeedX: " + this.RenderSpeedX() + ", "
-				+/*"\n"+*/" SpeedY: " + this.RenderSpeedY() + ", "
-				+/*"\n"+*/" Color: " + this.RenderColor() + ", "
-				+/*"\n"+*/" Alpha: " + this.RenderAlpha() + ", "
-				+/*"\n"+*/" Scatter: " + this.RenderScatter() + ", "
-				+/*"\n"+*/" HasGravity: " + this.RenderHasGravity() + ", "
-				+/*"\n"+*/" HasLight: " + this.RenderHasLight();
+			return this.ToString( false );
+		}
+
+		public string ToString( bool newLines ) {
+			string[] fields = this.ToStringFields();
+			if( newLines ) {
+				return string.Join( "\n ", fields );
+			} else {
+				return string.Join( ",  ", fields );
+			}
+		}
+
+		public string[] ToStringFields() {
+			return new string[] {
+				"Emitter Definition:",
+				/*+"\n"+*/"Is Activated: " + this.IsActivated, //+ ", "
+				/*+"\n"+*/"Mode: " + this.RenderMode(), //+ ", "
+				/*+"\n"+*/"Type: " + this.RenderType(), //+ ", "
+				/*+"\n"+*/"Scale: " + this.RenderScale(), //+ ", "
+				/*+"\n"+*/"Delay: " + this.RenderDelay(), //+ ", "
+				/*+"\n"+*/"Speed X: " + this.RenderSpeedX(), //+ ", "
+				/*+"\n"+*/"Speed Y: " + this.RenderSpeedY(), //+ ", "
+				/*+"\n"+*/"Color: " + this.RenderColor(), //+ ", "
+				/*+"\n"+*/"Alpha: " + this.RenderAlpha(), //+ ", "
+				/*+"\n"+*/"Scatter: " + this.RenderScatter(), //+ ", "
+				/*+"\n"+*/"Has Gravity: " + this.RenderHasGravity(), //+ ", "
+				/*+"\n"+*/"Has Light: " + this.RenderHasLight()
+			};
 		}
 	}
 }

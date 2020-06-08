@@ -21,8 +21,9 @@ v2.1
 -	Hide inapplicable fields for gores
 -	Render emitters on top of dusts and gores when in add/remove mode
 -	Add glowmasks for NPCs, items, and projectiles
+-	Draw layer control
 v2.0
--	Use another input key to access emitter/hologram dialogs
+-	Find alternative control to access emitter/hologram dialogs
 -	Add popup info for emitter/hologram on hover (debug mode)
 -	Add button to copy settings from placed emitter/hologram
 -	Add reset button to UIs
@@ -33,8 +34,8 @@ v2.0
 	-	Sound loop cuts out (tab out?)
 	-	Fix dust emitters failing on rejoin
 	-	Fix holograms disappearing
--	Fix preview alignments
 
+-	Fix preview alignments
 -	Add hologram modes (NPC, item, projectile)
 -	Add shader modes
 -	Add tabs

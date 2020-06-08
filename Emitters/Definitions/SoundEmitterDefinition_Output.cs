@@ -18,6 +18,7 @@ namespace Emitters.Definitions {
 			isActivated = this.IsActivated;
 		}
 
+
 		////////////////
 
 		public string RenderType() {
@@ -36,16 +37,32 @@ namespace Emitters.Definitions {
 			return this.Delay.ToString();
 		}
 
+
 		////////////////
 
 		public override string ToString() {
-			return "Sound Emitter Definition:"
-				+/*"\n"+*/" Type: " + this.RenderType() + ", "
-				+/*"\n"+*/" Type: " + this.RenderStyle() + ", "
-				+/*"\n"+*/" Volume: " + this.RenderVolume() + ", "
-				+/*"\n"+*/" Pitch: " + this.RenderPitch() + ", "
-				+/*"\n"+*/" Delay: " + this.RenderDelay() + ", "
-				+/*"\n"+*/" IsActivated: " + this.IsActivated;
+			return this.ToString( false );
+		}
+
+		public string ToString( bool newLines ) {
+			string[] fields = this.ToStringFields();
+			if( newLines ) {
+				return string.Join( "\n ", fields );
+			} else {
+				return string.Join( ",  ", fields );
+			}
+		}
+
+		public string[] ToStringFields() {
+			return new string[] {
+				"Sound Emitter Definition:",
+				/*"\n"+*/"Type: " + this.RenderType(),
+				/*"\n"+*/"Type: " + this.RenderStyle(),
+				/*"\n"+*/"Volume: " + this.RenderVolume(),
+				/*"\n"+*/"Pitch: " + this.RenderPitch(),
+				/*"\n"+*/"Delay: " + this.RenderDelay(),
+				/*"\n"+*/"Is Activated: " + this.IsActivated
+			};
 		}
 	}
 }

@@ -148,7 +148,7 @@ namespace Emitters.UI {
 			pos += scrCenter;
 
 			if( def.AnimateHologram(pos, true) ) {
-				def.DrawHologram( pos, true );
+				def.DrawHologram( sb, pos, true );
 			}
 		}
 	}
