@@ -25,8 +25,8 @@ namespace Emitters.Definitions {
 			this.WorldLighting = (bool)reader.ReadBoolean();
 			this.ShaderMode = (HologramShaderMode)reader.ReadUInt16();
 			this.ShaderTime = (float)reader.ReadSingle();
-			this.IsActivated = (bool)reader.ReadBoolean();
 			this.ShaderType = (int)reader.ReadUInt16();
+			this.IsActivated = (bool)reader.ReadBoolean();
 		}
 
 		public override void Write( BinaryWriter writer ) {

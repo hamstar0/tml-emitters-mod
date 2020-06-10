@@ -20,9 +20,9 @@ v3.0
 -	Add glowmasks for NPCs, items, and projectiles
 -	Draw layer control
 -	Add reset button to UIs
+
 v2.0
 -	Find alternative control to access emitter/hologram dialogs
-
 -	@MH
 	-	Fix not filtering verbose packets from PacketInfo
 	-	Ping packets are spammy
