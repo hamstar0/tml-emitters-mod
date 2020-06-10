@@ -11,7 +11,7 @@ using Emitters.Definitions;
 
 
 namespace Emitters.Items {
-	public partial class SoundEmitterItem : ModItem {
+	public partial class SoundEmitterItem : ModItem, IBaseEmitterItem {
 		public static void OpenUI( Item soundEmitterItem ) {
 			var mymod = EmittersMod.Instance;
 			mymod.SoundEmitterEditorDialog.Open();
@@ -34,8 +34,8 @@ namespace Emitters.Items {
 
 		////////////////
 
-		public static bool CanViewSoundEmitters( Player plr ) {
-			return WiresUI.Settings.DrawWires || (
+		public static bool CanViewSoundEmitters( Player plr, bool withWire ) {
+			return (withWire && WiresUI.Settings.DrawWires) || (
 					plr.HeldItem != null
 					&& !plr.HeldItem.IsAir
 					&& plr.HeldItem.type == ModContent.ItemType<SoundEmitterItem>() );

@@ -12,7 +12,7 @@ namespace Emitters.Definitions {
 
 			this.AnimateSoundEmitter( wldPos );
 
-			if( isOnScreen && SoundEmitterItem.CanViewSoundEmitters(Main.LocalPlayer) ) {
+			if( isOnScreen && SoundEmitterItem.CanViewSoundEmitters(Main.LocalPlayer, true) ) {
 				this.DrawSoundEmitterTile( sb, tileX, tileY );
 			}
 		}

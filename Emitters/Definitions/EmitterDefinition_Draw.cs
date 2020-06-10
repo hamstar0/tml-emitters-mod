@@ -14,7 +14,7 @@ namespace Emitters.Definitions {
 
 			this.AnimateEmitter( wldPos );
 
-			if( isOnScreen && EmitterItem.CanViewEmitters(Main.LocalPlayer) ) {
+			if( isOnScreen && EmitterItem.CanViewEmitters(Main.LocalPlayer, true) ) {
 				this.DrawEmitterTile( sb, tileX, tileY );
 			}
 		}

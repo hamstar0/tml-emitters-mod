@@ -11,7 +11,7 @@ using Emitters.Definitions;
 
 
 namespace Emitters.Items {
-	public partial class EmitterItem : ModItem {
+	public partial class EmitterItem : ModItem, IBaseEmitterItem {
 		public static void OpenUI( Item emitterItem ) {
 			var mymod = EmittersMod.Instance;
 
@@ -22,8 +22,8 @@ namespace Emitters.Items {
 
 		////////////////
 
-		public static bool CanViewEmitters( Player plr ) {
-			return WiresUI.Settings.DrawWires || (
+		public static bool CanViewEmitters( Player plr, bool withWire ) {
+			return (withWire && WiresUI.Settings.DrawWires) || (
 					plr.HeldItem != null
 					&& !plr.HeldItem.IsAir
 					&& plr.HeldItem.type == ModContent.ItemType<EmitterItem>() );
@@ -110,7 +110,7 @@ namespace Emitters.Items {
 
 		////////////////
 
-		public override bool CanRightClick() {
+		/*public override bool CanRightClick() {
 			return true;
 		}
 
@@ -118,7 +118,7 @@ namespace Emitters.Items {
 			EmitterItem.OpenUI( this.item );
 
 			return false;
-		}
+		}*/
 
 
 		////////////////

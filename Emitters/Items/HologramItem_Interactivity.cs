@@ -11,7 +11,7 @@ using Emitters.Definitions;
 
 
 namespace Emitters.Items {
-	public partial class HologramItem : ModItem {
+	public partial class HologramItem : ModItem, IBaseEmitterItem {
 
 		public static void OpenUI( Item hologramItem ) {
 			var mymod = EmittersMod.Instance;
@@ -25,8 +25,8 @@ namespace Emitters.Items {
 
 		////////////////
 
-		public static bool CanViewHolograms( Player plr ) {
-			return WiresUI.Settings.DrawWires || (
+		public static bool CanViewHolograms( Player plr, bool withWire ) {
+			return (withWire && WiresUI.Settings.DrawWires) || (
 					plr.HeldItem != null
 					&& !plr.HeldItem.IsAir
 					&& plr.HeldItem.type == ModContent.ItemType<HologramItem>() );

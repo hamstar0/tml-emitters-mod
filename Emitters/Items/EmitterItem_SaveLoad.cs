@@ -6,7 +6,7 @@ using Emitters.Definitions;
 
 
 namespace Emitters.Items {
-	public partial class EmitterItem : ModItem {
+	public partial class EmitterItem : ModItem, IBaseEmitterItem {
 		public override void Load( TagCompound tag ) {
 			if( !tag.ContainsKey("EmitterMode") ) {
 				return;

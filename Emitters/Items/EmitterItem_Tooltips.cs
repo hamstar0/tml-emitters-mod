@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 
 namespace Emitters.Items {
-	public partial class EmitterItem : ModItem {
+	public partial class EmitterItem : ModItem, IBaseEmitterItem {
 		public override void ModifyTooltips( List<TooltipLine> tooltips ) {
 			int i = 1;
 			tooltips.Insert( i++, new TooltipLine(this.mod, "EmitterUI", "[c/00FF00:Right-click in inventory to adjust settings]") );

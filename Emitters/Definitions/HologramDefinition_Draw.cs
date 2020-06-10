@@ -16,7 +16,7 @@ namespace Emitters.Definitions {
 				this.DrawHologram( sb, wldPos, false );
 			}
 
-			if( isOnScreen && HologramItem.CanViewHolograms( Main.LocalPlayer ) ) {
+			if( isOnScreen && HologramItem.CanViewHolograms(Main.LocalPlayer, true) ) {
 				this.DrawHologramTile( sb, tileX, tileY );
 			}
 		}

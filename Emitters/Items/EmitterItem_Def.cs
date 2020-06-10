@@ -1,14 +1,14 @@
-using System.Collections.Generic;
+using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
 using Emitters.Definitions;
 
 
 namespace Emitters.Items {
-	public partial class EmitterItem : ModItem {
+	public partial class EmitterItem : ModItem, IBaseEmitterItem {
 		public EmitterDefinition Def { get; private set; } = null;
 
 
@@ -76,7 +76,7 @@ namespace Emitters.Items {
 		}
 
 		private void UpdateForCurrentPlayer() {
-			if( EmitterItem.CanViewEmitters( Main.LocalPlayer ) ) {
+			if( EmitterItem.CanViewEmitters( Main.LocalPlayer, false ) ) {
 				this.UpdateInterface();
 			}
 		}
@@ -88,6 +88,52 @@ namespace Emitters.Items {
 			//	this.AttemptEmitterToggle( Main.MouseWorld );
 			} else if( Main.mouseRight && Main.mouseRightRelease ) {
 				EmitterItem.AttemptEmitterPickup( Main.MouseWorld );
+			}
+		}
+
+
+		////////////////
+
+		public override bool PreDrawInInventory(
+					SpriteBatch sb,
+					Vector2 pos,
+					Rectangle frame,
+					Color drawColor,
+					Color itemColor,
+					Vector2 origin,
+					float scale ) {
+			var mymod = EmittersMod.Instance;
+			var newPos = new Vector2( pos.X - 4f, pos.Y - 16f );
+
+			if( mymod.CanPressEditorButton(newPos) ) {
+				mymod.ReadyEditorButtonPress( () => EmitterItem.OpenUI(this.item) );
+			}
+
+			return base.PreDrawInInventory( sb, pos, frame, drawColor, itemColor, origin, scale );
+		}
+
+
+		////////////////
+
+		public override void PostDrawInInventory(
+					SpriteBatch sb,
+					Vector2 pos,
+					Rectangle frame,
+					Color drawColor,
+					Color itemColor,
+					Vector2 origin,
+					float scale ) {
+			var mymod = EmittersMod.Instance;
+			var newPos = new Vector2( pos.X - 4f, pos.Y - 16f );
+			var mouseRect = new Rectangle(
+				x: (int)newPos.X,
+				y: (int)newPos.Y,
+				width: mymod.EditorButtonWidth,
+				height: mymod.EditorButtonHeight
+			);
+
+			if( mouseRect.Contains(Main.mouseX, Main.mouseY) ) {
+				mymod.DrawEditorButton( sb, newPos );
 			}
 		}
 	}

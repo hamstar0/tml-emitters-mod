@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 
 
 namespace Emitters.Items {
-	public partial class SoundEmitterItem : ModItem {
+	public partial class SoundEmitterItem : ModItem, IBaseEmitterItem {
 		public override void AddRecipes() {
 			if( !EmittersConfig.Instance.SoundEmitterRecipeEnabled ) {
 				return;
