@@ -11,31 +11,9 @@ using Emitters.Definitions;
 
 
 namespace Emitters.Items {
-	public partial class SoundEmitterItem : ModItem {
-		public static void OpenUI( Item soundEmitterItem ) {
-			var mymod = EmittersMod.Instance;
-			mymod.SoundEmitterEditorDialog.Open();
-			mymod.SoundEmitterEditorDialog.SetItem( soundEmitterItem );
-
-			/*var myitem = soundEmitterItem.modItem as SoundEmitterItem;
-			if( myitem.Def == null || !myitem.Def.IsActivated ) {
-				return;
-			}
-
-			Timers.RunUntil( () => {
-				if( myitem.Def.Timer++ >= myitem.Def.Delay ) {
-					myitem.Def.Timer = 0;
-					Main.PlaySound( myitem.Def.Type, -1, -1, myitem.Def.Style, myitem.Def.Volume, myitem.Def.Pitch );
-				}
-				return mymod.SoundEmitterEditorDialog.IsOpen;
-			}, true );*/
-		}
-
-
-		////////////////
-
-		public static bool CanViewSoundEmitters( Player plr ) {
-			return WiresUI.Settings.DrawWires || (
+	public partial class SoundEmitterItem : ModItem, IBaseEmitterItem {
+		public static bool CanViewSoundEmitters( Player plr, bool withWire ) {
+			return (withWire && WiresUI.Settings.DrawWires) || (
 					plr.HeldItem != null
 					&& !plr.HeldItem.IsAir
 					&& plr.HeldItem.type == ModContent.ItemType<SoundEmitterItem>() );
@@ -122,7 +100,7 @@ namespace Emitters.Items {
 
 		////////////////
 
-		public override bool CanRightClick() {
+		/*public override bool CanRightClick() {
 			return true;
 		}
 
@@ -130,7 +108,7 @@ namespace Emitters.Items {
 			SoundEmitterItem.OpenUI( this.item );
 
 			return false;
-		}
+		}*/
 
 
 		////////////////
@@ -154,10 +132,19 @@ namespace Emitters.Items {
 			if( SoundEmitterItem.AttemptSoundEmitterPlacementForCurrentPlayer( this.Def ) ) {
 				PlayerItemHelpers.RemoveInventoryItemQuantity( player, this.item.type, 1 );
 			} else {
-				SoundEmitterItem.AttemptSoundEmitterToggle( Main.MouseWorld );
+				//SoundEmitterItem.AttemptSoundEmitterToggle( Main.MouseWorld );
 			}
 
 			return base.UseItem( player );
+		}
+
+
+		////////////////
+
+		public void OpenUI( Item soundEmitterItem ) {
+			var mymod = EmittersMod.Instance;
+			mymod.SoundEmitterEditorDialog.Open();
+			mymod.SoundEmitterEditorDialog.SetItem( soundEmitterItem );
 		}
 	}
 }

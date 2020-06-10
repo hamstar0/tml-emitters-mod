@@ -141,8 +141,14 @@ namespace Emitters.UI {
 
 			this.CachedHologramDef = def;
 
-			if( def.AnimateHologram(Main.MouseWorld, true) ) {
-				def.DrawHologram( Main.MouseWorld, true );
+			Vector2 scrCenter = Main.screenPosition + ( new Vector2( Main.screenWidth, Main.screenHeight ) * 0.5f );
+			Vector2 pos = Main.screenPosition
+				+ ( new Vector2( Main.mouseX, Main.mouseY ) * Main.UIScale );
+			pos = ( pos - scrCenter ) / Main.GameZoomTarget;
+			pos += scrCenter;
+
+			if( def.AnimateHologram(pos, true) ) {
+				def.DrawHologram( sb, pos, true );
 			}
 		}
 	}

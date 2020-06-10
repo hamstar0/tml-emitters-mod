@@ -7,22 +7,36 @@ Future considerations
 -	Add player holograms
 -	Add tile holograms
 -	Add projectile emitters
+-	Add right-click option outside of inventory
+-	Add presets
+-	Add button to copy settings from placed emitter/hologram
 
 
 
-v2
--	Add shader field for holograms?
--	Add hologram presets
--	Add emitter presets
-v1.4
--	Add search function
+v3.0
 -	Add rotation animation dialog field
 -	Hide inapplicable fields for gores
 -	Render emitters on top of dusts and gores when in add/remove mode
 -	Add glowmasks for NPCs, items, and projectiles
-v1.3
--	Use another input key to access emitter/hologram dialogs
+-	Draw layer control
+-	Add reset button to UIs
 
+v2.0
+-	Find alternative control to access emitter/hologram dialogs
+-	@MH
+	-	Fix not filtering verbose packets from PacketInfo
+	-	Ping packets are spammy
+	-	Fix checkbox texture
+-	MP:
+	-	@Reports
+		-	Fix dust emitters only animating latest
+		-	Fix dust + gore dual emitters?
+		-	Sound loop cuts out (tab out?)
+		-	Fix dust emitters failing on rejoin
+		-	Fix holograms disappearing
+-	Removed emitter/hologram left click toggle
+-	Added in-world emitter/hologram tile tooltips
+-	Fix preview alignments
 -	Add hologram modes (NPC, item, projectile)
 -	Add shader modes
 -	Add tabs

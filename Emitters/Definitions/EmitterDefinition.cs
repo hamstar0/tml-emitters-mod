@@ -15,7 +15,7 @@ namespace Emitters.Definitions {
 		public float SpeedX { get; set; }
 		public float SpeedY { get; set; }
 		public Color Color { get; set; }
-		public byte Alpha { get; set; }
+		public byte Transparency { get; set; }
 		public float Scatter { get; set; }
 		public bool HasGravity { get; set; }
 		public bool HasLight { get; set; }
@@ -34,7 +34,7 @@ namespace Emitters.Definitions {
 			this.SpeedX = copy.SpeedX;
 			this.SpeedY = copy.SpeedY;
 			this.Color = copy.Color;
-			this.Alpha = copy.Alpha;
+			this.Transparency = copy.Transparency;
 			this.Scatter = copy.Scatter;
 			this.HasGravity = copy.HasGravity;
 			this.HasLight = copy.HasLight;
@@ -49,7 +49,7 @@ namespace Emitters.Definitions {
 					float speedX,
 					float speedY,
 					Color color,
-					byte alpha,
+					byte transparency,
 					float scatter,
 					bool hasGravity,
 					bool hasLight,
@@ -61,7 +61,7 @@ namespace Emitters.Definitions {
 			this.SpeedX = speedX;
 			this.SpeedY = speedY;
 			this.Color = color;
-			this.Alpha = alpha;
+			this.Transparency = transparency;
 			this.Scatter = scatter;
 			this.HasGravity = hasGravity;
 			this.HasLight = hasLight;

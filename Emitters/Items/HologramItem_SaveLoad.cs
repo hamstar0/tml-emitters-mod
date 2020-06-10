@@ -8,7 +8,7 @@ using Emitters.Definitions;
 
 
 namespace Emitters.Items {
-	public partial class HologramItem : ModItem {
+	public partial class HologramItem : ModItem, IBaseEmitterItem {
 		public int LoadHologramType( HologramMode mode, string entDefRaw ) {
 			switch( mode ) {
 			case HologramMode.NPC:

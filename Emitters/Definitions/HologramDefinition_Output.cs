@@ -62,23 +62,23 @@ namespace Emitters.Definitions {
 					out bool isActivated ) {
 			Color color;
 			this.Output(
-				out type,
-				out mode,
-				out scale,
-				out color,
-				out alpha,
-				out direction,
-				out rotation,
-				out offsetX,
-				out offsetY,
-				out frameStart,
-				out frameEnd,
-				out frameRateTicks,
-				out worldLight,
-				out shaderMode,
-				out shaderTime,
-				out shaderType,
-				out isActivated
+				type: out type,
+				mode: out mode,
+				scale: out scale,
+				color: out color,
+				alpha: out alpha,
+				direction: out direction,
+				rotation: out rotation,
+				offsetX: out offsetX,
+				offsetY: out offsetY,
+				frameStart: out frameStart,
+				frameEnd: out frameEnd,
+				frameRateTicks: out frameRateTicks,
+				worldLight: out worldLight,
+				shaderMode: out shaderMode,
+				shaderTime: out shaderTime,
+				shaderType: out shaderType,
+				isActivated: out isActivated
 			);
 			colorR = color.R;
 			colorG = color.G;
@@ -91,8 +91,7 @@ namespace Emitters.Definitions {
 		public string RenderType() {
 			return this.Type.ToString();
 		}
-		public string RenderMode()
-		{
+		public string RenderMode() {
 			return this.Mode.ToString();
 		}
 		public string RenderScale() {
@@ -119,7 +118,7 @@ namespace Emitters.Definitions {
 			return this.OffsetY.ToString();
 		}
 		public string RenderOffset() {
-			return this.OffsetX.ToString()+", "+this.OffsetY.ToString();
+			return this.OffsetX.ToString() + ", " + this.OffsetY.ToString();
 		}
 		public string RenderFrameStart() {
 			return this.FrameStart.ToString();
@@ -131,38 +130,54 @@ namespace Emitters.Definitions {
 			return this.FrameRateTicks.ToString();
 		}
 		public string RenderFrame() {
-			return "#"+this.CurrentFrame+" between "+this.FrameStart+" and "+this.FrameEnd+" (rate: "+this.FrameRateTicks+")";
+			return "#" + this.CurrentFrame
+				+ " between " + this.FrameStart
+				+ " and " + this.FrameEnd
+				+ " (rate: " + this.FrameRateTicks + ")";
 		}
-		public string RenderShaderMode()
-		{
+		public string RenderShaderMode() {
 			return this.ShaderMode.ToString();
 		}
-		public string RenderShaderTime()
-		{
+		public string RenderShaderTime() {
 			return this.ShaderTime.ToString();
 		}
-		public string RenderShaderType()
-		{
+		public string RenderShaderType() {
 			return this.ShaderType.ToString();
 		}
+
+
 		////////////////
 
 		public override string ToString() {
-			return "Emitter Definition:"
-				+/*"\n"+*/" Type: " + this.RenderType() + ", "
-				+/*"\n"+*/" Mode: " + this.RenderMode() + ", "
-				+/*"\n"+*/" Scale: " + this.RenderScale() + ", "
-				+/*"\n"+*/" Color: " + this.RenderColor() + ", "
-				+/*"\n"+*/" Alpha: " + this.RenderAlpha() + ", "
-				+/*"\n"+*/" Direction: " + this.RenderDirection() + ", "
-				+/*"\n"+*/" Rotation: " + this.RenderRotation() + ", "
-				+/*"\n"+*/" Offset: " + this.RenderOffset() + ", "
-				+/*"\n"+*/" Frame: " + this.RenderFrame() + ", "
-				+/*"\n"+*/" WorldLight: " + this.WorldLighting + ", "
-				+/*"\n"+*/" ShaderMode: " + this.RenderShaderMode() + ", "
-				+/*"\n"+*/" ShaderTime: " + this.ShaderTime + ", "
-				+/*"\n"+*/" ShaderTime: " + this.ShaderType + ", "
-				+/*"\n"+*/" IsActivated: " + this.IsActivated;
+			return this.ToString( false );
+		}
+
+		public string ToString( bool newLines ) {
+			string[] fields = this.ToStringFields();
+			if( newLines ) {
+				return string.Join( "\n ", fields );
+			} else {
+				return string.Join( ",  ", fields );
+			}
+		}
+
+		public string[] ToStringFields() {
+			return new string[] {
+				"Hologram Definition:",
+				/*"\n"+*/"Type: " + this.RenderType(),
+				/*"\n"+*/"Mode: " + this.RenderMode(),
+				/*"\n"+*/"Scale: " + this.RenderScale(),
+				/*"\n"+*/"Color: " + this.RenderColor(),
+				/*"\n"+*/"Direction: " + this.RenderDirection(),
+				/*"\n"+*/"Rotation: " + this.RenderRotation(),
+				/*"\n"+*/"Offset: " + this.RenderOffset(),
+				/*"\n"+*/"Frame: " + this.RenderFrame(),
+				/*"\n"+*/"World Light: " + this.WorldLighting,
+				/*"\n"+*/"Shader Mode: " + this.RenderShaderMode(),
+				/*"\n"+*/"Shader Type: " + this.ShaderType,
+				/*"\n"+*/"Shader Time: " + this.ShaderTime,
+				/*"\n"+*/"Is Activated: " + this.IsActivated
+			};
 		}
 	}
 }

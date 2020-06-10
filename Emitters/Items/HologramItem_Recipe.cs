@@ -1,8 +1,9 @@
 ﻿using Terraria.ID;
 using Terraria.ModLoader;
 
+
 namespace Emitters.Items {
-	public partial class HologramItem : ModItem {
+	public partial class HologramItem : ModItem, IBaseEmitterItem {
 		public override void AddRecipes() {
 			if( !EmittersConfig.Instance.HologramRecipeEnabled ) {
 				return;

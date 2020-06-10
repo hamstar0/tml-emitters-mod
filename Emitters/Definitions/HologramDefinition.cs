@@ -88,6 +88,12 @@ namespace Emitters.Definitions {
 		public float ShaderTime { get; set; }
 		public int ShaderType { get; set; }
 
+		////
+
+		public int CurrentFrame { get; internal set; }
+
+		internal int CurrentFrameElapsedTicks = 0;
+
 
 
 		////////////////
@@ -112,7 +118,9 @@ namespace Emitters.Definitions {
 			this.ShaderTime = copy.ShaderTime;
 			this.ShaderType = copy.ShaderType;
 			this.IsActivated = copy.IsActivated;
-			this.CurrentFrame = this.FrameStart;
+
+			this.CurrentFrameElapsedTicks = copy.CurrentFrameElapsedTicks;
+			this.CurrentFrame = copy.CurrentFrame;
 		}
 
 		public HologramDefinition(

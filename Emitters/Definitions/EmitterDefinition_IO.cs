@@ -4,25 +4,23 @@ using Microsoft.Xna.Framework;
 
 namespace Emitters.Definitions {
 	public partial class EmitterDefinition : BaseEmitterDefinition {
-		public override BaseEmitterDefinition Read( BinaryReader reader ) {
-			return new EmitterDefinition(
-				isGoreMode: (bool)reader.ReadBoolean(),
-				type: (int)reader.ReadUInt16(),
-				scale: (float)reader.ReadSingle(),
-				delay: (int)reader.ReadInt16(),
-				speedX: (float)reader.ReadSingle(),
-				speedY: (float)reader.ReadSingle(),
-				color: new Color(
-					(byte)reader.ReadByte(),
-					(byte)reader.ReadByte(),
-					(byte)reader.ReadByte()
-				),
-				alpha: (byte)reader.ReadByte(),
-				scatter: (float)reader.ReadSingle(),
-				hasGravity: (bool)reader.ReadBoolean(),
-				hasLight: (bool)reader.ReadBoolean(),
-				isActivated: (bool)reader.ReadBoolean()
+		public override void Read( BinaryReader reader ) {
+			this.IsGoreMode = (bool)reader.ReadBoolean();
+			this.Type = (int)reader.ReadUInt16();
+			this.Scale = (float)reader.ReadSingle();
+			this.Delay = (int)reader.ReadUInt16();
+			this.SpeedX = (float)reader.ReadSingle();
+			this.SpeedY = (float)reader.ReadSingle();
+			this.Color = new Color(
+				(byte)reader.ReadByte(),
+				(byte)reader.ReadByte(),
+				(byte)reader.ReadByte()
 			);
+			this.Transparency = (byte)reader.ReadByte();
+			this.Scatter = (float)reader.ReadSingle();
+			this.HasGravity = (bool)reader.ReadBoolean();
+			this.HasLight = (bool)reader.ReadBoolean();
+			this.IsActivated = (bool)reader.ReadBoolean();
 		}
 
 		public override void Write( BinaryWriter writer ) {
@@ -35,7 +33,7 @@ namespace Emitters.Definitions {
 			writer.Write( (byte)this.Color.R );
 			writer.Write( (byte)this.Color.G );
 			writer.Write( (byte)this.Color.B );
-			writer.Write( (byte)this.Alpha );
+			writer.Write( (byte)this.Transparency );
 			writer.Write( (float)this.Scatter );
 			writer.Write( (bool)this.HasGravity );
 			writer.Write( (bool)this.HasLight );

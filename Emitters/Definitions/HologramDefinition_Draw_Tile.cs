@@ -1,30 +1,18 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using HamstarHelpers.Helpers.Debug;
 using HamstarHelpers.Helpers.UI;
-using Emitters.Items;
 
 
 namespace Emitters.Definitions {
-	public partial class SoundEmitterDefinition : BaseEmitterDefinition {
-		public void Draw( SpriteBatch sb, int tileX, int tileY, bool isOnScreen ) {
-			var wldPos = new Vector2( (tileX<<4)+8, (tileY<<4)+8 );
-
-			this.AnimateSoundEmitter( wldPos );
-
-			if( isOnScreen && SoundEmitterItem.CanViewSoundEmitters(Main.LocalPlayer, true) ) {
-				this.DrawSoundEmitterTile( sb, tileX, tileY );
-			}
-		}
-
-
-		////////////////
-
-		public void DrawSoundEmitterTile( SpriteBatch sb, int tileX, int tileY ) {
-			Vector2 scr = UIHelpers.ConvertToScreenPosition( new Vector2(tileX<<4, tileY<<4) );
+	public partial class HologramDefinition : BaseEmitterDefinition {
+		public void DrawHologramTile( SpriteBatch sb, int tileX, int tileY ) {
+			Vector2 scr = UIHelpers.ConvertToScreenPosition( new Vector2( tileX << 4, tileY << 4 ) );
+			Texture2D tex = EmittersMod.Instance.HologramTex;
 
 			sb.Draw(
-				texture: EmittersMod.Instance.SoundEmitterTex,
+				texture: tex,
 				position: scr,
 				sourceRectangle: null,
 				color: Color.White,
@@ -68,3 +56,4 @@ namespace Emitters.Definitions {
 		}
 	}
 }
+

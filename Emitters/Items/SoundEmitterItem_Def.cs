@@ -5,7 +5,7 @@ using Emitters.Definitions;
 
 
 namespace Emitters.Items {
-	public partial class SoundEmitterItem : ModItem {
+	public partial class SoundEmitterItem : ModItem, IBaseEmitterItem {
 		public SoundEmitterDefinition Def { get; private set; } = null;
 		////////////////
 
@@ -71,7 +71,7 @@ namespace Emitters.Items {
 		}
 
 		private void UpdateForCurrentPlayer() {
-			if( SoundEmitterItem.CanViewSoundEmitters( Main.LocalPlayer ) ) {
+			if( SoundEmitterItem.CanViewSoundEmitters(Main.LocalPlayer, false) ) {
 				this.UpdateInterface();
 			}
 		}

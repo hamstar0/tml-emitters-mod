@@ -37,7 +37,7 @@ namespace Emitters.NetProtocols {
 		public byte ColorR;
 		public byte ColorG;
 		public byte ColorB;
-		public byte Alpha;
+		public byte Transparency;
 		public float Scatter;
 		public bool HasGravity;
 		public bool HasLight;
@@ -60,7 +60,7 @@ namespace Emitters.NetProtocols {
 				out this.ColorR,
 				out this.ColorG,
 				out this.ColorB,
-				out this.Alpha,
+				out this.Transparency,
 				out this.Scatter,
 				out this.HasGravity,
 				out this.HasLight,
@@ -83,7 +83,7 @@ namespace Emitters.NetProtocols {
 			speedX: this.SpeedX,
 			speedY: this.SpeedY,
 			color: new Color( this.ColorR, this.ColorG, this.ColorB ),
-			alpha: this.Alpha,
+			transparency: this.Transparency,
 			scatter: this.Scatter,
 			hasGravity: this.HasGravity,
 			hasLight: this.HasLight,

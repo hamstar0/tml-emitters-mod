@@ -11,22 +11,9 @@ using Emitters.Definitions;
 
 
 namespace Emitters.Items {
-	public partial class HologramItem : ModItem {
-
-		public static void OpenUI( Item hologramItem ) {
-			var mymod = EmittersMod.Instance;
-			mymod.HologramEditorDialog.Open();
-
-			if( !mymod.HologramEditorDialog.SetItem(hologramItem) ) {
-				mymod.HologramEditorDialog.Close();
-			}
-		}
-
-
-		////////////////
-
-		public static bool CanViewHolograms( Player plr ) {
-			return WiresUI.Settings.DrawWires || (
+	public partial class HologramItem : ModItem, IBaseEmitterItem {
+		public static bool CanViewHolograms( Player plr, bool withWire ) {
+			return (withWire && WiresUI.Settings.DrawWires) || (
 					plr.HeldItem != null
 					&& !plr.HeldItem.IsAir
 					&& plr.HeldItem.type == ModContent.ItemType<HologramItem>() );
@@ -113,7 +100,7 @@ namespace Emitters.Items {
 
 		////////////////
 
-		public override bool CanRightClick() {
+		/*public override bool CanRightClick() {
 			return true;
 		}
 
@@ -121,7 +108,7 @@ namespace Emitters.Items {
 			HologramItem.OpenUI( this.item );
 
 			return false;
-		}
+		}*/
 
 
 		////////////////
@@ -145,10 +132,22 @@ namespace Emitters.Items {
 			if( HologramItem.AttemptHologramPlacementForCurrentPlayer( this.Def ) ) {
 				PlayerItemHelpers.RemoveInventoryItemQuantity( player, this.item.type, 1 );
 			} else {
-				HologramItem.AttemptHologramToggle( Main.MouseWorld );
+				//HologramItem.AttemptHologramToggle( Main.MouseWorld );
 			}
 
 			return base.UseItem( player );
+		}
+
+
+		////////////////
+
+		public void OpenUI( Item hologramItem ) {
+			var mymod = EmittersMod.Instance;
+			mymod.HologramEditorDialog.Open();
+
+			if( !mymod.HologramEditorDialog.SetItem( hologramItem ) ) {
+				mymod.HologramEditorDialog.Close();
+			}
 		}
 	}
 }

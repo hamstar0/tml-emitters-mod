@@ -218,22 +218,22 @@ namespace Emitters.UI {
 		}
 
 		private void InitializeWidgetsForAlpha( ref float yOffset ) {
-			this.InitializeComponentForTitle( "Alpha:", false, ref yOffset );
+			this.InitializeComponentForTitle( "Transparency:", false, ref yOffset );
 
-			this.AlphaSliderElem = new UISlider(
+			this.TransparencySliderElem = new UISlider(
 				theme: UITheme.Vanilla,
 				hoverText: "",
 				isInt: true,
 				ticks: 0,
 				minRange: 0f,
 				maxRange: 255f );
-			this.AlphaSliderElem.Top.Set( yOffset, 0f );
-			this.AlphaSliderElem.Left.Set( 64f, 0f );
-			this.AlphaSliderElem.Width.Set( -64f, 1f );
-			this.AlphaSliderElem.SetValue( 0f );
+			this.TransparencySliderElem.Top.Set( yOffset, 0f );
+			this.TransparencySliderElem.Left.Set( 96f, 0f );
+			this.TransparencySliderElem.Width.Set( -96f, 1f );
+			this.TransparencySliderElem.SetValue( 0f );
 			yOffset += 28f;
 
-			this.InnerContainer.Append( (UIElement)this.AlphaSliderElem );
+			this.InnerContainer.Append( (UIElement)this.TransparencySliderElem );
 		}
 
 		private void InitializeWidgetsForScatter( ref float yOffset ) {
@@ -247,8 +247,8 @@ namespace Emitters.UI {
 				minRange: 0f,
 				maxRange: 300f );
 			this.ScatterSliderElem.Top.Set( yOffset, 0f );
-			this.ScatterSliderElem.Left.Set( 64f, 0f );
-			this.ScatterSliderElem.Width.Set( -64f, 1f );
+			this.ScatterSliderElem.Left.Set( 96f, 0f );
+			this.ScatterSliderElem.Width.Set( -96f, 1f );
 			this.ScatterSliderElem.SetValue( 0f );
 			yOffset += 28f;
 

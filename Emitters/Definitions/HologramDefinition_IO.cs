@@ -1,39 +1,32 @@
 ﻿using System.IO;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.ModLoader.Config;
 using HamstarHelpers.Classes.Errors;
 
 
 namespace Emitters.Definitions {
 	public partial class HologramDefinition : BaseEmitterDefinition {
-		public override BaseEmitterDefinition Read( BinaryReader reader ) {
-			return new HologramDefinition(
-				mode: (HologramMode)reader.ReadUInt16(),
-				type: (int)reader.ReadUInt16(),
-				scale: (float)reader.ReadSingle(),
-				color: new Color(
-					(byte)reader.ReadByte(),
-					(byte)reader.ReadByte(),
-					(byte)reader.ReadByte()
-				),
-				alpha: (byte)reader.ReadByte(),
-				direction: (int)reader.ReadUInt16(),
-				rotation: (float)reader.ReadSingle(),
-				offsetX: (int)reader.ReadUInt16(),
-				offsetY: (int)reader.ReadUInt16(),
-				frameStart: (int)reader.ReadUInt16(),
-				frameEnd: (int)reader.ReadUInt16(),
-				frameRateTicks: (int)reader.ReadUInt16(),
-				worldLight: (bool)reader.ReadBoolean(),
-				shaderMode: (HologramShaderMode)reader.ReadUInt16(),
-				shaderTime: (float)reader.ReadSingle(),
-				shaderType: (int)reader.ReadUInt16(),
-				isActivated: (bool)reader.ReadBoolean()
+		public override void Read( BinaryReader reader ) {
+			this.Mode = (HologramMode)reader.ReadUInt16();
+			this.Type = (int)reader.ReadUInt16();
+			this.Scale = (float)reader.ReadSingle();
+			this.Color = new Color(
+				(byte)reader.ReadByte(),
+				(byte)reader.ReadByte(),
+				(byte)reader.ReadByte()
 			);
+			this.Alpha = (byte)reader.ReadByte();
+			this.Direction = (int)reader.ReadUInt16();
+			this.Rotation = (float)reader.ReadSingle();
+			this.OffsetX = (int)reader.ReadUInt16();
+			this.OffsetY = (int)reader.ReadUInt16();
+			this.FrameStart = (int)reader.ReadUInt16();
+			this.FrameEnd = (int)reader.ReadUInt16();
+			this.FrameRateTicks = (int)reader.ReadUInt16();
+			this.WorldLighting = (bool)reader.ReadBoolean();
+			this.ShaderMode = (HologramShaderMode)reader.ReadUInt16();
+			this.ShaderTime = (float)reader.ReadSingle();
+			this.ShaderType = (int)reader.ReadUInt16();
+			this.IsActivated = (bool)reader.ReadBoolean();
 		}
 
 		public override void Write( BinaryWriter writer ) {

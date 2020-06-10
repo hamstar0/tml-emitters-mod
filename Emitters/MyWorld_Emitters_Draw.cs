@@ -31,15 +31,15 @@ namespace Emitters {
 						bool isOnScr = scrTiles.Contains( x, y );
 
 						if( this.Emitters.TryGetValue2D( x, y, out EmitterDefinition def) ) {
-							def.Draw( x, y, isOnScr );
+							def.Draw( Main.spriteBatch, x, y, isOnScr );
 						}
 
 						if( this.SoundEmitters.TryGetValue2D( x, y, out SoundEmitterDefinition sdef) ) {
-							sdef.Draw( x, y, isOnScr );
+							sdef.Draw( Main.spriteBatch, x, y, isOnScr );
 						}
 
 						if( this.Holograms.TryGetValue2D( x, y, out HologramDefinition hdef ) ) {
-							hdef.Draw( x, y, isOnScr );
+							hdef.Draw( Main.spriteBatch, x, y, isOnScr );
 						}
 					}
 				}

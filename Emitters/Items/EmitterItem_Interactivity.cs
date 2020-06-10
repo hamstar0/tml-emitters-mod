@@ -11,19 +11,9 @@ using Emitters.Definitions;
 
 
 namespace Emitters.Items {
-	public partial class EmitterItem : ModItem {
-		public static void OpenUI( Item emitterItem ) {
-			var mymod = EmittersMod.Instance;
-
-			mymod.EmitterEditorDialog.Open();
-			mymod.EmitterEditorDialog.SetItem( emitterItem );
-		}
-
-
-		////////////////
-
-		public static bool CanViewEmitters( Player plr ) {
-			return WiresUI.Settings.DrawWires || (
+	public partial class EmitterItem : ModItem, IBaseEmitterItem {
+		public static bool CanViewEmitters( Player plr, bool withWire ) {
+			return (withWire && WiresUI.Settings.DrawWires) || (
 					plr.HeldItem != null
 					&& !plr.HeldItem.IsAir
 					&& plr.HeldItem.type == ModContent.ItemType<EmitterItem>() );
@@ -110,7 +100,7 @@ namespace Emitters.Items {
 
 		////////////////
 
-		public override bool CanRightClick() {
+		/*public override bool CanRightClick() {
 			return true;
 		}
 
@@ -118,7 +108,7 @@ namespace Emitters.Items {
 			EmitterItem.OpenUI( this.item );
 
 			return false;
-		}
+		}*/
 
 
 		////////////////
@@ -142,10 +132,20 @@ namespace Emitters.Items {
 			if( EmitterItem.AttemptEmitterPlacementForCurrentPlayer(this.Def) ) {
 				PlayerItemHelpers.RemoveInventoryItemQuantity( player, this.item.type, 1 );
 			} else {
-				EmitterItem.AttemptEmitterToggle( Main.MouseWorld );
+				//EmitterItem.AttemptEmitterToggle( Main.MouseWorld );
 			}
 
 			return base.UseItem( player );
+		}
+
+
+		////////////////
+
+		public void OpenUI( Item emitterItem ) {
+			var mymod = EmittersMod.Instance;
+
+			mymod.EmitterEditorDialog.Open();
+			mymod.EmitterEditorDialog.SetItem( emitterItem );
 		}
 	}
 }

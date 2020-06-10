@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
 using Terraria.Graphics.Shaders;
+using Terraria.ModLoader;
 using HamstarHelpers.Helpers.Debug;
 using Emitters.UI;
 using Emitters.Effects;
@@ -35,6 +36,11 @@ namespace Emitters {
 		internal List<EmitterArmorShaderData> MyArmorShaders = new List<EmitterArmorShaderData>();
 
 
+		////////////////
+
+		public EditorButton EditorButton { get; private set; }
+
+
 
 		////////////////
 
@@ -44,6 +50,8 @@ namespace Emitters {
 
 		public override void Load() {
 			if( !Main.dedServ && Main.netMode != NetmodeID.Server ) {
+				this.EditorButton = new EditorButton();
+
 				this.LoadArmorShaders();
 
 				this.EmitterEditorDialog = new UIEmitterEditorDialog();
@@ -87,24 +95,5 @@ namespace Emitters {
 				this.HologramTex = this.GetTexture( "Definitions/Hologram" );
 			}
 		}
-
-		//public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
-		//{
-		//	int cursorIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Cursor"));
-		//	if (cursorIndex == -1) { return; }
-
-		//	layers.Insert(cursorIndex, new LegacyGameInterfaceLayer(
-		//		"Emitters: DrawPreveiw",
-		//		delegate {
-		//			if (HologramEditorDialog.IsOpen)
-		//			{
-		//				HologramDefinition def = HologramEditorDialog.CreateHologramDefinition();
-		//				HologramEditorDialog.Draw(Main.spriteBatch);
-		//			}
-		//			return true;
-		//		},
-		//			InterfaceScaleType.UI)
-		//		);
-		//}
 	}
 }

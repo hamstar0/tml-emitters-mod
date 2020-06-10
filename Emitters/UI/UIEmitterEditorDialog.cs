@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using HamstarHelpers.Classes.Errors;
+using HamstarHelpers.Helpers.Debug;
 using HamstarHelpers.Classes.UI.Theme;
 using HamstarHelpers.Classes.UI.Elements;
 using HamstarHelpers.Classes.UI.Elements.Slider;
@@ -24,7 +25,7 @@ namespace Emitters.UI {
 		private UISlider SpeedYSliderElem;
 		private UISlider HueSliderElem;
 		private UISlider SaturationSliderElem;
-		private UISlider AlphaSliderElem;
+		private UISlider TransparencySliderElem;
 		private UISlider ScatterSliderElem;
 		private UICheckbox HasGravityCheckbox;
 		private UICheckbox HasLightCheckbox;
@@ -70,7 +71,13 @@ namespace Emitters.UI {
 			def.Timer = this.CachedEmitterDef?.Timer ?? 0;
 			this.CachedEmitterDef = def;
 
-			def.AnimateEmitter( Main.MouseWorld );
+			Vector2 scrCenter = Main.screenPosition + (new Vector2(Main.screenWidth, Main.screenHeight) * 0.5f);
+			Vector2 pos = Main.screenPosition
+				+ (new Vector2(Main.mouseX, Main.mouseY) * Main.UIScale);
+			pos = (pos - scrCenter) / Main.GameZoomTarget;
+			pos += scrCenter;
+
+			def.AnimateEmitter( pos );
 		}
 	}
 }

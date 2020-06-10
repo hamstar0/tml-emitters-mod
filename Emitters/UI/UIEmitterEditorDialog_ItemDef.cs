@@ -26,7 +26,7 @@ namespace Emitters.UI {
 			this.SpeedYSliderElem.SetValue( myitem.Def.SpeedY );
 			this.HueSliderElem.SetValue( hsl.X );
 			this.SaturationSliderElem.SetValue( hsl.Y );
-			this.AlphaSliderElem.SetValue( myitem.Def.Alpha );
+			this.TransparencySliderElem.SetValue( myitem.Def.Transparency );
 			this.ScatterSliderElem.SetValue( myitem.Def.Scatter );
 			this.HasGravityCheckbox.Selected = myitem.Def.HasGravity;
 			this.HasLightCheckbox.Selected = myitem.Def.HasLight;
@@ -61,7 +61,7 @@ namespace Emitters.UI {
 				speedX: this.SpeedXSliderElem.RememberedInputValue,
 				speedY: this.SpeedYSliderElem.RememberedInputValue,
 				color: this.GetColor(),
-				alpha: (byte)this.AlphaSliderElem.RememberedInputValue,
+				transparency: (byte)this.TransparencySliderElem.RememberedInputValue,
 				scatter: this.ScatterSliderElem.RememberedInputValue,
 				hasGravity: this.HasGravityCheckbox.Selected,
 				hasLight: this.HasLightCheckbox.Selected,

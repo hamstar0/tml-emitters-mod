@@ -1,15 +1,11 @@
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
-using Terraria.ModLoader.Config;
 using Emitters.Definitions;
 
 
 namespace Emitters.Items {
-	public partial class HologramItem : ModItem {
+	public partial class HologramItem : ModItem, IBaseEmitterItem {
 		public HologramDefinition Def { get; private set; } = null;
 
 
@@ -77,7 +73,7 @@ namespace Emitters.Items {
 		}
 
 		private void UpdateForCurrentPlayer() {
-			if( HologramItem.CanViewHolograms( Main.LocalPlayer ) ) {
+			if( HologramItem.CanViewHolograms(Main.LocalPlayer, false) ) {
 				this.UpdateInterface();
 			}
 		}

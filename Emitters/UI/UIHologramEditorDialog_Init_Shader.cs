@@ -58,25 +58,6 @@ namespace Emitters.UI {
 			this.ShadertTimeSlider.Left.Set( 128f, 0f );
 			this.ShadertTimeSlider.Width.Set( -128f, 1f );
 			this.ShadertTimeSlider.SetValue( 1f );
-			this.ShadertTimeSlider.PreOnChange += (value) =>
-			{
-				switch (CurrentsShaderMode)
-				{
-					case HologramShaderMode.Vanilla:
-						this.ShadertTimeSlider.SetRange(-8f, 8f);
-						this.ShadertTimeSlider.SetValue(1f);
-						break;
-					case HologramShaderMode.Custom:
-						this.ShadertTimeSlider.SetRange( 0.01f, 60f);
-						this.ShadertTimeSlider.SetValue(1f);
-						break;
-					case HologramShaderMode.None:
-						this.ShadertTimeSlider.SetRange(0f,1f);
-						this.ShadertTimeSlider.SetValue(0f);
-						break;
-				}
-				return value;
-			};
 			container.Append( this.ShadertTimeSlider );
 
 			yOffset += 28f;
@@ -94,6 +75,8 @@ namespace Emitters.UI {
 				this.SetHologramShaderMode( HologramShaderMode.None );
 				this.ShaderTypeSlider.SetRange( 0f, 0f );
 				this.ShaderTypeSlider.SetValue( 0f );
+				this.ShadertTimeSlider.SetRange( 0f, 1f );
+				this.ShadertTimeSlider.SetValue( 0f );
 			};
 
 			this.ShaderVanillaChoice = new UICheckbox( UITheme.Vanilla, "Vanilla", "" );
@@ -104,6 +87,8 @@ namespace Emitters.UI {
 				this.SetHologramShaderMode( HologramShaderMode.Vanilla );
 				this.ShaderTypeSlider.SetRange( 0f, EmittersMod.Instance.MyArmorShaders.Count - 1 );    //ArmorShaders.Count?
 				this.ShaderTypeSlider.SetValue( 0f );
+				this.ShadertTimeSlider.SetRange( -8f, 8f );
+				this.ShadertTimeSlider.SetValue( 1f );
 			};
 
 			this.ShaderCustomChoice = new UICheckbox( UITheme.Vanilla, "Custom", "" );
@@ -113,6 +98,8 @@ namespace Emitters.UI {
 				this.SetHologramShaderMode( HologramShaderMode.Custom );
 				this.ShaderTypeSlider.SetRange( 0f, 0f );
 				this.ShaderTypeSlider.SetValue( 0f );
+				this.ShadertTimeSlider.SetRange( 0.01f, 60f );
+				this.ShadertTimeSlider.SetValue( 1f );
 			};
 
 			container.Append( (UIElement)this.ShaderNoneChoice );

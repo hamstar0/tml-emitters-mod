@@ -5,7 +5,7 @@ using Emitters.Definitions;
 
 
 namespace Emitters.Items {
-	public partial class SoundEmitterItem : ModItem {
+	public partial class SoundEmitterItem : ModItem, IBaseEmitterItem {
 		public override void Load( TagCompound tag ) {
 			if( !tag.ContainsKey( "SndEmitterType" ) ) {
 				return;

@@ -1,14 +1,12 @@
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
 using Emitters.Definitions;
 
 
 namespace Emitters.Items {
-	public partial class EmitterItem : ModItem {
+	public partial class EmitterItem : ModItem, IBaseEmitterItem {
 		public EmitterDefinition Def { get; private set; } = null;
 
 
@@ -76,7 +74,7 @@ namespace Emitters.Items {
 		}
 
 		private void UpdateForCurrentPlayer() {
-			if( EmitterItem.CanViewEmitters( Main.LocalPlayer ) ) {
+			if( EmitterItem.CanViewEmitters( Main.LocalPlayer, false ) ) {
 				this.UpdateInterface();
 			}
 		}
