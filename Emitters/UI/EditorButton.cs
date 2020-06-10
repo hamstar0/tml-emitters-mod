@@ -1,18 +1,28 @@
-using System;
+﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.ModLoader;
-using HamstarHelpers.Helpers.Debug;
+using Terraria.ModLoader.UI;
+using HamstarHelpers.Helpers.DotNET.Reflection;
 
 
-namespace Emitters {
-	public partial class EmittersMod : Mod {
+namespace Emitters.UI {
+	public partial class EditorButton {
+		private Texture2D EditorButtonTex;
+		private Action EditorButtonAction = null;
+
+
+
+		////////////////
+
+		public EditorButton() {
+			ReflectionHelpers.Get( typeof(UICommon), null, "ButtonConfigTexture", out this.EditorButtonTex );
+		}
+
+
+		////////////////
+
 		public bool CanPressEditorButton( Vector2 scrPos ) {
-			//if( !Main.mouseLeft || !Main.mouseLeftRelease ) {
-			//	return false;
-			//}
-
 			int minX = (int)scrPos.X;
 			int minY = (int)scrPos.Y;
 			int maxX = minX + this.EditorButtonTex.Width;
@@ -22,12 +32,12 @@ namespace Emitters {
 		}
 
 		////
-		
+
 		public void ReadyEditorButtonPress( Action func ) {
 			this.EditorButtonAction = func;
 		}
 
-		public bool RunEditorButtonIfInteracting() {
+		public bool PressEditorButtonIfInteracting() {
 			if( this.EditorButtonAction == null ) {
 				return false;
 			}
@@ -42,7 +52,7 @@ namespace Emitters {
 
 
 		////////////////
-
+		
 		public void DrawEditorButton( SpriteBatch sb, Vector2 scrPos ) {
 			sb.Draw(
 				texture: this.EditorButtonTex,

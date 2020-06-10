@@ -12,16 +12,6 @@ using Emitters.Definitions;
 
 namespace Emitters.Items {
 	public partial class EmitterItem : ModItem, IBaseEmitterItem {
-		public static void OpenUI( Item emitterItem ) {
-			var mymod = EmittersMod.Instance;
-
-			mymod.EmitterEditorDialog.Open();
-			mymod.EmitterEditorDialog.SetItem( emitterItem );
-		}
-
-
-		////////////////
-
 		public static bool CanViewEmitters( Player plr, bool withWire ) {
 			return (withWire && WiresUI.Settings.DrawWires) || (
 					plr.HeldItem != null
@@ -146,6 +136,16 @@ namespace Emitters.Items {
 			}
 
 			return base.UseItem( player );
+		}
+
+
+		////////////////
+
+		public void OpenUI( Item emitterItem ) {
+			var mymod = EmittersMod.Instance;
+
+			mymod.EmitterEditorDialog.Open();
+			mymod.EmitterEditorDialog.SetItem( emitterItem );
 		}
 	}
 }

@@ -12,28 +12,6 @@ using Emitters.Definitions;
 
 namespace Emitters.Items {
 	public partial class SoundEmitterItem : ModItem, IBaseEmitterItem {
-		public static void OpenUI( Item soundEmitterItem ) {
-			var mymod = EmittersMod.Instance;
-			mymod.SoundEmitterEditorDialog.Open();
-			mymod.SoundEmitterEditorDialog.SetItem( soundEmitterItem );
-
-			/*var myitem = soundEmitterItem.modItem as SoundEmitterItem;
-			if( myitem.Def == null || !myitem.Def.IsActivated ) {
-				return;
-			}
-
-			Timers.RunUntil( () => {
-				if( myitem.Def.Timer++ >= myitem.Def.Delay ) {
-					myitem.Def.Timer = 0;
-					Main.PlaySound( myitem.Def.Type, -1, -1, myitem.Def.Style, myitem.Def.Volume, myitem.Def.Pitch );
-				}
-				return mymod.SoundEmitterEditorDialog.IsOpen;
-			}, true );*/
-		}
-
-
-		////////////////
-
 		public static bool CanViewSoundEmitters( Player plr, bool withWire ) {
 			return (withWire && WiresUI.Settings.DrawWires) || (
 					plr.HeldItem != null
@@ -122,7 +100,7 @@ namespace Emitters.Items {
 
 		////////////////
 
-		public override bool CanRightClick() {
+		/*public override bool CanRightClick() {
 			return true;
 		}
 
@@ -130,7 +108,7 @@ namespace Emitters.Items {
 			SoundEmitterItem.OpenUI( this.item );
 
 			return false;
-		}
+		}*/
 
 
 		////////////////
@@ -158,6 +136,15 @@ namespace Emitters.Items {
 			}
 
 			return base.UseItem( player );
+		}
+
+
+		////////////////
+
+		public void OpenUI( Item soundEmitterItem ) {
+			var mymod = EmittersMod.Instance;
+			mymod.SoundEmitterEditorDialog.Open();
+			mymod.SoundEmitterEditorDialog.SetItem( soundEmitterItem );
 		}
 	}
 }

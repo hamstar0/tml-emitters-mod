@@ -5,9 +5,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
-using Terraria.ModLoader.UI;
 using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Helpers.DotNET.Reflection;
 using Emitters.UI;
 using Emitters.Effects;
 
@@ -37,14 +35,10 @@ namespace Emitters {
 		public List<ArmorShaderData> ArmorShaders;
 		internal List<EmitterArmorShaderData> MyArmorShaders = new List<EmitterArmorShaderData>();
 
-		private Texture2D EditorButtonTex;
-		private Action EditorButtonAction = null;
-
 
 		////////////////
 
-		public int EditorButtonWidth => this.EditorButtonTex.Width;
-		public int EditorButtonHeight => this.EditorButtonTex.Height;
+		public EditorButton EditorButton { get; private set; }
 
 
 
@@ -56,7 +50,7 @@ namespace Emitters {
 
 		public override void Load() {
 			if( !Main.dedServ && Main.netMode != NetmodeID.Server ) {
-				ReflectionHelpers.Get( typeof(UICommon), null, "ButtonConfigTexture", out this.EditorButtonTex );
+				this.EditorButton = new EditorButton();
 
 				this.LoadArmorShaders();
 

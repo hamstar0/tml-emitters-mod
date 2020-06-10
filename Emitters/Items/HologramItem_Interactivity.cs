@@ -12,19 +12,6 @@ using Emitters.Definitions;
 
 namespace Emitters.Items {
 	public partial class HologramItem : ModItem, IBaseEmitterItem {
-
-		public static void OpenUI( Item hologramItem ) {
-			var mymod = EmittersMod.Instance;
-			mymod.HologramEditorDialog.Open();
-
-			if( !mymod.HologramEditorDialog.SetItem(hologramItem) ) {
-				mymod.HologramEditorDialog.Close();
-			}
-		}
-
-
-		////////////////
-
 		public static bool CanViewHolograms( Player plr, bool withWire ) {
 			return (withWire && WiresUI.Settings.DrawWires) || (
 					plr.HeldItem != null
@@ -113,7 +100,7 @@ namespace Emitters.Items {
 
 		////////////////
 
-		public override bool CanRightClick() {
+		/*public override bool CanRightClick() {
 			return true;
 		}
 
@@ -121,7 +108,7 @@ namespace Emitters.Items {
 			HologramItem.OpenUI( this.item );
 
 			return false;
-		}
+		}*/
 
 
 		////////////////
@@ -149,6 +136,18 @@ namespace Emitters.Items {
 			}
 
 			return base.UseItem( player );
+		}
+
+
+		////////////////
+
+		public void OpenUI( Item hologramItem ) {
+			var mymod = EmittersMod.Instance;
+			mymod.HologramEditorDialog.Open();
+
+			if( !mymod.HologramEditorDialog.SetItem( hologramItem ) ) {
+				mymod.HologramEditorDialog.Close();
+			}
 		}
 	}
 }
