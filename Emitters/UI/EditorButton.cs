@@ -37,17 +37,21 @@ namespace Emitters.UI {
 			this.EditorButtonAction = func;
 		}
 
+		/// <summary></summary>
+		/// <returns>`true` if mouse interaction has occurred.</returns>
 		public bool PressEditorButtonIfInteracting() {
 			if( this.EditorButtonAction == null ) {
 				return false;
 			}
 
-			if( Main.mouseLeft && Main.mouseLeftRelease ) {
+			bool isMouse = Main.mouseLeft && Main.mouseLeftRelease;
+			if( isMouse ) {
 				this.EditorButtonAction.Invoke();
 			}
+
 			this.EditorButtonAction = null;
 
-			return true;
+			return isMouse;
 		}
 
 
