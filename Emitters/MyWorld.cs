@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
 using Newtonsoft.Json;
+using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using HamstarHelpers.Helpers.Debug;
@@ -20,6 +21,7 @@ namespace Emitters {
 		
 		private IDictionary<ushort, IDictionary<ushort, HologramDefinition>> Holograms
 			= new ConcurrentDictionary<ushort, IDictionary<ushort, HologramDefinition>>();
+
 
 
 		////////////////
@@ -54,7 +56,8 @@ namespace Emitters {
 		private IDictionary<ushort, IDictionary<ushort, T>> LoadEmitterType<T>(
 					IDictionary<ushort, IDictionary<ushort, T>> dict2d,
 					TagCompound tag,
-					string prefix ) where T : BaseEmitterDefinition {
+					string prefix )
+					where T : BaseEmitterDefinition {
 			dict2d.Clear();
 
 			if( !tag.ContainsKey( prefix + "_count" ) ) {
@@ -88,7 +91,8 @@ namespace Emitters {
 		private void SaveEmitterType<T>(
 					TagCompound tag,
 					string prefix,
-					IDictionary<ushort, IDictionary<ushort, T>> dict2d ) where T : BaseEmitterDefinition {
+					IDictionary<ushort, IDictionary<ushort, T>> dict2d )
+					where T : BaseEmitterDefinition {
 			int count = dict2d.Count2D();
 
 			tag[ prefix+"_count" ] = count;
@@ -113,14 +117,25 @@ namespace Emitters {
 		////////////////
 
 		public override void NetReceive( BinaryReader reader ) {
-			this.Emitters.Clear();
-			this.SoundEmitters.Clear();
-			this.Holograms.Clear();
+			//this.Emitters.Clear();
+			//this.SoundEmitters.Clear();
+			//this.Holograms.Clear();
 
 			try {
 				int emitCount = reader.ReadInt32();
 				int sndEmitCount = reader.ReadInt32();
 				int hologramCount = reader.ReadInt32();
+
+				if( EmittersConfig.Instance.DebugModeNetInfo ) {
+					Main.NewText( "Receiving from server: "
+						+emitCount+" emitters, "
+						+sndEmitCount+" sound emitters, "
+						+hologramCount+" holograms." );
+					LogHelpers.Log( "Receiving from server: "
+						+emitCount+" emitters, "
+						+sndEmitCount+" sound emitters, "
+						+hologramCount+" holograms." );
+				}
 
 				this.NetReceiveEmitterType( emitCount, reader, this.Emitters );
 				this.NetReceiveEmitterType( sndEmitCount, reader, this.SoundEmitters );
@@ -132,7 +147,14 @@ namespace Emitters {
 			try {
 				writer.Write( (int)this.Emitters.Count2D() );
 				writer.Write( (int)this.SoundEmitters.Count2D() );
-				writer.Write((int)this.Holograms.Count2D());
+				writer.Write( (int)this.Holograms.Count2D() );
+
+				if( EmittersConfig.Instance.DebugModeNetInfo ) {
+					LogHelpers.Log( "Sending from server: "
+						+ this.Emitters.Count2D() + " emitters, "
+						+ this.SoundEmitters.Count2D() + " sound emitters, "
+						+ this.Holograms.Count2D() + " holograms." );
+				}
 
 				this.NetSendEmitterType( writer, this.Emitters );
 				this.NetSendEmitterType( writer, this.SoundEmitters );
@@ -145,8 +167,9 @@ namespace Emitters {
 		private void NetReceiveEmitterType<T>(
 					int count,
 					BinaryReader reader,
-					IDictionary<ushort, IDictionary<ushort, T>> dict2d ) where T : BaseEmitterDefinition {
-			dict2d.Clear();
+					IDictionary<ushort, IDictionary<ushort, T>> dict2d )
+					where T : BaseEmitterDefinition {
+			//dict2d.Clear();
 
 			for( int i = 0; i < count; i++ ) {
 				ushort tileX = reader.ReadUInt16();
@@ -154,16 +177,27 @@ namespace Emitters {
 				var def = Activator.CreateInstance<T>();
 				def.Read( reader );
 
+				if( EmittersConfig.Instance.DebugModeNetInfo ) {
+					LogHelpers.Log( " Receiving "+typeof(T).Name+" from server at "+tileX+", "+tileY
+						+":\n  "+def.ToString() );
+				}
+
 				dict2d.Set2D( tileX, tileY, def );
 			}
 		}
 
 		private void NetSendEmitterType<T>(
 					BinaryWriter writer,
-					IDictionary<ushort, IDictionary<ushort, T>> dict2d ) where T : BaseEmitterDefinition {
+					IDictionary<ushort, IDictionary<ushort, T>> dict2d )
+					where T : BaseEmitterDefinition {
 			try {
 				foreach( (ushort tileX, IDictionary<ushort, T> tileYs) in dict2d ) {
 					foreach( (ushort tileY, T def) in tileYs ) {
+						if( EmittersConfig.Instance.DebugModeNetInfo ) {
+							LogHelpers.Log( " Sending "+typeof(T).Name+" from server at "+tileX+", "+tileY
+								+ ":\n  " + def.ToString() );
+						}
+
 						writer.Write( tileX );
 						writer.Write( tileY );
 						def.Write( writer );

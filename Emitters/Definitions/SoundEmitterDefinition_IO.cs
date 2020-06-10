@@ -3,15 +3,13 @@
 
 namespace Emitters.Definitions {
 	public partial class SoundEmitterDefinition : BaseEmitterDefinition {
-		public override BaseEmitterDefinition Read( BinaryReader reader ) {
-			return new SoundEmitterDefinition(
-				type: (int)reader.ReadUInt16(),
-				style: (int)reader.ReadUInt16(),
-				volume: (float)reader.ReadSingle(),
-				pitch: (float)reader.ReadSingle(),
-				delay: (int)reader.ReadInt16(),
-				isActivated: (bool)reader.ReadBoolean()
-			);
+		public override void Read( BinaryReader reader ) {
+			this.Type = (int)reader.ReadUInt16();
+			this.Style = (int)reader.ReadUInt16();
+			this.Volume = (float)reader.ReadSingle();
+			this.Pitch = (float)reader.ReadSingle();
+			this.Delay = (int)reader.ReadUInt16();
+			this.IsActivated = (bool)reader.ReadBoolean();
 		}
 
 		public override void Write( BinaryWriter writer ) {

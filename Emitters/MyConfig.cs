@@ -26,6 +26,8 @@ namespace Emitters {
 
 		public bool DebugModeInfo { get; set; } = false;
 
+		public bool DebugModeNetInfo { get; set; } = false;
+
 		//
 
 		[DefaultValue( true )]

@@ -20,7 +20,7 @@ namespace Emitters.Definitions {
 
 		////////////////
 		
-		public abstract BaseEmitterDefinition Read( BinaryReader reader );
+		public abstract void Read( BinaryReader reader );
 
 		public abstract void Write( BinaryWriter writer );
 
