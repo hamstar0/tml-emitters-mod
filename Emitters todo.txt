@@ -10,6 +10,7 @@ Future considerations
 -	Add right-click option outside of inventory
 -	Add presets
 -	Add button to copy settings from placed emitter/hologram
+-	Draw "tile" tooltips over the top of players
 
 
 

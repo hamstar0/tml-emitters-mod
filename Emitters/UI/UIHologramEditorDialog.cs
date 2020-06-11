@@ -6,6 +6,7 @@ using HamstarHelpers.Classes.UI.Elements;
 using HamstarHelpers.Classes.UI.Elements.Slider;
 using HamstarHelpers.Classes.UI.Theme;
 using Emitters.Definitions;
+using Emitters.Helpers.UI;
 
 
 namespace Emitters.UI {
@@ -141,14 +142,12 @@ namespace Emitters.UI {
 
 			this.CachedHologramDef = def;
 
-			Vector2 scrCenter = Main.screenPosition + ( new Vector2( Main.screenWidth, Main.screenHeight ) * 0.5f );
-			Vector2 pos = Main.screenPosition
-				+ ( new Vector2( Main.mouseX, Main.mouseY ) * Main.UIScale );
-			pos = ( pos - scrCenter ) / Main.GameZoomTarget;
-			pos += scrCenter;
+			var mouseScr = new Vector2( Main.mouseX, Main.mouseY );
+			mouseScr = UIZoomHelpers.ApplyZoomFromScreenCenter( mouseScr, null, true, null, null );
+			var mouseWld = mouseScr + Main.screenPosition;
 
-			if( def.AnimateHologram(pos, true) ) {
-				def.DrawHologram( sb, pos, true );
+			if( def.AnimateHologram(mouseWld, true) ) {
+				def.DrawHologram( sb, mouseWld, true );
 			}
 		}
 	}

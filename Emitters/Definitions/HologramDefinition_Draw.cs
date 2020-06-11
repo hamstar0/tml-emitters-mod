@@ -10,7 +10,7 @@ using Emitters.Effects;
 namespace Emitters.Definitions {
 	public partial class HologramDefinition : BaseEmitterDefinition {
 		public void Draw( SpriteBatch sb, int tileX, int tileY, bool isOnScreen ) {
-			var wldPos = new Vector2( ( tileX << 4 ) + 8, ( tileY << 4 ) + 8 );
+			var wldPos = new Vector2( (tileX << 4) + 8, (tileY << 4) + 8 );
 
 			if( this.AnimateHologram( wldPos, false ) ) {
 				this.DrawHologram( sb, wldPos, false );
