@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
@@ -91,6 +92,19 @@ namespace Emitters.Definitions {
 		////
 
 		public int CurrentFrame { get; internal set; }
+
+		////
+
+		[Obsolete( "use ShaderMode" )]
+		public bool CrtEffect {
+			get => this.ShaderMode == HologramShaderMode.Custom;
+			//set => this.ShaderMode = value;
+			set => this.ShaderMode = this.ShaderMode;
+		}
+
+
+
+		////////////////
 
 		internal int CurrentFrameElapsedTicks = 0;
 

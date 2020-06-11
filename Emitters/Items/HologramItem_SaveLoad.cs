@@ -27,12 +27,38 @@ namespace Emitters.Items {
 
 		public override void Load( TagCompound tag ) {
 			try {
-				HologramMode mode = (HologramMode)tag.GetInt( "HologramMode" );
+				HologramMode mode;
+				if( !tag.ContainsKey( "HologramMode" ) ) {
+					mode = HologramMode.NPC;
+				} else {
+					mode = (HologramMode)tag.GetInt( "HologramMode" );
+				}
+
 				string entDefRaw = tag.GetString( "HologramType" );
+				int type = (int)this.LoadHologramType( mode, entDefRaw );
+
+				var shaderMode = HologramShaderMode.None;
+				if( tag.ContainsKey("HologramShaderMode") ) {
+					shaderMode = (HologramShaderMode)tag.GetInt( "HologramShaderMode" );
+				} else if( tag.ContainsKey("HologramCRTEffect") ) {
+					shaderMode = tag.GetBool("HologramCRTEffect")
+						? HologramShaderMode.Custom
+						: HologramShaderMode.None;
+				}
+
+				int shaderType = 0;
+				if( tag.ContainsKey("HologramShaderType") ) {
+					shaderType = tag.GetInt( "HologramShaderTime" );
+				}
+
+				float shaderTime = 1f;
+				if( tag.ContainsKey("HologramShaderTime") ) {
+					shaderTime = tag.GetFloat( "HologramShaderTime" );
+				}
 
 				this.Def = new HologramDefinition(
 					mode: mode,
-					type: (int)this.LoadHologramType( mode, entDefRaw ),
+					type: type,
 					scale: tag.GetFloat( "HologramScale" ),
 					color: new Color(
 						tag.GetByte( "HologramColorR" ),
@@ -48,9 +74,9 @@ namespace Emitters.Items {
 					frameEnd: tag.GetInt( "HologramFrameEnd" ),
 					frameRateTicks: tag.GetInt( "HologramFrameRateTicks" ),
 					worldLight: tag.GetBool( "HologramWorldLighting" ),
-					shaderMode: (HologramShaderMode)tag.GetInt( "HologramShaderMode" ),
-					shaderTime: tag.GetFloat( "HologramShaderTime" ),
-					shaderType: tag.GetInt( "HologramShaderType" ),
+					shaderMode: shaderMode,
+					shaderType: shaderType,
+					shaderTime: shaderTime,
 					isActivated: tag.GetBool( "HologramIsActivated" )
 				);
 			} catch { }
@@ -78,8 +104,8 @@ namespace Emitters.Items {
 				{ "HologramFrameRateTicks", (int)this.Def.FrameRateTicks },
 				{ "HologramWorldLighting", (bool)this.Def.WorldLighting },
 				{ "HologramShaderMode", (int)this.Def.ShaderMode },
-				{ "HologramShaderTime", (float)this.Def.ShaderTime},
 				{ "HologramShaderType", (int)this.Def.ShaderType },
+				{ "HologramShaderTime", (float)this.Def.ShaderTime},
 				{ "HologramIsActivated", (bool)this.Def.IsActivated },
 			};
 		}
