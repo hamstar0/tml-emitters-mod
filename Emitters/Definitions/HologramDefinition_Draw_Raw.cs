@@ -2,8 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Helpers.UI;
 using HamstarHelpers.Helpers.XNA;
+using Emitters.Helpers.UI;
 
 
 namespace Emitters.Definitions {
@@ -27,17 +27,10 @@ namespace Emitters.Definitions {
 
 			color *= (float)this.Alpha / 255f;
 
-			if( isUI ) {
-				scrPos = worldPos - Main.screenPosition;
-				//scrPos.X -= npcTexture.Width;
-				scrPos.X += this.OffsetX;
-				scrPos.Y += this.OffsetY;
-				scrPos *= Main.GameZoomTarget;
-			} else {
-				scrPos = UIHelpers.ConvertToScreenPosition( worldPos );
-				scrPos.X += this.OffsetX;
-				scrPos.Y += this.OffsetY;
-			}
+			scrPos = worldPos - Main.screenPosition;
+			scrPos.X += this.OffsetX;
+			scrPos.Y += this.OffsetY;
+			scrPos = UIZoomHelpers.ApplyZoomFromScreenCenter( scrPos, isUI ? (bool?)true : null, false, null, null );
 
 			if( this.Direction == -1 ) {
 				effects = SpriteEffects.FlipHorizontally;
