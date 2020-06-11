@@ -2,7 +2,6 @@
 using HamstarHelpers.Classes.UI.Elements;
 using HamstarHelpers.Classes.UI.Theme;
 using HamstarHelpers.Helpers.Debug;
-using HamstarHelpers.Services.Timers;
 
 
 namespace Emitters.UI {
