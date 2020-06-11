@@ -48,7 +48,7 @@ namespace Emitters.Items {
 
 				int shaderType = 0;
 				if( tag.ContainsKey("HologramShaderType") ) {
-					shaderType = tag.GetInt( "HologramShaderTime" );
+					shoaderType = tag.GetInt( "HologramShaderType" );
 				}
 
 				float shaderTime = 1f;
