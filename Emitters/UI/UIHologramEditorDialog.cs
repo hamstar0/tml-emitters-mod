@@ -5,6 +5,7 @@ using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Classes.UI.Elements;
 using HamstarHelpers.Classes.UI.Elements.Slider;
 using HamstarHelpers.Classes.UI.Theme;
+using HamstarHelpers.Helpers.Debug;
 using Emitters.Definitions;
 using Emitters.Helpers.UI;
 
@@ -83,7 +84,9 @@ namespace Emitters.UI {
 
 		////////////////
 
-		public UIHologramEditorDialog() : base( UITheme.Vanilla, 600, 500 ) { }
+		public UIHologramEditorDialog() : base( UITheme.Vanilla, 600, 500 ) {
+			this.OriginPercentVertical = 0f;
+		}
 
 
 		////////////////
@@ -114,8 +117,15 @@ namespace Emitters.UI {
 				break;
 			}
 
-			this.SetTopPosition( this.FullDialogHeight * -0.5f, 0.5f, 0f );
-			this.OuterContainer?.Height.Set( (this.FullDialogHeight - this.MainTabHeight) + tabHeight, 0f );
+			this.SetTopPosition(
+				pixels: this.FullDialogHeight * -0.5f,
+				percent: 0.5f,
+				originPercent: 0f
+			);
+			this.OuterContainer?.Height.Set(
+				pixels: (this.FullDialogHeight - this.MainTabHeight) + tabHeight,
+				precent: 0f
+			);
 
 			base.Recalculate();
 		}
@@ -143,7 +153,7 @@ namespace Emitters.UI {
 			this.CachedHologramDef = def;
 
 			var mouseScr = new Vector2( Main.mouseX, Main.mouseY );
-			mouseScr = UIZoomHelpers.ApplyZoomFromScreenCenter( mouseScr, null, true, null, null );
+			mouseScr = UIZoomHelpers.ApplyZoomFromScreenCenter( mouseScr, false, true, null, null );
 			var mouseWld = mouseScr + Main.screenPosition;
 
 			if( def.AnimateHologram(mouseWld, true) ) {

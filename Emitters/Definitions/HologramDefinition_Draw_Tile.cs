@@ -8,7 +8,9 @@ using HamstarHelpers.Helpers.UI;
 namespace Emitters.Definitions {
 	public partial class HologramDefinition : BaseEmitterDefinition {
 		public void DrawHologramTile( SpriteBatch sb, int tileX, int tileY ) {
-			Vector2 scr = UIHelpers.ConvertToScreenPosition( new Vector2( tileX << 4, tileY << 4 ) );
+			var wldPos = new Vector2( tileX << 4, tileY << 4 );
+			//Vector2 scr = UIHelpers.ConvertToScreenPosition( wldPos );
+			Vector2 scr = UIZoomHelpers.ApplyZoomFromScreenCenter( wldPos - Main.screenPosition, null, false, null, null );
 			Texture2D tex = EmittersMod.Instance.HologramTex;
 
 			sb.Draw(
