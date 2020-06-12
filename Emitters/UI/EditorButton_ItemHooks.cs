@@ -25,9 +25,11 @@ namespace Emitters.UI {
 				height: this.EditorButtonTex.Height
 			);
 
-			if( mouseRect.Contains( Main.mouseX, Main.mouseY ) ) {
-				this.DrawEditorButton( sb, newPos );
-			}
+			Color color = mouseRect.Contains( Main.mouseX, Main.mouseY )
+				? Color.White
+				: Color.White * 0.15f;
+
+			this.DrawEditorButton( sb, newPos, color );
 		}
 	}
 }
