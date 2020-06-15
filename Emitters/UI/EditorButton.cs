@@ -57,11 +57,11 @@ namespace Emitters.UI {
 
 		////////////////
 		
-		public void DrawEditorButton( SpriteBatch sb, Vector2 scrPos ) {
+		public void DrawEditorButton( SpriteBatch sb, Vector2 scrPos, Color color ) {
 			sb.Draw(
 				texture: this.EditorButtonTex,
 				position: scrPos,
-				color: Color.White
+				color: color
 			);
 		}
 	}

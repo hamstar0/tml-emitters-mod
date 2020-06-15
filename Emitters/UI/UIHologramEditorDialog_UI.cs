@@ -12,7 +12,6 @@ namespace Emitters.UI {
 		////////////////
 
 		public void SwitchTab( HologramUITab tab ) {
-
 			if( this.IsTabBeingSet ) { return; }
 			this.IsTabBeingSet = true;
 

@@ -24,7 +24,8 @@ namespace Emitters.Definitions {
 
 		public void DrawEmitterTile( SpriteBatch sb, int tileX, int tileY ) {
 			Vector2 wldPos = new Vector2( tileX << 4, tileY << 4 );
-			Vector2 scr = UIHelpers.ConvertToScreenPosition( wldPos );
+			//Vector2 scr = UIHelpers.ConvertToScreenPosition( wldPos );
+			Vector2 scr = UIZoomHelpers.ApplyZoomFromScreenCenter( wldPos - Main.screenPosition, null, false, null, null );
 
 			sb.Draw(
 				texture: EmittersMod.Instance.EmitterTex,

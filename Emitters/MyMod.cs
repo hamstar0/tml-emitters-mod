@@ -27,6 +27,7 @@ namespace Emitters {
 		internal Texture2D EmitterTex;
 		internal Texture2D SoundEmitterTex;
 		internal Texture2D HologramTex;
+
 		internal UIEmitterEditorDialog EmitterEditorDialog;
 		internal UISoundEmitterEditorDialog SoundEmitterEditorDialog;
 		internal UIHologramEditorDialog HologramEditorDialog;

@@ -95,7 +95,7 @@ namespace Emitters.Definitions {
 			return this.Mode.ToString();
 		}
 		public string RenderScale() {
-			return (this.Scale * 100f).ToString( "N0" );
+			return (this.Scale * 100f).ToString("N0") + "%";
 		}
 		public string RenderColor() {
 			Color color = this.Color;
@@ -112,13 +112,13 @@ namespace Emitters.Definitions {
 			return this.Rotation.ToString( "N2" );
 		}
 		public string RenderOffsetX() {
-			return this.OffsetX.ToString();
+			return this.OffsetX.ToString( "N2" );
 		}
 		public string RenderOffsetY() {
-			return this.OffsetY.ToString();
+			return this.OffsetY.ToString( "N2" );
 		}
 		public string RenderOffset() {
-			return this.OffsetX.ToString() + ", " + this.OffsetY.ToString();
+			return this.RenderOffsetX() + ", " + this.RenderOffsetY();
 		}
 		public string RenderFrameStart() {
 			return this.FrameStart.ToString();
@@ -139,7 +139,7 @@ namespace Emitters.Definitions {
 			return this.ShaderMode.ToString();
 		}
 		public string RenderShaderTime() {
-			return this.ShaderTime.ToString();
+			return this.ShaderTime.ToString( "N3" );
 		}
 		public string RenderShaderType() {
 			return this.ShaderType.ToString();

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 
 
 namespace Emitters.Definitions {
@@ -19,6 +20,14 @@ namespace Emitters.Definitions {
 		public float Scatter { get; set; }
 		public bool HasGravity { get; set; }
 		public bool HasLight { get; set; }
+
+		////
+
+		[Obsolete("use Transparency")]
+		public byte Alpha {
+			get => this.Transparency;
+			set => this.Transparency = value;
+		}
 
 
 

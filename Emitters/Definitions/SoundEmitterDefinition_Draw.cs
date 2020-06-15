@@ -21,11 +21,13 @@ namespace Emitters.Definitions {
 		////////////////
 
 		public void DrawSoundEmitterTile( SpriteBatch sb, int tileX, int tileY ) {
-			Vector2 scr = UIHelpers.ConvertToScreenPosition( new Vector2(tileX<<4, tileY<<4) );
+			var wldPos = new Vector2( tileX << 4, tileY << 4 );
+			//Vector2 scr = UIHelpers.ConvertToScreenPosition( wldPos );
+			Vector2 scrPos = UIZoomHelpers.ApplyZoomFromScreenCenter( wldPos - Main.screenPosition, null, false, null, null );
 
 			sb.Draw(
 				texture: EmittersMod.Instance.SoundEmitterTex,
-				position: scr,
+				position: scrPos,
 				sourceRectangle: null,
 				color: Color.White,
 				rotation: 0f,

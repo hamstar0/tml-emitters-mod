@@ -8,9 +8,9 @@ namespace Emitters.Items {
 	public partial class EmitterItem : ModItem, IBaseEmitterItem {
 		public override void ModifyTooltips( List<TooltipLine> tooltips ) {
 			int i = 1;
-			tooltips.Insert( i++, new TooltipLine(this.mod, "EmitterUI", "[c/00FF00:Right-click in inventory to adjust settings]") );
+			//tooltips.Insert( i++, new TooltipLine(this.mod, "EmitterUI", "[c/00FF00:Right-click in inventory to adjust settings]") );
 			//tooltips.Insert( i++, new TooltipLine(this.mod, "EmitterToggle", "[c/00FF00:Left-click in world to toggle activation]") );
-			tooltips.Insert( i++, new TooltipLine(this.mod, "EmitterRemove", "[c/00FF00:Right-click in world to remove]") );
+			tooltips.Insert( i++, new TooltipLine(this.mod, "EmitterRemove", "[c/00FF00:Right-click in world to reclaim]") );
 
 			if( this.Def == null ) {
 				return;

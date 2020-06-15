@@ -28,7 +28,7 @@ namespace Emitters.Definitions {
 			return this.Style.ToString();
 		}
 		public string RenderVolume() {
-			return ( this.Volume * 100f ).ToString( "N0" ) + "%";
+			return (this.Volume * 100f).ToString("N0") + "%";
 		}
 		public string RenderPitch() {
 			return this.Pitch.ToString( "N3" );

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Microsoft.Xna.Framework;
 
 
@@ -79,16 +78,16 @@ namespace Emitters.Definitions {
 			return this.Type.ToString();
 		}
 		public string RenderScale() {
-			return (this.Scale * 100f).ToString( "N0" ) + "%";
+			return (this.Scale * 100f).ToString("N0") + "%";
 		}
 		public string RenderDelay() {
 			return this.Delay.ToString();
 		}
 		public string RenderSpeedX() {
-			return this.SpeedX.ToString();
+			return this.SpeedX.ToString( "N2" );
 		}
 		public string RenderSpeedY() {
-			return this.SpeedY.ToString();
+			return this.SpeedY.ToString( "N2" );
 		}
 		public string RenderColor() {
 			Color color = this.Color;
