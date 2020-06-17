@@ -1,11 +1,13 @@
-﻿using Microsoft.Xna.Framework;
+﻿using HamstarHelpers.Classes.Errors;
+using HamstarHelpers.Helpers.DotNET.Reflection;
+using Microsoft.Xna.Framework;
 using System;
 using Terraria.ModLoader.Config;
 
 
 namespace Emitters.Definitions {
 	public partial class HologramDefinition : BaseEmitterDefinition {
-		public static EntityDefinition GetTypeDef( HologramMode mode, int type ) {
+		public static EntityDefinition GetEntDef( HologramMode mode, int type ) {
 			switch( mode ) {
 			case HologramMode.NPC:
 				return new NPCDefinition( type );
@@ -18,7 +20,7 @@ namespace Emitters.Definitions {
 			}
 		}
 
-		public static EntityDefinition GetTypeDef( HologramMode mode, string rawDef ) {
+		public static EntityDefinition GetEntDef( HologramMode mode, string rawDef ) {
 			switch( mode ) {
 			case HologramMode.NPC:
 				return NPCDefinition.FromString( rawDef );
@@ -31,13 +33,33 @@ namespace Emitters.Definitions {
 			}
 		}
 
+		public static EntityDefinition GetTypeDef( HologramMode mode, object objLiteral ) {
+			if( !ReflectionHelpers.Get(objLiteral, "mod", out string mod) ) {
+				return null;
+			}
+			if( !ReflectionHelpers.Get(objLiteral, "name", out string name) ) {
+				return null;
+			}
+
+			switch( mode ) {
+			case HologramMode.NPC:
+				return new NPCDefinition( mod, name );
+			case HologramMode.Item:
+				return new ItemDefinition( mod, name );
+			case HologramMode.Projectile:
+				return new ProjectileDefinition( mod, name );
+			default:
+				throw new NotImplementedException( "No such mode.." );
+			}
+		}
+
 
 
 		////////////////
 
 		public void Output(
 					out HologramMode mode,
-					out EntityDefinition typeDef,
+					out int type,
 					out float scale,
 					out Color color,
 					out byte alpha,
@@ -54,7 +76,7 @@ namespace Emitters.Definitions {
 					out int shaderType,
 					out bool isActivated ) {
 			mode = this.Mode;
-			typeDef = this.TypeDef;
+			type = this.Type;
 			scale = this.Scale;
 			color = this.Color;
 			alpha = this.Alpha;
@@ -74,7 +96,7 @@ namespace Emitters.Definitions {
 
 		public void Output(
 					out HologramMode mode,
-					out EntityDefinition typeDef,
+					out int type,
 					out float scale,
 					out byte colorR,
 					out byte colorG,
@@ -93,9 +115,10 @@ namespace Emitters.Definitions {
 					out int shaderType,
 					out bool isActivated ) {
 			Color color;
+
 			this.Output(
 				mode: out mode,
-				typeDef: out typeDef,
+				type: out type,
 				scale: out scale,
 				color: out color,
 				alpha: out alpha,
@@ -120,8 +143,8 @@ namespace Emitters.Definitions {
 
 		////////////////
 
-		public string RenderTypeDef() {
-			return this.TypeDef.ToString();
+		public string RenderType() {
+			return this.Type.ToString();
 		}
 		public string RenderMode() {
 			return this.Mode.ToString();
@@ -196,7 +219,7 @@ namespace Emitters.Definitions {
 		public string[] ToStringFields() {
 			return new string[] {
 				"Hologram Definition:",
-				/*"\n"+*/"Type: " + this.RenderTypeDef(),
+				/*"\n"+*/"Type: " + this.RenderType(),
 				/*"\n"+*/"Mode: " + this.RenderMode(),
 				/*"\n"+*/"Scale: " + this.RenderScale(),
 				/*"\n"+*/"Color: " + this.RenderColor(),

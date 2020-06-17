@@ -27,15 +27,15 @@ namespace Emitters.Definitions {
 		public void DrawHologram( SpriteBatch sb, Vector2 wldPos, bool isUI ) {
 			switch( this.Mode ) {
 			case HologramMode.NPC:
-				Main.instance.LoadNPC( this.TypeDef.Type );
+				Main.instance.LoadNPC( this.Type );
 				break;
 			case HologramMode.Projectile:
-				Main.instance.LoadProjectile( this.TypeDef.Type );
+				Main.instance.LoadProjectile( this.Type );
 				break;
 			}
 
-			Texture2D tex = HologramDefinition.GetTexture( this.Mode, this.TypeDef.Type );
-			var frameCount = HologramDefinition.GetFrameCount( this.Mode, this.TypeDef.Type );
+			Texture2D tex = HologramDefinition.GetTexture( this.Mode, this.Type );
+			var frameCount = HologramDefinition.GetFrameCount( this.Mode, this.Type );
 			var frameHeight = tex.Height / frameCount;
 
 			
@@ -122,7 +122,7 @@ namespace Emitters.Definitions {
 			fx.Parameters["RandValue"].SetValue( Main.rand.NextFloat() );
 			fx.Parameters["CyclePercent"].SetValue( cyclePerc );
 			fx.Parameters["Frame"].SetValue( (float)this.CurrentFrame );
-			fx.Parameters["FrameMax"].SetValue( (float)Main.npcFrameCount[this.TypeDef.Type] );
+			fx.Parameters["FrameMax"].SetValue( (float)Main.npcFrameCount[this.Type] );
 			fx.Parameters["UserColor"].SetValue( color.ToVector4() );
 			fx.Parameters["WaveScale"].SetValue( (float)color.A / 255f );	// TODO ?
 

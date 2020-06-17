@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Terraria.ModLoader.Config;
 using Emitters.Definitions;
 
 
@@ -19,7 +18,7 @@ namespace Emitters.Items {
 				}
 
 				string entDefRaw = tag.GetString( "HologramType" );
-				EntityDefinition typeDef = HologramDefinition.GetTypeDef( mode, entDefRaw );
+				int type = HologramDefinition.GetEntDef( mode, entDefRaw ).Type;
 
 				var shaderMode = HologramShaderMode.None;
 				if( tag.ContainsKey("HologramShaderMode") ) {
@@ -42,7 +41,7 @@ namespace Emitters.Items {
 
 				this.Def = new HologramDefinition(
 					mode: mode,
-					typeDef: typeDef,
+					type: type,
 					scale: tag.GetFloat( "HologramScale" ),
 					color: new Color(
 						tag.GetByte( "HologramColorR" ),
@@ -73,7 +72,7 @@ namespace Emitters.Items {
 
 			return new TagCompound {
 				{ "HologramMode", (int)this.Def.Mode },
-				{ "HologramType", (string)this.Def.TypeDef.ToString() },
+				{ "HologramType", (string)HologramDefinition.GetEntDef(this.Def.Mode, this.Def.Type).ToString() },
 				{ "HologramScale", (float)this.Def.Scale },
 				{ "HologramColorR", (byte)this.Def.Color.R },
 				{ "HologramColorG", (byte)this.Def.Color.G },

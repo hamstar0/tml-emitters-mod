@@ -1,8 +1,14 @@
-﻿using System.IO;
+﻿using System;
+using System.Dynamic;
+using System.IO;
 
 
 namespace Emitters.Definitions {
 	public partial class SoundEmitterDefinition : BaseEmitterDefinition {
+		public override void ReadDynamic( ExpandoObject obj ) {
+			throw new NotImplementedException( "No dynamic object support." );
+		}
+
 		public override void Read( BinaryReader reader ) {
 			this.Type = (int)reader.ReadUInt16();
 			this.Style = (int)reader.ReadUInt16();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Dynamic;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader.Config;
@@ -31,6 +32,10 @@ namespace Emitters.Definitions {
 
 		////////////////
 
+		public override void ReadDynamic( ExpandoObject obj ) {
+			throw new NotImplementedException();
+		}
+
 		public override void Read( BinaryReader reader ) {
 			throw new NotImplementedException();
 		}
@@ -45,7 +50,7 @@ namespace Emitters.Definitions {
 		public HologramDefinition ConvertToNew() {
 			return new HologramDefinition(
 				mode: HologramMode.NPC,
-				typeDef: this.Type,
+				type: this.Type.Type,
 				scale: this.Scale,
 				color: this.Color,
 				alpha: this.Alpha,

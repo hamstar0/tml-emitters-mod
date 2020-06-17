@@ -1,4 +1,5 @@
 using System;
+using System.Dynamic;
 using System.IO;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
@@ -93,7 +94,20 @@ namespace Emitters {
 					ushort tileY = (ushort)tag.GetInt( prefix + "_" + i + "_y" );
 					string rawDef = tag.GetString( prefix + "_" + i );
 
-					var def = JsonConvert.DeserializeObject<T>( rawDef );
+					T def;
+					try {
+						def = JsonConvert.DeserializeObject<T>( rawDef );
+					} catch {
+						try {
+							var dynDef = JsonConvert.DeserializeObject<ExpandoObject>( rawDef );
+							def = (T)Activator.CreateInstance( typeof( T ) );
+							def.ReadDynamic( dynDef );
+						} catch {
+							LogHelpers.Alert( "Could not load " + prefix + " at " + tileX + ", " + tileY );
+							continue;
+						}
+					}
+
 					def.Activate( tag.GetBool( prefix + "_" + i + "_on" ) );
 
 					dict2d.Set2D( tileX, tileY, def );
@@ -121,9 +135,7 @@ namespace Emitters {
 			foreach( (ushort tileX, IDictionary<ushort, T> tileYs) in dict2d ) {
 				foreach( (ushort tileY, T def) in tileYs ) {
 					if( def == null ) {
-						if( EmittersConfig.Instance.DebugModeInfo ) {
-							LogHelpers.Log( "Could not save "+prefix+" at "+tileX+", "+tileY );
-						}
+						LogHelpers.Alert( "Could not save "+prefix+" at "+tileX+", "+tileY );
 						count--;
 						continue;
 					}

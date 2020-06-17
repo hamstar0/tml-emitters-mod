@@ -4,7 +4,7 @@ using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Classes.UI.Elements;
 using Emitters.Definitions;
 using Emitters.Items;
-using Terraria.ModLoader.Config;
+
 
 namespace Emitters.UI {
 	partial class UIHologramEditorDialog : UIDialog {
@@ -21,7 +21,7 @@ namespace Emitters.UI {
 			this.SetHologramMode( myitem.Def.Mode );
 			this.SetHologramShaderMode( myitem.Def.ShaderMode );
 
-			this.TypeSlider.SetValue( myitem.Def.TypeDef.Type );
+			this.TypeSlider.SetValue( myitem.Def.Type );
 			this.HueSlider.SetValue( hsl.X );
 			this.SaturationSlider.SetValue( hsl.Y );
 			this.LightnessSlider.SetValue( hsl.Z );
@@ -52,11 +52,10 @@ namespace Emitters.UI {
 
 		public HologramDefinition CreateHologramDefinition() {
 			var mode = (HologramMode)this.CurrentMode;
-			EntityDefinition typeDef = HologramDefinition.GetTypeDef( mode, (int)this.TypeSlider.RememberedInputValue );
 
 			return new HologramDefinition(
 				mode: mode,
-				typeDef: typeDef,
+				type: (int)this.TypeSlider.RememberedInputValue,
 				scale: this.ScaleSlider.RememberedInputValue,
 				color: this.GetColor(),
 				alpha: (byte)this.AlphaSlider.RememberedInputValue,

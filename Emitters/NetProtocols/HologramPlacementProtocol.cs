@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Config;
 using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Classes.Protocols.Packet.Interfaces;
 using HamstarHelpers.Helpers.Players;
@@ -31,7 +30,7 @@ namespace Emitters.NetProtocols {
 		public ushort TileY;
 
 		public int Mode;
-		public string TypeDefRaw;
+		public int Type;
 		public float Scale;
 		public byte ColorR;
 		public byte ColorG;
@@ -59,10 +58,9 @@ namespace Emitters.NetProtocols {
 		private HologramPlacementProtocol( int fromWho, HologramDefinition def, ushort tileX, ushort tileY ) {
 			HologramMode mode;
 			HologramShaderMode shaderMode;
-			EntityDefinition typeDef;
 
 			def.Output(
-				typeDef: out typeDef,
+				type: out this.Type,
 				mode: out mode,
 				scale: out this.Scale,
 				colorR: out this.ColorR,
@@ -83,7 +81,6 @@ namespace Emitters.NetProtocols {
 				isActivated: out this.IsActivated
 			) ;
 
-			this.TypeDefRaw = typeDef.ToString();
 			this.Mode = (int)mode;
 			this.ShaderMode = (int)shaderMode;
 
@@ -97,7 +94,7 @@ namespace Emitters.NetProtocols {
 
 		private HologramDefinition GetNewHologram() => new HologramDefinition(
 			mode: (HologramMode)this.Mode,
-			typeDef: HologramDefinition.GetTypeDef( (HologramMode)this.Mode, this.TypeDefRaw ),
+			type: this.Type,
 			scale: this.Scale,
 			color: new Color( this.ColorR, this.ColorG, this.ColorB ),
 			alpha: this.Alpha,
