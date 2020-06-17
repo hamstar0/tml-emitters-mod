@@ -62,9 +62,9 @@ namespace Emitters {
 				//var scanlinesCRT = new Ref<Effect>( this.HologramFX );
 				//GameShaders.Misc["Emitters:ScanlinesPS"] = new MiscShaderData( scanlinesCRT, "P0" )
 				//	.UseImage( "Images/Misc/Perlin" );	//?
-
-				IL.Terraria.Wiring.HitWireSingle += HookWireHit;
 			}
+
+			IL.Terraria.Wiring.HitWireSingle += this.HookWireHit;
 		}
 
 		private void LoadArmorShaders() {

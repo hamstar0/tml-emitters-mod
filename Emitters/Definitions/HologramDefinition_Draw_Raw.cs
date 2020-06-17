@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using HamstarHelpers.Helpers.Debug;
 using HamstarHelpers.Helpers.XNA;
-using Emitters.Helpers.UI;
+using HamstarHelpers.Helpers.UI;
 
 
 namespace Emitters.Definitions {

@@ -1,11 +1,43 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
+using Terraria.ModLoader.Config;
 
 
 namespace Emitters.Definitions {
 	public partial class HologramDefinition : BaseEmitterDefinition {
+		public static EntityDefinition GetTypeDef( HologramMode mode, int type ) {
+			switch( mode ) {
+			case HologramMode.NPC:
+				return new NPCDefinition( type );
+			case HologramMode.Item:
+				return new ItemDefinition( type );
+			case HologramMode.Projectile:
+				return new ProjectileDefinition( type );
+			default:
+				throw new NotImplementedException( "No such mode." );
+			}
+		}
+
+		public static EntityDefinition GetTypeDef( HologramMode mode, string rawDef ) {
+			switch( mode ) {
+			case HologramMode.NPC:
+				return NPCDefinition.FromString( rawDef );
+			case HologramMode.Item:
+				return ItemDefinition.FromString( rawDef );
+			case HologramMode.Projectile:
+				return ProjectileDefinition.FromString( rawDef );
+			default:
+				throw new NotImplementedException( "No such mode.." );
+			}
+		}
+
+
+
+		////////////////
+
 		public void Output(
-					out int type,
 					out HologramMode mode,
+					out EntityDefinition typeDef,
 					out float scale,
 					out Color color,
 					out byte alpha,
@@ -21,8 +53,8 @@ namespace Emitters.Definitions {
 					out float shaderTime,
 					out int shaderType,
 					out bool isActivated ) {
-			type = this.Type;
 			mode = this.Mode;
+			typeDef = this.TypeDef;
 			scale = this.Scale;
 			color = this.Color;
 			alpha = this.Alpha;
@@ -41,8 +73,8 @@ namespace Emitters.Definitions {
 		}
 
 		public void Output(
-					out int type,
 					out HologramMode mode,
+					out EntityDefinition typeDef,
 					out float scale,
 					out byte colorR,
 					out byte colorG,
@@ -62,8 +94,8 @@ namespace Emitters.Definitions {
 					out bool isActivated ) {
 			Color color;
 			this.Output(
-				type: out type,
 				mode: out mode,
+				typeDef: out typeDef,
 				scale: out scale,
 				color: out color,
 				alpha: out alpha,
@@ -88,8 +120,8 @@ namespace Emitters.Definitions {
 
 		////////////////
 
-		public string RenderType() {
-			return this.Type.ToString();
+		public string RenderTypeDef() {
+			return this.TypeDef.ToString();
 		}
 		public string RenderMode() {
 			return this.Mode.ToString();
@@ -164,7 +196,7 @@ namespace Emitters.Definitions {
 		public string[] ToStringFields() {
 			return new string[] {
 				"Hologram Definition:",
-				/*"\n"+*/"Type: " + this.RenderType(),
+				/*"\n"+*/"Type: " + this.RenderTypeDef(),
 				/*"\n"+*/"Mode: " + this.RenderMode(),
 				/*"\n"+*/"Scale: " + this.RenderScale(),
 				/*"\n"+*/"Color: " + this.RenderColor(),

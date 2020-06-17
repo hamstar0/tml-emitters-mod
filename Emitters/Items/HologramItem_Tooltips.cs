@@ -17,7 +17,7 @@ namespace Emitters.Items {
 			}
 
 			var modeTip = new TooltipLine( this.mod, "HologramMode", " Mode: " + this.Def.RenderMode() );
-			var typeTip = new TooltipLine( this.mod, "HologramType", " Type: " + this.Def.RenderType() );
+			var typeTip = new TooltipLine( this.mod, "HologramType", " Type Definition: " + this.Def.RenderTypeDef() );
 			var scaleTip = new TooltipLine( this.mod, "HologramScale", " Scale: " + this.Def.RenderScale() );
 			var colorTip = new TooltipLine( this.mod, "HologramColor", " Color: " + this.Def.RenderColor() );
 			//var alphaTip = new TooltipLine( this.mod, "HologramAlpha", " Alpha: " + this.Def.RenderAlpha() );

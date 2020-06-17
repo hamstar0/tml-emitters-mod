@@ -8,7 +8,7 @@ namespace Emitters.Definitions {
 			if( !this.IsActivated ) {
 				return false;
 			}
-			if( HologramDefinition.IsBadType(this.Mode, this.Type) ) {
+			if( this.TypeDef == null ) {
 				return false;
 			}
 
