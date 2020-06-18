@@ -2,10 +2,10 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using HamstarHelpers.Classes.Errors;
+using HamstarHelpers.Helpers.Debug;
+using Terraria.ModLoader;
 
 
 namespace Emitters.Definitions {
@@ -23,24 +23,24 @@ namespace Emitters.Definitions {
 
 
 
-
 	public partial class HologramDefinition : BaseEmitterDefinition {
 		public static bool IsBadType( HologramMode mode, int type ) {
-			if( type < NPCID.Count ) {
-				return false;
-			}
-
 			switch( mode ) {
 			case HologramMode.NPC:
+				if( type < Main.npcTexture.Length ) { return false; }
 				return NPCLoader.GetNPC( type ) == null;
 			case HologramMode.Item:
+				if( type < Main.itemTexture.Length ) { return false; }
 				return ItemLoader.GetItem( type ) == null;
 			case HologramMode.Projectile:
+				if( type < Main.projectileTexture.Length ) { return false; }
 				return ProjectileLoader.GetProjectile( type ) == null;
 			default:
 				throw new ModHelpersException( "Invalid hologram type" );
 			}
 		}
+
+		////
 
 		public static Texture2D GetTexture( HologramMode mode, int type ) {
 			switch( mode ) {
@@ -73,20 +73,35 @@ namespace Emitters.Definitions {
 		////////////////
 
 		public HologramMode Mode { get; set; }
+
 		public int Type { get; set; }
+
 		public float Scale { get; set; }
+
 		public Color Color { get; set; }
+
 		public byte Alpha { get; set; }
+
 		public int Direction { get; set; }
+
 		public float Rotation { get; set; }
+
 		public int OffsetX { get; set; }
+
 		public int OffsetY { get; set; }
+
 		public int FrameStart { get; set; }
+
 		public int FrameEnd { get; set; }
+
 		public int FrameRateTicks { get; set; }
+
 		public bool WorldLighting { get; set; }
+
 		public HologramShaderMode ShaderMode { get; set; }
+
 		public float ShaderTime { get; set; }
+
 		public int ShaderType { get; set; }
 
 		////
@@ -95,7 +110,7 @@ namespace Emitters.Definitions {
 
 		////
 
-		[Obsolete( "use ShaderMode" )]
+		[Obsolete( "use ShaderMode", true )]
 		public bool CrtEffect {
 			get => this.ShaderMode == HologramShaderMode.Custom;
 			//set => this.ShaderMode = value;
@@ -174,22 +189,6 @@ namespace Emitters.Definitions {
 			this.IsActivated = isActivated;
 
 			this.CurrentFrame = frameStart;
-		}
-
-
-		////////////////
-
-		public EntityDefinition SetHologramType() {
-			switch( this.Mode ) {
-			case HologramMode.NPC:
-				return new NPCDefinition( this.Type );
-			case HologramMode.Item:
-				return new ItemDefinition( this.Type );
-			case HologramMode.Projectile:
-				return new ProjectileDefinition( this.Type );
-			default:
-				throw new ModHelpersException( "Invalid hologram type" );
-			}
 		}
 
 

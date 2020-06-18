@@ -125,7 +125,7 @@ namespace Emitters.Items {
 			Timers.SetTimer( timerName, 15, false, () => false );
 
 			if( this.Def == null ) {
-				Main.NewText( "Hologram settings must be first specified (right-click item)." );
+				Main.NewText( "Hologram settings must be first set." );
 				return base.UseItem( player );
 			}
 

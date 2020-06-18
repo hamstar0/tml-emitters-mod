@@ -1,11 +1,65 @@
-﻿using Microsoft.Xna.Framework;
+﻿using HamstarHelpers.Classes.Errors;
+using HamstarHelpers.Helpers.DotNET.Reflection;
+using Microsoft.Xna.Framework;
+using System;
+using Terraria.ModLoader.Config;
 
 
 namespace Emitters.Definitions {
 	public partial class HologramDefinition : BaseEmitterDefinition {
+		public static EntityDefinition GetEntDef( HologramMode mode, int type ) {
+			switch( mode ) {
+			case HologramMode.NPC:
+				return new NPCDefinition( type );
+			case HologramMode.Item:
+				return new ItemDefinition( type );
+			case HologramMode.Projectile:
+				return new ProjectileDefinition( type );
+			default:
+				throw new NotImplementedException( "No such mode." );
+			}
+		}
+
+		public static EntityDefinition GetEntDef( HologramMode mode, string rawDef ) {
+			switch( mode ) {
+			case HologramMode.NPC:
+				return NPCDefinition.FromString( rawDef );
+			case HologramMode.Item:
+				return ItemDefinition.FromString( rawDef );
+			case HologramMode.Projectile:
+				return ProjectileDefinition.FromString( rawDef );
+			default:
+				throw new NotImplementedException( "No such mode.." );
+			}
+		}
+
+		public static EntityDefinition GetTypeDef( HologramMode mode, object objLiteral ) {
+			if( !ReflectionHelpers.Get(objLiteral, "mod", out string mod) ) {
+				return null;
+			}
+			if( !ReflectionHelpers.Get(objLiteral, "name", out string name) ) {
+				return null;
+			}
+
+			switch( mode ) {
+			case HologramMode.NPC:
+				return new NPCDefinition( mod, name );
+			case HologramMode.Item:
+				return new ItemDefinition( mod, name );
+			case HologramMode.Projectile:
+				return new ProjectileDefinition( mod, name );
+			default:
+				throw new NotImplementedException( "No such mode.." );
+			}
+		}
+
+
+
+		////////////////
+
 		public void Output(
-					out int type,
 					out HologramMode mode,
+					out int type,
 					out float scale,
 					out Color color,
 					out byte alpha,
@@ -21,8 +75,8 @@ namespace Emitters.Definitions {
 					out float shaderTime,
 					out int shaderType,
 					out bool isActivated ) {
-			type = this.Type;
 			mode = this.Mode;
+			type = this.Type;
 			scale = this.Scale;
 			color = this.Color;
 			alpha = this.Alpha;
@@ -41,8 +95,8 @@ namespace Emitters.Definitions {
 		}
 
 		public void Output(
-					out int type,
 					out HologramMode mode,
+					out int type,
 					out float scale,
 					out byte colorR,
 					out byte colorG,
@@ -61,9 +115,10 @@ namespace Emitters.Definitions {
 					out int shaderType,
 					out bool isActivated ) {
 			Color color;
+
 			this.Output(
-				type: out type,
 				mode: out mode,
+				type: out type,
 				scale: out scale,
 				color: out color,
 				alpha: out alpha,

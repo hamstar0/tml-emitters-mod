@@ -51,8 +51,10 @@ namespace Emitters.UI {
 		////////////////
 
 		public HologramDefinition CreateHologramDefinition() {
+			var mode = (HologramMode)this.CurrentMode;
+
 			return new HologramDefinition(
-				mode: (HologramMode)this.CurrentMode,
+				mode: mode,
 				type: (int)this.TypeSlider.RememberedInputValue,
 				scale: this.ScaleSlider.RememberedInputValue,
 				color: this.GetColor(),

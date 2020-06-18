@@ -1,4 +1,5 @@
 using System;
+using System.Dynamic;
 using System.IO;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
@@ -38,8 +39,27 @@ namespace Emitters {
 		public override void Load( TagCompound tag ) {
 			this.LoadEmitterType( this.Emitters, tag, "emitter" );
 			this.LoadEmitterType( this.SoundEmitters, tag, "snd_emitter" );
-			this.LoadEmitterType( this.Holograms, tag, "hologram" );
+
+			if( !this.LoadEmitterType( this.Holograms, tag, "hologram" ) ) {
+				var oldHolos = new Dictionary<ushort, IDictionary<ushort, OldHologramDefinition>>();
+
+				if( this.LoadEmitterType( oldHolos, tag, "hologram" ) ) {
+					this.LoadOldHolograms( oldHolos );
+				}
+			}
 		}
+		
+		public void LoadOldHolograms( IDictionary<ushort, IDictionary<ushort, OldHologramDefinition>> oldHolos ) {
+			this.Holograms.Clear();
+
+			foreach( (ushort tileX, IDictionary<ushort, OldHologramDefinition> tileYs) in oldHolos ) {
+				foreach( (ushort tileY, OldHologramDefinition oldHoloDef) in tileYs ) {
+					this.Holograms.Set2D( tileX, tileY, oldHoloDef.ConvertToNew() );
+				}
+			}
+		}
+
+		////
 
 		public override TagCompound Save() {
 			var tag = new TagCompound();
@@ -51,9 +71,10 @@ namespace Emitters {
 			return tag;
 		}
 
-		////
 
-		private IDictionary<ushort, IDictionary<ushort, T>> LoadEmitterType<T>(
+		////////////////
+
+		private bool LoadEmitterType<T>(
 					IDictionary<ushort, IDictionary<ushort, T>> dict2d,
 					TagCompound tag,
 					string prefix )
@@ -61,9 +82,10 @@ namespace Emitters {
 			dict2d.Clear();
 
 			if( !tag.ContainsKey( prefix + "_count" ) ) {
-				return null;
+				return true;
 			}
 
+			bool success = true;
 			int count = tag.GetInt( prefix + "_count" );
 
 			try {
@@ -72,7 +94,20 @@ namespace Emitters {
 					ushort tileY = (ushort)tag.GetInt( prefix + "_" + i + "_y" );
 					string rawDef = tag.GetString( prefix + "_" + i );
 
-					var def = JsonConvert.DeserializeObject<T>( rawDef );
+					T def;
+					try {
+						def = JsonConvert.DeserializeObject<T>( rawDef );
+					} catch {
+						try {
+							var dynDef = JsonConvert.DeserializeObject<ExpandoObject>( rawDef );
+							def = (T)Activator.CreateInstance( typeof( T ) );
+							def.ReadDynamic( dynDef );
+						} catch {
+							LogHelpers.Alert( "Could not load " + prefix + " at " + tileX + ", " + tileY );
+							continue;
+						}
+					}
+
 					def.Activate( tag.GetBool( prefix + "_" + i + "_on" ) );
 
 					dict2d.Set2D( tileX, tileY, def );
@@ -83,9 +118,10 @@ namespace Emitters {
 				}
 			} catch( Exception e ) {
 				LogHelpers.Warn( e.ToString() );
+				success = false;
 			}
 
-			return dict2d;
+			return success;
 		}
 
 		private void SaveEmitterType<T>(
@@ -95,11 +131,15 @@ namespace Emitters {
 					where T : BaseEmitterDefinition {
 			int count = dict2d.Count2D();
 
-			tag[ prefix+"_count" ] = count;
-
 			int i = 0;
 			foreach( (ushort tileX, IDictionary<ushort, T> tileYs) in dict2d ) {
 				foreach( (ushort tileY, T def) in tileYs ) {
+					if( def == null ) {
+						LogHelpers.Alert( "Could not save "+prefix+" at "+tileX+", "+tileY );
+						count--;
+						continue;
+					}
+
 					tag[prefix+"_"+i+"_x"] = (int)tileX;
 					tag[prefix+"_"+i+"_y"] = (int)tileY;
 					tag[prefix+"_"+i] = (string)JsonConvert.SerializeObject( def );
@@ -111,6 +151,8 @@ namespace Emitters {
 					}
 				}
 			}
+
+			tag[prefix + "_count"] = count;
 		}
 
 

@@ -2,12 +2,12 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using HamstarHelpers.Classes.Errors;
+using HamstarHelpers.Helpers.UI;
 using HamstarHelpers.Classes.UI.Elements;
 using HamstarHelpers.Classes.UI.Elements.Slider;
 using HamstarHelpers.Classes.UI.Theme;
 using HamstarHelpers.Helpers.Debug;
 using Emitters.Definitions;
-using Emitters.Helpers.UI;
 
 
 namespace Emitters.UI {

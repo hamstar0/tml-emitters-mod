@@ -3,28 +3,11 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Terraria.ModLoader.Config;
 using Emitters.Definitions;
 
 
 namespace Emitters.Items {
 	public partial class HologramItem : ModItem, IBaseEmitterItem {
-		public int LoadHologramType( HologramMode mode, string entDefRaw ) {
-			switch( mode ) {
-			case HologramMode.NPC:
-				return NPCDefinition.FromString( entDefRaw ).Type;
-			case HologramMode.Item:
-				return ItemDefinition.FromString( entDefRaw ).Type;
-			case HologramMode.Projectile:
-				return ProjectileDefinition.FromString( entDefRaw ).Type;
-			}
-
-			throw new NotImplementedException( "Invalid hologram mode." );
-		}
-
-
-		////
-
 		public override void Load( TagCompound tag ) {
 			try {
 				HologramMode mode;
@@ -35,7 +18,7 @@ namespace Emitters.Items {
 				}
 
 				string entDefRaw = tag.GetString( "HologramType" );
-				int type = (int)this.LoadHologramType( mode, entDefRaw );
+				int type = HologramDefinition.GetEntDef( mode, entDefRaw ).Type;
 
 				var shaderMode = HologramShaderMode.None;
 				if( tag.ContainsKey("HologramShaderMode") ) {
@@ -89,7 +72,7 @@ namespace Emitters.Items {
 
 			return new TagCompound {
 				{ "HologramMode", (int)this.Def.Mode },
-				{ "HologramType", (string)this.Def.SetHologramType().ToString() },
+				{ "HologramType", (string)HologramDefinition.GetEntDef(this.Def.Mode, this.Def.Type).ToString() },
 				{ "HologramScale", (float)this.Def.Scale },
 				{ "HologramColorR", (byte)this.Def.Color.R },
 				{ "HologramColorG", (byte)this.Def.Color.G },

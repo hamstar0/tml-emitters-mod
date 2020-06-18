@@ -1,13 +1,66 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Dynamic;
 using Microsoft.Xna.Framework;
+using Newtonsoft.Json;
 using HamstarHelpers.Classes.Errors;
+using HamstarHelpers.Helpers.Debug;
 
 
 namespace Emitters.Definitions {
 	public partial class HologramDefinition : BaseEmitterDefinition {
+		public override void ReadDynamic( ExpandoObject obj ) {
+			var objDict = (IDictionary<string, object>)obj;
+
+			if( objDict.ContainsKey("Mode") ) {
+				this.Mode = (HologramMode)(long)objDict["Mode"];
+			} else {
+				this.Mode = HologramMode.NPC;
+			}
+
+			this.Type = (int)(long)objDict["Type"];
+			this.Scale = (float)(double)objDict["Scale"];
+			this.Color = JsonConvert.DeserializeObject<Color>( "\""+objDict["Color"]+"\"" );
+			this.Alpha = (byte)(long)objDict["Alpha"];
+			this.Direction = (int)(long)objDict["Direction"];
+			this.Rotation = (float)(double)objDict["Rotation"];
+			this.OffsetX = (int)(long)objDict["OffsetX"];
+			this.OffsetY = (int)(long)objDict["OffsetY"];
+			this.FrameStart = (int)(long)objDict["FrameStart"];
+			this.FrameEnd = (int)(long)objDict["FrameEnd"];
+			this.FrameRateTicks = (int)(long)objDict["FrameRateTicks"];
+			this.WorldLighting = (bool)objDict["WorldLighting"];
+
+			if( objDict.ContainsKey("ShaderMode") ) {
+				this.ShaderMode = (HologramShaderMode)(long)objDict["ShaderMode"];
+				this.ShaderTime = (float)(double)objDict["ShaderTime"];
+				this.ShaderType = (int)(long)objDict["ShaderType"];
+			} else if( objDict.ContainsKey("CrtEffect") ) {
+				this.ShaderMode = (bool)objDict["CrtEffect"]
+					? HologramShaderMode.None
+					: HologramShaderMode.Custom;
+				this.ShaderTime = 1f;
+				this.ShaderType = 0;
+			} else {
+				this.ShaderMode = HologramShaderMode.None;
+				this.ShaderTime = 1f;
+				this.ShaderType = 0;
+			}
+
+			this.IsActivated = (bool)objDict["IsActivated"];
+
+			//Color color = this.Color;
+			//color.A = this.Alpha;
+			//this.Color = color;
+		}
+
+		////
+
 		public override void Read( BinaryReader reader ) {
 			this.Mode = (HologramMode)reader.ReadUInt16();
-			this.Type = (int)reader.ReadUInt16();
+
+			this.Type = reader.ReadInt32();
 			this.Scale = (float)reader.ReadSingle();
 			this.Color = new Color(
 				(byte)reader.ReadByte(),
@@ -31,7 +84,7 @@ namespace Emitters.Definitions {
 
 		public override void Write( BinaryWriter writer ) {
 			writer.Write( (ushort)this.Mode );
-			writer.Write( (ushort)this.Type );
+			writer.Write( (int)this.Type );
 			writer.Write( (float)this.Scale );
 			writer.Write( (byte)this.Color.R );
 			writer.Write( (byte)this.Color.G );

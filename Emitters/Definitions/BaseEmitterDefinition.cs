@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Dynamic;
 using Terraria;
 using HamstarHelpers.Classes.Errors;
 
@@ -20,6 +21,8 @@ namespace Emitters.Definitions {
 
 		////////////////
 		
+		public abstract void ReadDynamic( ExpandoObject obj );
+
 		public abstract void Read( BinaryReader reader );
 
 		public abstract void Write( BinaryWriter writer );
