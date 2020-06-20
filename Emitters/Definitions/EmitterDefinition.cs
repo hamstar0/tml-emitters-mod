@@ -11,11 +11,11 @@ namespace Emitters.Definitions {
 
 		public bool IsGoreMode { get; set; }
 		public int Type { get; set; }
-		public float Scale { get; set; }
+		public float Scale { get; set; } = 1f;
 		public int Delay { get; set; }
 		public float SpeedX { get; set; }
 		public float SpeedY { get; set; }
-		public Color Color { get; set; }
+		public Color Color { get; set; } = Color.White;
 		public byte Transparency { get; set; }
 		public float Scatter { get; set; }
 		public bool HasGravity { get; set; }
