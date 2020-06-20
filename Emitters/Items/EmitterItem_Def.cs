@@ -6,7 +6,7 @@ using Emitters.Definitions;
 
 
 namespace Emitters.Items {
-	public partial class EmitterItem : ModItem, IBaseEmitterItem {
+	public partial class EmitterItem : ModItem, IBaseEmitterItem<EmitterDefinition> {
 		public EmitterDefinition Def { get; private set; } = null;
 
 
@@ -59,8 +59,7 @@ namespace Emitters.Items {
 
 		////////////////
 
-		public void SetEmitterDefinition( EmitterDefinition def ) {
-//Main.NewText( def.ToString() );
+		public void SetDefinition( EmitterDefinition def ) {
 			this.Def = def;
 		}
 

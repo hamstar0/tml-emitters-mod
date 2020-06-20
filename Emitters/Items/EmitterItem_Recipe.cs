@@ -1,9 +1,10 @@
 using Terraria.ID;
 using Terraria.ModLoader;
+using Emitters.Definitions;
 
 
 namespace Emitters.Items {
-	public partial class EmitterItem : ModItem, IBaseEmitterItem {
+	public partial class EmitterItem : ModItem, IBaseEmitterItem<EmitterDefinition> {
 		public override void AddRecipes() {
 			if( !EmittersConfig.Instance.EmitterRecipeEnabled ) {
 				return;

@@ -5,21 +5,21 @@ using Emitters.Definitions;
 
 
 namespace Emitters.Items {
-	public partial class SoundEmitterItem : ModItem, IBaseEmitterItem {
+	public partial class SoundEmitterItem : ModItem, IBaseEmitterItem<SoundEmitterDefinition> {
 		public override void Load( TagCompound tag ) {
 			if( !tag.ContainsKey( "SndEmitterType" ) ) {
 				return;
 			}
 
 			try {
-				this.Def = new SoundEmitterDefinition(
+				this.SetDefinition( new SoundEmitterDefinition(
 					type: tag.GetInt( "SndEmitterType" ),
 					style: tag.GetInt( "SndEmitterStyle" ),
 					volume: tag.GetFloat( "SndEmitterVolume" ),
 					pitch: tag.GetFloat( "SndEmitterPitch" ),
 					delay: tag.GetInt( "SndEmitterDelay" ),
 					isActivated: tag.GetBool( "SndEmitterIsActivated" )
-				);
+				) );
 			} catch { }
 		}
 

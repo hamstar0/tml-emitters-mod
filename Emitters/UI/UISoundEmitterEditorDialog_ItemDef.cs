@@ -10,19 +10,16 @@ using Emitters.Definitions;
 
 namespace Emitters.UI {
 	partial class UISoundEmitterEditorDialog : UIDialog {
-		internal void SetItem( Item SoundEmitterItem ) {
-			this.SoundEmitterItem = SoundEmitterItem;
+		internal void SetItem( Item soundEmitterItem ) {
+			var def = BaseEmitterDefinition.CreateOrGetDefForItem<SoundEmitterDefinition>( soundEmitterItem );
 
-			var myitem = SoundEmitterItem.modItem as SoundEmitterItem;
-			if( myitem.Def == null ) {
-				return;
-			}
+			this.SoundEmitterItem = soundEmitterItem;
 
-			this.TypeSliderElem.SetValue( myitem.Def.Type );
-			this.StyleSliderElem.SetValue( myitem.Def.Style );
-			this.VolumeSliderElem.SetValue( myitem.Def.Volume );
-			this.PitchSliderElem.SetValue( myitem.Def.Pitch );
-			this.DelaySliderElem.SetValue( myitem.Def.Delay );
+			this.TypeSliderElem.SetValue( def.Type );
+			this.StyleSliderElem.SetValue( def.Style );
+			this.VolumeSliderElem.SetValue( def.Volume );
+			this.PitchSliderElem.SetValue( def.Pitch );
+			this.DelaySliderElem.SetValue( def.Delay );
 		}
 
 
@@ -39,7 +36,7 @@ namespace Emitters.UI {
 				return;
 			}
 
-			myitem?.SetSoundEmitterDefinition( this.CreateSoundEmitterDefinition() );
+			myitem.SetDefinition( this.CreateSoundEmitterDefinition() );
 		}
 
 

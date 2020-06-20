@@ -7,7 +7,7 @@ using Emitters.Definitions;
 
 
 namespace Emitters.Items {
-	public partial class HologramItem : ModItem, IBaseEmitterItem {
+	public partial class HologramItem : ModItem, IBaseEmitterItem<HologramDefinition> {
 		public override void Load( TagCompound tag ) {
 			try {
 				HologramMode mode;
@@ -39,7 +39,7 @@ namespace Emitters.Items {
 					shaderTime = tag.GetFloat( "HologramShaderTime" );
 				}
 
-				this.Def = new HologramDefinition(
+				this.SetDefinition( new HologramDefinition(
 					mode: mode,
 					type: type,
 					scale: tag.GetFloat( "HologramScale" ),
@@ -61,7 +61,7 @@ namespace Emitters.Items {
 					shaderType: shaderType,
 					shaderTime: shaderTime,
 					isActivated: tag.GetBool( "HologramIsActivated" )
-				);
+				) );
 			} catch { }
 		}
 

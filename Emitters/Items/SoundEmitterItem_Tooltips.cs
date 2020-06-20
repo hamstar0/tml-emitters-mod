@@ -2,10 +2,11 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
+using Emitters.Definitions;
 
 
 namespace Emitters.Items {
-	public partial class SoundEmitterItem : ModItem, IBaseEmitterItem {
+	public partial class SoundEmitterItem : ModItem, IBaseEmitterItem<SoundEmitterDefinition> {
 		public override void ModifyTooltips( List<TooltipLine> tooltips ) {
 			int i = 1;
 			//tooltips.Insert( i++, new TooltipLine( this.mod, "SndEmitterUI", "[c/00FF00:Right-click in inventory to adjust settings]" ) );

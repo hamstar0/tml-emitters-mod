@@ -5,7 +5,7 @@ using Emitters.Definitions;
 
 
 namespace Emitters.Items {
-	public partial class SoundEmitterItem : ModItem, IBaseEmitterItem {
+	public partial class SoundEmitterItem : ModItem, IBaseEmitterItem<SoundEmitterDefinition> {
 		public SoundEmitterDefinition Def { get; private set; } = null;
 		////////////////
 
@@ -56,7 +56,7 @@ namespace Emitters.Items {
 
 		////////////////
 
-		public void SetSoundEmitterDefinition( SoundEmitterDefinition def ) {
+		public void SetDefinition( SoundEmitterDefinition def ) {
 			//Main.NewText( def.ToString() );
 			this.Def = def;
 		}

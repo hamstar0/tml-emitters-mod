@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Terraria;
 using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Classes.UI.Elements;
@@ -8,26 +9,33 @@ using Emitters.Items;
 
 namespace Emitters.UI {
 	partial class UIHologramEditorDialog : UIDialog {
-		internal bool SetItem( Item hologramItem ) {
-			var myitem = hologramItem.modItem as HologramItem;
-			if( myitem.Def == null ) {
-				return false;
-			}
+		internal void SetItem( Item hologramItem ) {
+			var def = BaseEmitterDefinition.CreateOrGetDefForItem<HologramDefinition>( hologramItem );
 
 			this.HologramItem = hologramItem;
 
-			Vector3 hsl = Main.rgbToHsl( myitem.Def.Color );
+			Vector3 hsl = Main.rgbToHsl( def.Color );
 
-			this.SetHologramMode( myitem.Def.Mode );
-			this.SetHologramShaderMode( myitem.Def.ShaderMode );
+			 this.SetHologramMode( def.Mode );
+			this.TypeSlider.SetValue( def.Type );
+			this.ScaleSlider.SetValue( def.Scale );
+			this.DirectionSlider.SetValue( def.Direction );
+			this.RotationSlider.SetValue( def.Rotation );
+			this.OffsetXSlider.SetValue( def.OffsetX );
+			this.OffsetYSlider.SetValue( def.OffsetY );
+			this.FrameStartSlider.SetValue( def.FrameStart );
+			this.FrameEndSlider.SetValue( def.FrameEnd );
+			this.FrameRateTicksSlider.SetValue( def.FrameRateTicks );
+			this.WorldLightingFlag.Selected = def.WorldLighting;
 
-			this.TypeSlider.SetValue( myitem.Def.Type );
 			this.HueSlider.SetValue( hsl.X );
 			this.SaturationSlider.SetValue( hsl.Y );
 			this.LightnessSlider.SetValue( hsl.Z );
-			this.WorldLightingFlag.Selected = myitem.Def.WorldLighting;
+			this.AlphaSlider.SetValue( def.Alpha );
 
-			return true;
+			 this.SetHologramShaderMode( def.ShaderMode );
+			this.ShaderTypeSlider.SetValue( def.ShaderType );
+			this.ShadertTimeSlider.SetValue( def.ShaderTime );
 		}
 
 
@@ -44,7 +52,7 @@ namespace Emitters.UI {
 				return;
 			}
 
-			myitem?.SetHologramDefinition( this.CreateHologramDefinition() );
+			myitem.SetDefinition( this.CreateHologramDefinition() );
 		}
 
 

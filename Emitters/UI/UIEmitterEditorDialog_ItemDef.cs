@@ -9,27 +9,24 @@ using Emitters.Definitions;
 namespace Emitters.UI {
 	partial class UIEmitterEditorDialog : UIDialog {
 		internal void SetItem( Item emitterItem ) {
+			var def = BaseEmitterDefinition.CreateOrGetDefForItem<EmitterDefinition>( emitterItem );
+
 			this.EmitterItem = emitterItem;
 
-			var myitem = emitterItem.modItem as EmitterItem;
-			if( myitem.Def == null ) {
-				return;
-			}
+			Vector3 hsl = Main.rgbToHsl( def.Color );
 
-			Vector3 hsl = Main.rgbToHsl( myitem.Def.Color );
-
-			this.SetGoreMode( myitem.Def.IsGoreMode );
-			this.TypeSliderElem.SetValue( myitem.Def.Type );
-			this.ScaleSliderElem.SetValue( myitem.Def.Scale );
-			this.DelaySliderElem.SetValue( myitem.Def.Delay );
-			this.SpeedXSliderElem.SetValue( myitem.Def.SpeedX );
-			this.SpeedYSliderElem.SetValue( myitem.Def.SpeedY );
+			this.SetGoreMode( def.IsGoreMode );
+			this.TypeSliderElem.SetValue( def.Type );
+			this.ScaleSliderElem.SetValue( def.Scale );
+			this.DelaySliderElem.SetValue( def.Delay );
+			this.SpeedXSliderElem.SetValue( def.SpeedX );
+			this.SpeedYSliderElem.SetValue( def.SpeedY );
 			this.HueSliderElem.SetValue( hsl.X );
 			this.SaturationSliderElem.SetValue( hsl.Y );
-			this.TransparencySliderElem.SetValue( myitem.Def.Transparency );
-			this.ScatterSliderElem.SetValue( myitem.Def.Scatter );
-			this.HasGravityCheckbox.Selected = myitem.Def.HasGravity;
-			this.HasLightCheckbox.Selected = myitem.Def.HasLight;
+			this.TransparencySliderElem.SetValue( def.Transparency );
+			this.ScatterSliderElem.SetValue( def.Scatter );
+			this.HasGravityCheckbox.Selected = def.HasGravity;
+			this.HasLightCheckbox.Selected = def.HasLight;
 		}
 
 
@@ -46,7 +43,7 @@ namespace Emitters.UI {
 				return;
 			}
 
-			myitem?.SetEmitterDefinition( this.CreateEmitterDefinition() );
+			myitem.SetDefinition( this.CreateEmitterDefinition() );
 		}
 
 

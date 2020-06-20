@@ -5,7 +5,7 @@ using Emitters.Definitions;
 
 
 namespace Emitters.Items {
-	public partial class HologramItem : ModItem, IBaseEmitterItem {
+	public partial class HologramItem : ModItem, IBaseEmitterItem<HologramDefinition> {
 		public HologramDefinition Def { get; private set; } = null;
 
 
@@ -58,8 +58,7 @@ namespace Emitters.Items {
 
 		////////////////
 
-		public void SetHologramDefinition( HologramDefinition def ) {
-			//Main.NewText( def.ToString() );
+		public void SetDefinition( HologramDefinition def ) {
 			this.Def = def;
 		}
 
