@@ -2,10 +2,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.ModLoader.Config;
+using Terraria.ModLoader;
 using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Helpers.Debug;
-using Terraria.ModLoader;
 
 
 namespace Emitters.Definitions {
@@ -76,13 +75,13 @@ namespace Emitters.Definitions {
 
 		public int Type { get; set; }
 
-		public float Scale { get; set; }
+		public float Scale { get; set; } = 1f;
 
-		public Color Color { get; set; }
+		public Color Color { get; set; } = Color.White;
 
-		public byte Alpha { get; set; }
+		public byte Alpha { get; set; } = 255;
 
-		public int Direction { get; set; }
+		public int Direction { get; set; } = 1;
 
 		public float Rotation { get; set; }
 
@@ -127,7 +126,10 @@ namespace Emitters.Definitions {
 
 		////////////////
 
-		public HologramDefinition() { }
+		public HologramDefinition() {
+			this.Color = Color.White;
+			this.Alpha = 255;
+		}
 
 		public HologramDefinition( HologramDefinition copy ) {
 			this.Mode = copy.Mode;

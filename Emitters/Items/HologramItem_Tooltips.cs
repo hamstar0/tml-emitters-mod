@@ -2,10 +2,11 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
+using Emitters.Definitions;
 
 
 namespace Emitters.Items {
-	public partial class HologramItem : ModItem, IBaseEmitterItem {
+	public partial class HologramItem : ModItem, IBaseEmitterItem<HologramDefinition> {
 		public override void ModifyTooltips( List<TooltipLine> tooltips ) {
 			int i = 1;
 			//tooltips.Insert( i++, new TooltipLine( this.mod, "HologramUI", "[c/00FF00:Right-click in inventory to adjust settings]" ) );

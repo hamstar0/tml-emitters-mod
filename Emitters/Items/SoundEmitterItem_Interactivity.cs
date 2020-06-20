@@ -11,7 +11,7 @@ using Emitters.Definitions;
 
 
 namespace Emitters.Items {
-	public partial class SoundEmitterItem : ModItem, IBaseEmitterItem {
+	public partial class SoundEmitterItem : ModItem, IBaseEmitterItem<SoundEmitterDefinition> {
 		public static bool CanViewSoundEmitters( Player plr, bool withWire ) {
 			return (withWire && WiresUI.Settings.DrawWires) || (
 					plr.HeldItem != null
@@ -125,7 +125,7 @@ namespace Emitters.Items {
 			Timers.SetTimer( timerName, 15, false, () => false );
 
 			if( this.Def == null ) {
-				Main.NewText( "Sound Emitter settings must be first specified (right-click item)." );
+				Main.NewText( "Sound Emitter settings must be first specified (click item's button)." );
 				return base.UseItem( player );
 			}
 

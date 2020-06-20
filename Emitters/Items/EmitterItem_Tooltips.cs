@@ -2,10 +2,11 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
+using Emitters.Definitions;
 
 
 namespace Emitters.Items {
-	public partial class EmitterItem : ModItem, IBaseEmitterItem {
+	public partial class EmitterItem : ModItem, IBaseEmitterItem<EmitterDefinition> {
 		public override void ModifyTooltips( List<TooltipLine> tooltips ) {
 			int i = 1;
 			//tooltips.Insert( i++, new TooltipLine(this.mod, "EmitterUI", "[c/00FF00:Right-click in inventory to adjust settings]") );

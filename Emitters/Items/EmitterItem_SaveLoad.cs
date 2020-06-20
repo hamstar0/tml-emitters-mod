@@ -6,14 +6,14 @@ using Emitters.Definitions;
 
 
 namespace Emitters.Items {
-	public partial class EmitterItem : ModItem, IBaseEmitterItem {
+	public partial class EmitterItem : ModItem, IBaseEmitterItem<EmitterDefinition> {
 		public override void Load( TagCompound tag ) {
 			if( !tag.ContainsKey("EmitterMode") ) {
 				return;
 			}
 
 			try {
-				this.Def = new EmitterDefinition(
+				this.SetDefinition( new EmitterDefinition(
 					isGoreMode: tag.GetBool( "EmitterMode" ),
 					type: tag.GetInt( "EmitterType" ),
 					scale: tag.GetFloat( "EmitterScale" ),
@@ -30,7 +30,7 @@ namespace Emitters.Items {
 					hasGravity: tag.GetBool( "EmitterHasGrav" ),
 					hasLight: tag.GetBool( "EmitterHasLight" ),
 					isActivated: tag.GetBool( "EmitterIsActivated" )
-				);
+				) );
 			} catch { }
 		}
 
