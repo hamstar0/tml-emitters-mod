@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using HamstarHelpers.Helpers.Debug;
@@ -36,17 +37,26 @@ namespace Emitters.Definitions {
 				effects = SpriteEffects.FlipHorizontally;
 			}
 
-			sb.Draw(
-				texture: tex,
-				position: scrPos,
-				sourceRectangle: frame,
-				color: color,
-				rotation: MathHelper.ToRadians( this.Rotation ),
-				origin: isUI ? default(Vector2) : origin,
-				scale: this.Scale * Main.GameZoomTarget,
-				effects: effects,
-				layerDepth: 1f
-			);
+			try
+			{
+				sb.Draw(
+					texture: tex,
+					position: scrPos,
+					sourceRectangle: frame,
+					color: color,
+					rotation: MathHelper.ToRadians( this.Rotation ),
+					origin: isUI ? default(Vector2) : origin,
+					scale: this.Scale * Main.GameZoomTarget,
+					effects: effects,
+					layerDepth: 1f
+				);
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+				throw;
+			}
+			
 		}
 	}
 }

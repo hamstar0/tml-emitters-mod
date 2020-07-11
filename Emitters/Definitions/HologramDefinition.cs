@@ -5,13 +5,13 @@ using Terraria;
 using Terraria.ModLoader;
 using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Helpers.Debug;
-
-
+using Terraria.ID;
 namespace Emitters.Definitions {
 	public enum HologramMode {
 		NPC,
 		Item,
-		Projectile
+		Projectile,
+		Gore
 	}
 
 	public enum HologramShaderMode {
@@ -24,18 +24,25 @@ namespace Emitters.Definitions {
 
 	public partial class HologramDefinition : BaseEmitterDefinition {
 		public static bool IsBadType( HologramMode mode, int type ) {
-			switch( mode ) {
-			case HologramMode.NPC:
-				if( type < Main.npcTexture.Length ) { return false; }
-				return NPCLoader.GetNPC( type ) == null;
-			case HologramMode.Item:
-				if( type < Main.itemTexture.Length ) { return false; }
-				return ItemLoader.GetItem( type ) == null;
-			case HologramMode.Projectile:
-				if( type < Main.projectileTexture.Length ) { return false; }
-				return ProjectileLoader.GetProjectile( type ) == null;
-			default:
-				throw new ModHelpersException( "Invalid hologram type" );
+			if( type < NPCLoader.NPCCount ) {
+				return false;
+			}
+			switch (mode)
+			{
+				case HologramMode.NPC:
+					if (type < Main.npcTexture.Length || type < NPCLoader.NPCCount) { return false; }
+					return NPCLoader.GetNPC( type ) == null;
+				case HologramMode.Item:
+					if( type < Main.itemTexture.Length || type < ItemLoader.ItemCount ) { return false; }
+					return ItemLoader.GetItem( type ) == null;
+				case HologramMode.Projectile:
+					if( type < Main.projectileTexture.Length || type < ProjectileLoader.ProjectileCount ) { return false; }
+					return ProjectileLoader.GetProjectile( type ) == null;
+				case HologramMode.Gore:
+                    if ( type < Main.maxGoreTypes ) { return false; }
+					return Main.goreTexture[ type - 1 ] == null;
+				default:
+					throw new ModHelpersException( "Invalid hologram type" );
 			}
 		}
 
@@ -49,6 +56,8 @@ namespace Emitters.Definitions {
 				return Main.itemTexture[type];
 			case HologramMode.Projectile:
 				return Main.projectileTexture[type];
+			case HologramMode.Gore:
+				return Main.goreTexture[type];
 			default:
 				throw new ModHelpersException( "Invalid hologram type" );
 			}
@@ -62,6 +71,8 @@ namespace Emitters.Definitions {
 				return 1;
 			case HologramMode.Projectile:
 				return Main.projFrames[type];
+			case  HologramMode.Gore:
+				return 1;
 			default:
 				throw new ModHelpersException( "Invalid hologram type" );
 			}

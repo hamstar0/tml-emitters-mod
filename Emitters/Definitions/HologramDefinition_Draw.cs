@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Graphics.Shaders;
@@ -32,26 +33,40 @@ namespace Emitters.Definitions {
 			case HologramMode.Projectile:
 				Main.instance.LoadProjectile( this.Type );
 				break;
+			case HologramMode.Gore:
+				Main.instance.LoadGore(this.Type);
+				break;
 			}
 
 			Texture2D tex = HologramDefinition.GetTexture( this.Mode, this.Type );
 			var frameCount = HologramDefinition.GetFrameCount( this.Mode, this.Type );
 			var frameHeight = tex.Height / frameCount;
 
-			
-			try {
-				switch( this.ShaderMode ) {
-				case HologramShaderMode.Vanilla:
-					this.BeginBatch( sb, null );
-					this.VanillaShaderBegin( tex, frameHeight );
-					break;
-				case HologramShaderMode.Custom:
-					this.BeginBatch( sb, this.CustomEffectsBegin(tex) );
-					this.CustomEffectsBegin( tex );
-					break;
+
+			try
+			{
+				switch (this.ShaderMode)
+				{
+
+					case HologramShaderMode.None:
+						this.BeginBatch(sb, null);
+						break;
+					case HologramShaderMode.Vanilla:
+						this.BeginBatch(sb, null);
+						this.VanillaShaderBegin(tex, frameHeight);
+						break;
+					case HologramShaderMode.Custom:
+						this.BeginBatch(sb, this.CustomEffectsBegin(tex));
+						this.CustomEffectsBegin(tex);
+						break;
 				}
 
-				this.DrawHologramRaw( sb, wldPos, isUI, tex, frameHeight );
+				this.DrawHologramRaw(sb, wldPos, isUI, tex, frameHeight);
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+				throw;
 			} finally {
 				if( this.ShaderMode != HologramShaderMode.None ) {
 					this.BatchEnd( sb );
@@ -63,21 +78,37 @@ namespace Emitters.Definitions {
 		////
 
 		public void BeginBatch( SpriteBatch sb, Effect shader ) {
-			sb.End();
-			sb.Begin(
-				SpriteSortMode.Immediate,
-				BlendState.AlphaBlend,
-				SamplerState.PointClamp,
-				DepthStencilState.Default,
-				RasterizerState.CullNone,
-				shader,
-				Main.GameViewMatrix.EffectMatrix
-			);
+			try
+			{
+				sb.End();
+				sb.Begin(
+					SpriteSortMode.Immediate,
+					BlendState.AlphaBlend,
+					SamplerState.PointClamp,
+					DepthStencilState.Default,
+					RasterizerState.CullNone,
+					shader, 
+                    shader == null ? Main.GameViewMatrix.TransformationMatrix : Main.GameViewMatrix.EffectMatrix
+                );
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+				throw;
+			}
 		}
 
 		public void BatchEnd( SpriteBatch sb ) {
 			sb.End();
-			sb.Begin();
+			sb.Begin(
+					SpriteSortMode.Immediate,
+					BlendState.AlphaBlend,
+					SamplerState.PointClamp,
+					DepthStencilState.Default,
+					RasterizerState.CullNone,
+					null,
+                    Main.GameViewMatrix.ZoomMatrix
+				);
 		}
 
 

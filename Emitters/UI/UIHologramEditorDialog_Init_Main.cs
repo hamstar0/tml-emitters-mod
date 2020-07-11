@@ -56,11 +56,19 @@ namespace Emitters.UI {
 			this.ModeProjectileChoice.OnSelectedChanged += () => {
 				this.SetHologramMode( HologramMode.Projectile );
 			};
+
+			this.ModeGoreChoice = new UICheckbox( UITheme.Vanilla, "Gore", "" );
+			this.ModeGoreChoice.Top.Set( yOffset, 0f );
+			this.ModeGoreChoice.Left.Set( 288, 0f );
+			this.ModeGoreChoice.OnSelectedChanged += () => {
+				this.SetHologramMode( HologramMode.Gore );
+			};
 			yOffset += 28f;
 
 			container.Append( (UIElement)this.ModeNpcChoice );
 			container.Append( (UIElement)this.ModeItemChoice );
 			container.Append( (UIElement)this.ModeProjectileChoice );
+			container.Append( (UIElement)this.ModeGoreChoice );
 		}
 
 		private void InitializeWidgetsForType( UIThemedPanel container, ref float yOffset ) {
