@@ -46,6 +46,7 @@ namespace Emitters.UI {
 		private UICheckbox ModeNpcChoice;
 		private UICheckbox ModeItemChoice;
 		private UICheckbox ModeProjectileChoice;
+		private UICheckbox ModeGoreChoice;
 		private UISlider TypeSlider;
 		private UISlider ScaleSlider;
 		private UISlider DirectionSlider;

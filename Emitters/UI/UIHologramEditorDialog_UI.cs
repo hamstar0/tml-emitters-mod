@@ -69,6 +69,11 @@ namespace Emitters.UI {
 				this.ModeProjectileChoice.Selected = false;
 				this.ModeProjectileChoice.Recalculate();
 			}
+			if( mode != HologramMode.Gore && this.ModeGoreChoice.Selected ) {
+				this.ModeGoreChoice.Selected = false;
+				this.ModeGoreChoice.Recalculate();
+			}
+
 
 			this.CurrentMode = mode;
 
