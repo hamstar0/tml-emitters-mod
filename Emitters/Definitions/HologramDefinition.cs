@@ -36,8 +36,8 @@ namespace Emitters.Definitions {
 				if( type < ProjectileLoader.ProjectileCount ) { return false; } //type < Main.projectileTexture.Length
 				return ProjectileLoader.GetProjectile( type ) == null;
 			case HologramMode.Gore:
-				if( type < Main.maxGoreTypes ) { return false; }
-				return Main.goreTexture[type] == null;	//return Main.goreTexture[type - 1] == null;????
+				return type < 0 || type >= ModGore.GoreCount;
+				//return Main.goreTexture[type] == null;
 			default:
 				throw new ModHelpersException( "Invalid hologram type" );
 			}
@@ -137,6 +137,7 @@ namespace Emitters.Definitions {
 		public HologramDefinition() {
 			this.Color = Color.White;
 			this.Alpha = 255;
+			this.Scale = 1f;
 		}
 
 		public HologramDefinition( HologramDefinition copy ) {

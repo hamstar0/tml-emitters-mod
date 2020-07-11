@@ -1,8 +1,9 @@
-﻿using HamstarHelpers.Classes.Errors;
-using HamstarHelpers.Helpers.DotNET.Reflection;
+﻿using System;
 using Microsoft.Xna.Framework;
-using System;
 using Terraria.ModLoader.Config;
+using HamstarHelpers.Classes.Errors;
+using HamstarHelpers.Helpers.DotNET.Reflection;
+using Emitters.Terraria.ModLoader.Config;
 
 
 namespace Emitters.Definitions {
@@ -15,6 +16,8 @@ namespace Emitters.Definitions {
 				return new ItemDefinition( type );
 			case HologramMode.Projectile:
 				return new ProjectileDefinition( type );
+			case HologramMode.Gore:
+				return new GoreDefinition( type );
 			default:
 				throw new NotImplementedException( "No such mode." );
 			}
@@ -28,6 +31,8 @@ namespace Emitters.Definitions {
 				return ItemDefinition.FromString( rawDef );
 			case HologramMode.Projectile:
 				return ProjectileDefinition.FromString( rawDef );
+			case HologramMode.Gore:
+				return GoreDefinition.FromString( rawDef );
 			default:
 				throw new NotImplementedException( "No such mode.." );
 			}
@@ -48,6 +53,8 @@ namespace Emitters.Definitions {
 				return new ItemDefinition( mod, name );
 			case HologramMode.Projectile:
 				return new ProjectileDefinition( mod, name );
+			case HologramMode.Gore:
+				return new GoreDefinition( mod, name );
 			default:
 				throw new NotImplementedException( "No such mode.." );
 			}

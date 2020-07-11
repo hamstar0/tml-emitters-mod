@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
+using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
-using HamstarHelpers.Services.Configs;
 
 
 namespace Emitters {
@@ -11,8 +11,8 @@ namespace Emitters {
 
 
 
-	public partial class EmittersConfig : StackableModConfig {
-		public static EmittersConfig Instance => ModConfigStack.GetMergedConfigs<EmittersConfig>();
+	public partial class EmittersConfig : ModConfig {
+		public static EmittersConfig Instance => ModContent.GetInstance<EmittersConfig>();
 
 
 
