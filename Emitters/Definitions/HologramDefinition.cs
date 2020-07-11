@@ -5,7 +5,8 @@ using Terraria;
 using Terraria.ModLoader;
 using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Helpers.Debug;
-using Terraria.ID;
+
+
 namespace Emitters.Definitions {
 	public enum HologramMode {
 		NPC,
@@ -24,25 +25,21 @@ namespace Emitters.Definitions {
 
 	public partial class HologramDefinition : BaseEmitterDefinition {
 		public static bool IsBadType( HologramMode mode, int type ) {
-			if( type < NPCLoader.NPCCount ) {
-				return false;
-			}
-			switch (mode)
-			{
-				case HologramMode.NPC:
-					if (type < Main.npcTexture.Length || type < NPCLoader.NPCCount) { return false; }
-					return NPCLoader.GetNPC( type ) == null;
-				case HologramMode.Item:
-					if( type < Main.itemTexture.Length || type < ItemLoader.ItemCount ) { return false; }
-					return ItemLoader.GetItem( type ) == null;
-				case HologramMode.Projectile:
-					if( type < Main.projectileTexture.Length || type < ProjectileLoader.ProjectileCount ) { return false; }
-					return ProjectileLoader.GetProjectile( type ) == null;
-				case HologramMode.Gore:
-                    if ( type < Main.maxGoreTypes ) { return false; }
-					return Main.goreTexture[ type - 1 ] == null;
-				default:
-					throw new ModHelpersException( "Invalid hologram type" );
+			switch( mode ) {
+			case HologramMode.NPC:
+				if( type < NPCLoader.NPCCount ) { return false; }   //type < Main.npcTexture.Length
+				return NPCLoader.GetNPC( type ) == null;
+			case HologramMode.Item:
+				if( type < ItemLoader.ItemCount ) { return false; } //type < Main.itemTexture.Length
+				return ItemLoader.GetItem( type ) == null;
+			case HologramMode.Projectile:
+				if( type < ProjectileLoader.ProjectileCount ) { return false; } //type < Main.projectileTexture.Length
+				return ProjectileLoader.GetProjectile( type ) == null;
+			case HologramMode.Gore:
+				if( type < Main.maxGoreTypes ) { return false; }
+				return Main.goreTexture[type] == null;	//return Main.goreTexture[type - 1] == null;????
+			default:
+				throw new ModHelpersException( "Invalid hologram type" );
 			}
 		}
 

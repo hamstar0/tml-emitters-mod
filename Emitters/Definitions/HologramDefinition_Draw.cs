@@ -43,29 +43,24 @@ namespace Emitters.Definitions {
 			var frameHeight = tex.Height / frameCount;
 
 
-			try
-			{
-				switch (this.ShaderMode)
-				{
-
-					case HologramShaderMode.None:
+			try {
+				switch( this.ShaderMode ) {
+				case HologramShaderMode.None:
 						this.BeginBatch(sb, null);
 						break;
-					case HologramShaderMode.Vanilla:
-						this.BeginBatch(sb, null);
-						this.VanillaShaderBegin(tex, frameHeight);
-						break;
-					case HologramShaderMode.Custom:
-						this.BeginBatch(sb, this.CustomEffectsBegin(tex));
-						this.CustomEffectsBegin(tex);
-						break;
+				case HologramShaderMode.Vanilla:
+					this.BeginBatch( sb, null );
+					this.VanillaShaderBegin( tex, frameHeight );
+					break;
+				case HologramShaderMode.Custom:
+					this.BeginBatch( sb, this.CustomEffectsBegin( tex ) );
+					this.CustomEffectsBegin( tex );
+					break;
 				}
 
 				this.DrawHologramRaw(sb, wldPos, isUI, tex, frameHeight);
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e);
+			} catch( Exception e ) {
+				LogHelpers.Warn( e.ToString() );
 				throw;
 			} finally {
 				if( this.ShaderMode != HologramShaderMode.None ) {
@@ -78,8 +73,7 @@ namespace Emitters.Definitions {
 		////
 
 		public void BeginBatch( SpriteBatch sb, Effect shader ) {
-			try
-			{
+			try {
 				sb.End();
 				sb.Begin(
 					SpriteSortMode.Immediate,
@@ -90,10 +84,8 @@ namespace Emitters.Definitions {
 					shader, 
                     shader == null ? Main.GameViewMatrix.TransformationMatrix : Main.GameViewMatrix.EffectMatrix
                 );
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e);
+			} catch( Exception e ) {
+				LogHelpers.Warn( e.ToString() );
 				throw;
 			}
 		}
@@ -101,14 +93,14 @@ namespace Emitters.Definitions {
 		public void BatchEnd( SpriteBatch sb ) {
 			sb.End();
 			sb.Begin(
-					SpriteSortMode.Immediate,
-					BlendState.AlphaBlend,
-					SamplerState.PointClamp,
-					DepthStencilState.Default,
-					RasterizerState.CullNone,
-					null,
-                    Main.GameViewMatrix.ZoomMatrix
-				);
+				SpriteSortMode.Immediate,
+				BlendState.AlphaBlend,
+				SamplerState.PointClamp,
+				DepthStencilState.Default,
+				RasterizerState.CullNone,
+				null,
+                Main.GameViewMatrix.ZoomMatrix
+			);
 		}
 
 

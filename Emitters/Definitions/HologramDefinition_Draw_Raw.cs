@@ -37,8 +37,7 @@ namespace Emitters.Definitions {
 				effects = SpriteEffects.FlipHorizontally;
 			}
 
-			try
-			{
+			try {
 				sb.Draw(
 					texture: tex,
 					position: scrPos,
@@ -50,13 +49,10 @@ namespace Emitters.Definitions {
 					effects: effects,
 					layerDepth: 1f
 				);
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e);
+			} catch( Exception e ) {
+				LogHelpers.Warn( e.ToString() );
 				throw;
 			}
-			
 		}
 	}
 }
