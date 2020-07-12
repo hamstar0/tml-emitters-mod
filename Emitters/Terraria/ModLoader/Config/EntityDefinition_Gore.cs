@@ -22,7 +22,7 @@ namespace Emitters.Terraria.ModLoader.Config {
 
 		public static string GetUniqueKey( int type ) {
 			if( type < GoreID.Count ) {
-				return "Terraria " + NPCID.Search.GetName( type );
+				return "Terraria " + type;	//GoreID.Search.GetName( type );
 			}
 			//if( !ReflectionHelpers.Get( typeof(ModGore), null, "modGores", out ModGore[] modGores ) ) {
 			//	throw new ModHelpersException( "Could not access ModGore.modGores" );
