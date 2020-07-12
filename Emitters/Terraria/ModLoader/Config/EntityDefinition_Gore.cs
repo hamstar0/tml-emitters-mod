@@ -1,13 +1,14 @@
-﻿using HamstarHelpers.Classes.Errors;
-using HamstarHelpers.Helpers.DotNET.Reflection;
-using System;
+﻿using System;
 using System.ComponentModel;
+using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.IO;
+using HamstarHelpers.Classes.Errors;
+using HamstarHelpers.Helpers.DotNET.Reflection;
 
 
 namespace Emitters.Terraria.ModLoader.Config {
@@ -23,18 +24,22 @@ namespace Emitters.Terraria.ModLoader.Config {
 			if( type < GoreID.Count ) {
 				return "Terraria " + NPCID.Search.GetName( type );
 			}
-			if( !ReflectionHelpers.Get( typeof(ModGore), null, "modGores", out ModGore[] modGores ) ) {
-				throw new ModHelpersException( "Could not access modGores" );
-			}
-			if( type >= modGores.Length ) {   //GoreLoader.GoreCount
+			//if( !ReflectionHelpers.Get( typeof(ModGore), null, "modGores", out ModGore[] modGores ) ) {
+			//	throw new ModHelpersException( "Could not access ModGore.modGores" );
+			//}
+			if( type >= Main.goreTexture.Length ) {   //GoreLoader.GoreCount
 				throw new ArgumentOutOfRangeException( "Invalid type: " + type );
 			}
 
-			ModGore modGore = modGores[ type ]; //GoreLoader.GetGore( type );
+			//ModGore modGore = modGores[ type ]; //GoreLoader.GetGore( type );
 			//return $"{modGore.mod.Name} {modGore.Name}";
-			return modGore.GetType().Assembly.FullName+" "+modGore.GetType().Name;
-		}
+			//return $"{modGore.GetType().Assembly.FullName} {modGore.GetType().Name}";	//ew
 
+			if( !ReflectionHelpers.Get( typeof(ModGore), null, "gores", out Dictionary<string, int> gores ) ) {
+				throw new ModHelpersException( "Could not access ModGore.gores" );
+			}
+			return gores.FirstOrDefault( g => g.Value == type ).Key;
+		}
 
 		////////////////
 
