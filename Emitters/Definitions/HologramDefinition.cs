@@ -82,7 +82,7 @@ namespace Emitters.Definitions {
 
 		public HologramMode Mode { get; set; }
 
-		public int Type { get; set; }
+		public int Type { get; set; } = 1;
 
 		public float Scale { get; set; } = 1f;
 
@@ -136,6 +136,7 @@ namespace Emitters.Definitions {
 		////////////////
 
 		public HologramDefinition() {
+			this.Type = 1;
 			this.Color = Color.White;
 			this.Alpha = 255;
 			this.Scale = 1f;

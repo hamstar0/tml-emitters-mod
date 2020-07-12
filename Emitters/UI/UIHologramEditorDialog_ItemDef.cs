@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using HamstarHelpers.Classes.Errors;
 using HamstarHelpers.Classes.UI.Elements;
+using HamstarHelpers.Helpers.Debug;
 using Emitters.Definitions;
 using Emitters.Items;
 
@@ -52,7 +53,8 @@ namespace Emitters.UI {
 				return;
 			}
 
-			myitem.SetDefinition( this.CreateHologramDefinition() );
+			HologramDefinition def = this.CreateHologramDefinition();
+			myitem.SetDefinition( def );
 		}
 
 

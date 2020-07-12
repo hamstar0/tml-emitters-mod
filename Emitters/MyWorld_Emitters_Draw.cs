@@ -8,20 +8,32 @@ using Emitters.Definitions;
 
 namespace Emitters {
 	public partial class EmittersWorld : ModWorld {
+		public const int MaximumOffscreenEmitterTileDistance = 16;
+
+
+
+		////////////////
+
 		public override void PostDrawTiles() {
 			int leftTile = (int)Main.screenPosition.X >> 4;
 			int topTile = (int)Main.screenPosition.Y >> 4;
 			int tileWidth = Main.screenWidth >> 4;
 			int tileHeight = Main.screenHeight >> 4;
 
+			int maxDist = EmittersWorld.MaximumOffscreenEmitterTileDistance;
+			leftTile -= maxDist;
+			topTile -= maxDist;
+			tileWidth += maxDist + maxDist;
+			tileHeight += maxDist + maxDist;
+
 			int minX = Math.Max( leftTile, 0 );
 			int minY = Math.Max( topTile, 0 );
 			int maxX = leftTile + tileWidth + 1;
 			int maxY = topTile + tileHeight + 1;
 
+			maxX = Math.Min( maxX, Main.maxTilesX );
+			maxY = Math.Min( maxY, Main.maxTilesY );
 			var scrTiles = new Rectangle( leftTile, topTile, maxX, maxY );
-			maxX = Math.Min( maxX + 8, Main.maxTilesX );
-			maxY = Math.Min( maxY + 8, Main.maxTilesY );
 
 			try {
 				Main.spriteBatch.Begin();
@@ -38,7 +50,7 @@ namespace Emitters {
 							sdef.Draw( Main.spriteBatch, x, y, isOnScr );
 						}
 
-						if( this.Holograms.TryGetValue2D( x, y, out HologramDefinition hdef ) ) {
+						if( this.Holograms.TryGetValue2D(x, y, out HologramDefinition hdef) ) {
 							hdef.Draw( Main.spriteBatch, x, y, isOnScr );
 						}
 					}
