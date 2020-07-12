@@ -16,7 +16,7 @@ namespace Emitters.Definitions {
 			this.AnimateCurrentFrame();
 
 			if( !isUI ) {
-				int maxDistSqr = EmittersConfig.Instance.HologramMinimumRangeBeforeProject;
+				int maxDistSqr = EmittersConfig.Instance.HologramMaximumRangeForProjection;
 				maxDistSqr *= maxDistSqr;
 
 				// Too far away?

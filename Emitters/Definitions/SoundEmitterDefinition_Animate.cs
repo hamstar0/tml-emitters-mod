@@ -14,7 +14,7 @@ namespace Emitters.Definitions {
 				return;
 			}
 
-			int maxDistSqr = EmittersConfig.Instance.SoundEmitterMinimumRangeBeforeEmit;
+			int maxDistSqr = EmittersConfig.Instance.SoundEmitterMaximumRangeForEmit;
 			maxDistSqr *= maxDistSqr;
 
 			if( (Main.LocalPlayer.Center - worldPos).LengthSquared() >= maxDistSqr ) {

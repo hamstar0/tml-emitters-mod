@@ -16,7 +16,7 @@ namespace Emitters.Definitions {
 				return;
 			}
 
-			int maxDistSqr = EmittersConfig.Instance.DustEmitterMinimumRangeBeforeEmit;
+			int maxDistSqr = EmittersConfig.Instance.DustEmitterMaximumRangeForEmit;
 			maxDistSqr *= maxDistSqr;
 			if( (Main.LocalPlayer.Center - worldPos).LengthSquared() >= maxDistSqr ) {
 				return;

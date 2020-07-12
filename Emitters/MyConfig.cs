@@ -43,14 +43,14 @@ namespace Emitters {
 		
 		[Range( 16 * 16, 16 * 1000 )]
 		[DefaultValue( 16 * 96 )]
-		public int DustEmitterMinimumRangeBeforeEmit { get; set; } = 16 * 96;
+		public int DustEmitterMaximumRangeForEmit { get; set; } = 16 * 96;
 
 		[Range( 16 * 16, 16 * 1000 )]
 		[DefaultValue( 16 * 192 )]
-		public int SoundEmitterMinimumRangeBeforeEmit { get; set; } = 16 * 192;
+		public int SoundEmitterMaximumRangeForEmit { get; set; } = 16 * 192;
 
 		[Range( 16 * 16, 16 * 1000 )]
 		[DefaultValue( 16 * 160 )]
-		public int HologramMinimumRangeBeforeProject { get; set; } = 16 * 160;
+		public int HologramMaximumRangeForProjection { get; set; } = 16 * 160;
 	}
 }

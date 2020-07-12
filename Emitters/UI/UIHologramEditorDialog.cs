@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using HamstarHelpers.Classes.Errors;
@@ -158,7 +159,11 @@ namespace Emitters.UI {
 			var mouseWld = mouseScr + Main.screenPosition;
 
 			if( def.AnimateHologram(mouseWld, true) ) {
-				def.DrawHologram( sb, mouseWld, true );
+				try {
+					def.DrawHologram( sb, mouseWld, true );
+				} catch( Exception e ) {
+					LogHelpers.AlertOnce( e.ToString() );
+				}
 			}
 		}
 	}

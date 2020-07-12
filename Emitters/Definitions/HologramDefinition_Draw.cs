@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Graphics.Shaders;
 using HamstarHelpers.Helpers.Debug;
+using HamstarHelpers.Helpers.XNA;
 using Emitters.Items;
 using Emitters.Effects;
 
@@ -34,20 +35,19 @@ namespace Emitters.Definitions {
 				Main.instance.LoadProjectile( this.Type );
 				break;
 			case HologramMode.Gore:
-				Main.instance.LoadGore(this.Type);
+				Main.instance.LoadGore( this.Type );
 				break;
 			}
-
+			
 			Texture2D tex = HologramDefinition.GetTexture( this.Mode, this.Type );
 			var frameCount = HologramDefinition.GetFrameCount( this.Mode, this.Type );
 			var frameHeight = tex.Height / frameCount;
 
-
 			try {
 				switch( this.ShaderMode ) {
 				case HologramShaderMode.None:
-						this.BeginBatch(sb, null);
-						break;
+					this.BeginBatch( sb, null );
+					break;
 				case HologramShaderMode.Vanilla:
 					this.BeginBatch( sb, null );
 					this.VanillaShaderBegin( tex, frameHeight );
@@ -56,9 +56,11 @@ namespace Emitters.Definitions {
 					this.BeginBatch( sb, this.CustomEffectsBegin( tex ) );
 					this.CustomEffectsBegin( tex );
 					break;
+				default:
+					return;
 				}
 
-				this.DrawHologramRaw(sb, wldPos, isUI, tex, frameHeight);
+				this.DrawHologramRaw( sb, wldPos, isUI, tex, frameHeight );
 			} catch( Exception e ) {
 				LogHelpers.Warn( e.ToString() );
 				throw;
@@ -74,14 +76,17 @@ namespace Emitters.Definitions {
 
 		public void BeginBatch( SpriteBatch sb, Effect shader ) {
 			try {
-				sb.End();
+				if( XNAHelpers.IsMainSpriteBatchBegun(out bool isBegun) && isBegun ) {  // TODO: IsSpriteBatchBegun
+					sb.End();
+				}
+
 				sb.Begin(
 					SpriteSortMode.Immediate,
 					BlendState.AlphaBlend,
 					SamplerState.PointClamp,
 					DepthStencilState.Default,
 					RasterizerState.CullNone,
-					shader, 
+					shader,
                     shader == null ? Main.GameViewMatrix.TransformationMatrix : Main.GameViewMatrix.EffectMatrix
                 );
 			} catch( Exception e ) {
@@ -91,7 +96,10 @@ namespace Emitters.Definitions {
 		}
 
 		public void BatchEnd( SpriteBatch sb ) {
-			sb.End();
+			if( XNAHelpers.IsMainSpriteBatchBegun(out bool isBegun) && isBegun ) {  // TODO: IsSpriteBatchBegun
+				sb.End();
+			}
+
 			sb.Begin(
 				SpriteSortMode.Immediate,
 				BlendState.AlphaBlend,

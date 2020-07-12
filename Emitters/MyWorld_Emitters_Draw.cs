@@ -23,9 +23,9 @@ namespace Emitters {
 			maxX = Math.Min( maxX + 8, Main.maxTilesX );
 			maxY = Math.Min( maxY + 8, Main.maxTilesY );
 
-			Main.spriteBatch.Begin();
-
 			try {
+				Main.spriteBatch.Begin();
+
 				for( ushort x = (ushort)minX; x < maxX; x++ ) {
 					for( ushort y = (ushort)minY; y < maxY; y++ ) {
 						bool isOnScr = scrTiles.Contains( x, y );

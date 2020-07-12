@@ -1,5 +1,6 @@
-﻿using Emitters.Definitions;
+﻿using Terraria.ModLoader;
 using HamstarHelpers.Classes.UI.Elements;
+using Emitters.Definitions;
 
 
 namespace Emitters.UI {
@@ -78,20 +79,25 @@ namespace Emitters.UI {
 			case HologramMode.NPC:
 				this.ModeNpcChoice.Selected = true;
 				this.ModeNpcChoice.Recalculate();
+				this.TypeSlider.SetRange( 1f, NPCLoader.NPCCount-1 );
 				break;
 			case HologramMode.Item:
 				this.ModeItemChoice.Selected = true;
 				this.ModeItemChoice.Recalculate();
+				this.TypeSlider.SetRange( 1f, ItemLoader.ItemCount-1 );
 				break;
 			case HologramMode.Projectile:
 				this.ModeProjectileChoice.Selected = true;
 				this.ModeProjectileChoice.Recalculate();
+				this.TypeSlider.SetRange( 1f, ProjectileLoader.ProjectileCount-1 );
 				break;
 			case HologramMode.Gore:
 				this.ModeGoreChoice.Selected = true;
 				this.ModeGoreChoice.Recalculate();
+				this.TypeSlider.SetRange( 1f, ModGore.GoreCount-1 );
 				break;
 			}
+			this.TypeSlider.Recalculate();
 
 			this.CurrentMode = mode;
 

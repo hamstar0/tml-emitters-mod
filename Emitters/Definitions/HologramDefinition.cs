@@ -69,7 +69,7 @@ namespace Emitters.Definitions {
 				return 1;
 			case HologramMode.Projectile:
 				return Main.projFrames[type];
-			case  HologramMode.Gore:
+			case HologramMode.Gore:
 				return 1;
 			default:
 				throw new ModHelpersException( "Invalid hologram type" );
