@@ -21,11 +21,11 @@ v3.0
 -	Add glowmasks for NPCs, items, and projectiles
 -	Draw layer control
 -	Add reset button to UIs
+
 v2.1
 -	Fix tab checkboxes being unselected on load
 -	Fix shader checkboxes being unselected on load
 -	Offset hologram sprites from cursor slightly
-
 -	Add gore holograms
 v2.0
 -	Find alternative control to access emitter/hologram dialogs

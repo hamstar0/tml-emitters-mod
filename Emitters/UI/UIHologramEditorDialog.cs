@@ -153,7 +153,7 @@ namespace Emitters.UI {
 
 			this.CachedHologramDef = def;
 
-			var mouseScr = new Vector2( Main.mouseX, Main.mouseY );
+			var mouseScr = new Vector2( Main.mouseX + 12, Main.mouseY );
 			mouseScr = UIZoomHelpers.ApplyZoomFromScreenCenter( mouseScr, false, true, null, null );
 			var mouseWld = mouseScr + Main.screenPosition;
 

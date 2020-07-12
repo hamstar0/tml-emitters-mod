@@ -23,6 +23,7 @@ namespace Emitters.Definitions {
 
 
 
+
 	public partial class HologramDefinition : BaseEmitterDefinition {
 		public static bool IsBadType( HologramMode mode, int type ) {
 			switch( mode ) {

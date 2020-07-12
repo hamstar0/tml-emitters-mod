@@ -74,6 +74,24 @@ namespace Emitters.UI {
 				this.ModeGoreChoice.Recalculate();
 			}
 
+			switch( mode ) {
+			case HologramMode.NPC:
+				this.ModeNpcChoice.Selected = true;
+				this.ModeNpcChoice.Recalculate();
+				break;
+			case HologramMode.Item:
+				this.ModeItemChoice.Selected = true;
+				this.ModeItemChoice.Recalculate();
+				break;
+			case HologramMode.Projectile:
+				this.ModeProjectileChoice.Selected = true;
+				this.ModeProjectileChoice.Recalculate();
+				break;
+			case HologramMode.Gore:
+				this.ModeGoreChoice.Selected = true;
+				this.ModeGoreChoice.Recalculate();
+				break;
+			}
 
 			this.CurrentMode = mode;
 
@@ -95,6 +113,21 @@ namespace Emitters.UI {
 			if( mode != HologramShaderMode.None && this.ShaderNoneChoice.Selected ) {
 				this.ShaderNoneChoice.Selected = false;
 				this.ShaderNoneChoice.Recalculate();
+			}
+
+			switch( mode ) {
+			case HologramShaderMode.Vanilla:
+				this.ShaderVanillaChoice.Selected = true;
+				this.ShaderVanillaChoice.Recalculate();
+				break;
+			case HologramShaderMode.Custom:
+				this.ShaderCustomChoice.Selected = true;
+				this.ShaderCustomChoice.Recalculate();
+				break;
+			case HologramShaderMode.None:
+				this.ShaderNoneChoice.Selected = true;
+				this.ShaderNoneChoice.Recalculate();
+				break;
 			}
 
 			this.CurrentsShaderMode = mode;
