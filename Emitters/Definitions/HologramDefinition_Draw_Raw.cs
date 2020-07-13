@@ -31,7 +31,13 @@ namespace Emitters.Definitions {
 			scrPos = worldPos - Main.screenPosition;
 			scrPos.X += this.OffsetX;
 			scrPos.Y += this.OffsetY;
-			scrPos = UIZoomHelpers.ApplyZoomFromScreenCenter( scrPos, isUI ? (bool?)true : null, false, null, null );
+			scrPos = UIZoomHelpers.ApplyZoomFromScreenCenter(
+				value: scrPos,
+				uiZoomState: isUI ? (bool?)true : null,
+				gameZoomState: null,
+				uiZoomStateForCenterOffset: null,
+				gameZoomStateForCenterOffset: null
+			);
 
 			if( this.Direction == -1 ) {
 				effects = SpriteEffects.FlipHorizontally;
@@ -45,7 +51,7 @@ namespace Emitters.Definitions {
 					color: color,
 					rotation: MathHelper.ToRadians( this.Rotation ),
 					origin: isUI ? default(Vector2) : origin,
-					scale: this.Scale * Main.GameZoomTarget,
+					scale: this.Scale,// * Main.GameZoomTarget,
 					effects: effects,
 					layerDepth: 1f
 				);
